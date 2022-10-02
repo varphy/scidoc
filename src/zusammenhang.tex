@@ -1,0 +1,553 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{authblk}
+\usepackage{titlesec}
+
+% section title formating
+\renewcommand{\thesection}{\Roman{section}}
+\titleformat{\section}[block]{\normalsize\bfseries}{\thesection.}{1em}{\MakeUppercase}
+\titlespacing*{\section}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+
+\renewcommand{\thesubsection}{\arabic{section}.\Alph{subsection}}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+   
+% custom macros
+\newcommand{\mydef}[1]{\textls{#1}}
+
+% %%%%%%%
+% title %
+% %%%%%%%
+
+\title{Kurzeinführung in lineare Zusammenhänge}
+\author{Hendrik Meier und Jean-Philippe Dugard}
+
+\affil{Vernon, Frankreich}
+\renewcommand\Affilfont{\itshape}
+
+\date{August 2022}
+
+
+% %%%%%%%%%%
+% document %
+% %%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+In diesem Aufsatz führen wir den Zusammenhangs\-begriff auf (reellen) Vektorbündeln ein.
+Im Folgenden sei dazu $M$ eine glatte Mannigfaltigkeit der Dimension~$\mathrm{dim}\ M = n$ und $B$ ein glattes Vektorbündel über~$M$ vom Rang~$m$ mit Projektion
+\begin{align*}
+\pi:B\rightarrow M
+\ .
+\end{align*}
+Für einen Punkt~$x\in M$ ist die Faser~$\pi^{-1}(x)$ also ein Vektorraum der Dimension~$m$, den wir mit~$B_x$ bezeichnen.
+Die Mannigfaltigkeit~$M$ nennen wir den \mydef{Grundraum} des Vektorbündels.
+Als \mydef{Vektorfeld}~$X$ bezeichnen wir in diesem Aufsatz einen glatten Schnitt im Vektorbündel~$B$, also eine glatte Abbildung~$X:M\rightarrow B$ mit~$\pi\circ X = \mathrm{id}_M$.\\
+
+Betrachten wir das Vektorfeld~$X$ in einem Punkt~$x\in M$, wo es den Wert~$X|_x$ annimmt.
+\emph{Wir interessieren für eine quantitative Angabe darüber, wie sich~$X$ von $x$ aus in Richtung eines gegebenen Tangential\-vektors $\xi\in \mathrm{T}_xM$ ändert.} 
+Die gesuchte Angabe sollte sinnvollerweise ein Vektor in~$B_x$ sein, der linear von $\xi$ abhängt.
+Wir wählen die übliche Bezeichnung
+\begin{align*}
+\left.\nabla_\xi X\right|_x
+\end{align*}
+für diesen Vektor.
+
+Wählen wir als Ausgangspunkt die Ableitung des Vektorfeldes~$X$ im Punkte~$x$,
+\begin{align*}
+dX|_x : \mathrm{T}_xM \rightarrow \mathrm{T}_{X|_x}B
+\ ,
+\end{align*}
+müssen wir feststellen, dass~$dX|_x$ alleine unser eingangs formuliertes Interesse nicht befriedigt, da wir ohne Weiteres nicht wissen, wie wir einem Tangential\-vektor~$\beta\in \mathrm{T}_{X|_x} B$ einen Vektor in~$B_x$ zuordnen sollen.
+Unser erstes Ziel ist die Konstruktion von Strukturen, die eine solche Zuordnung eindeutig ermöglichen.
+
+\newpage
+
+\section{Zusammenhänge auf Vektorbündeln}
+
+Ziel dieses Abschnitts ist die Definition, Konstruktion und Darstellung von Zusammenhängen auf einem Vektorbündel.
+Hinsichtlich der Bezeichnungen und Symbole übernimmt folgender Text jene, die in der Einleitung eingeführt worden sind.
+
+\subsection{Der vertikale Raum}
+Betrachten wir zunächst den mit Hilfe der Bündelprojektion~$\pi$ definierten $m$-dimensionalen Untervektorraum
+\begin{align*}
+\mathrm{V}_{X|_x}B = \mathrm{Kern}\ d\pi|_{X|_x} \subset \mathrm{T}_{X|_x} B
+\ .
+\end{align*}
+Dieser sogenannte \mydef{vertikale} Raum ist kanonisch isomorph zu~$B_x$.
+
+Zur Begründung dieser Aussage definieren wir für einen gegebenen Vektor~$v_x\in B_x$ den Weg
+\begin{align*}
+\gamma_v: \mathbb{R} &\rightarrow B
+\ ,\nonumber\\
+t &\mapsto X|_x + tv_x
+\ ,
+\end{align*}
+der vollständig in $B_x\subset B$ enthalten ist.
+Es ist~$\gamma_v(0) = X|_x$.
+Die Abbildung
+\begin{align*}
+\kappa_{X|_x}: B_x&\rightarrow\mathrm{T}_{X|_x}B
+\ ,\nonumber\\
+v_x &\mapsto \left.\frac{d\gamma_v}{dt}\right|_{t=0}
+\end{align*}
+ist offenbar ein injektiver Vektorraum\-homomorphismus.\footnote{Dies zeigt sich z.B. unmittelbar in lokalen Karte einer lokalen Trivialisierung.} 
+Sein Bild ist ein Unterraum von $\mathrm{V}_{X|_x}B$, dem Kern von~$d\pi|_{X|_x}$, wie die Kettenregel
+\begin{align*}
+d\pi|_{X|_x} . \left.\frac{d\gamma_v}{dt}\right|_{t=0}
+= 
+\left.\frac{d}{dt}
+\left(
+\pi\circ\gamma_v
+\right)
+\right|_{t=0} = 0
+\end{align*}
+zeigt.
+(Man beachte, dass $t\mapsto\pi\circ\gamma_v=x$ ein konstanter Weg ist.) 
+Aus Dimensions\-gründen muss $\mathrm{Bild}\ \kappa_{X|_x}$ mit $\mathrm{V}_{X|_x}B$ sogar übereinstimmen.
+Wir bestätigen die behauptete kanonische Isomorphie
+\begin{align*}
+B_x \cong \mathrm{V}_{X|_x}B
+\end{align*}
+also mit Hilfe der Abbildung~$\kappa_{X|_x}$.
+
+\subsection{Horizontale Räume und Zusammenhänge}
+\label{ssec:horizontal}
+
+Zur Konstruktion von~$\left.\nabla_\xi X\right|_x$ fehlte an dieser Stelle nur noch eine Projektion
+\begin{align*}
+p_V|_{X|_x}: \mathrm{T}_{X|_x} B\rightarrow\mathrm{V}_{X|_x}B
+\ ,
+\end{align*}
+die die Ableitung~$dX|_x.\xi$ in Richtung~$\xi$ zunächst auf~$\mathrm{V}_{X|_x}B$ projizierte, von wo aus die Umkehrung der Isomorphie~$\kappa_{X|_x}$ zurück auf $B_x$ führte.
+Mit~$p_V|_{X|_x}$ hätten wir somit alle Zutaten für eine in~$\xi$ lineare Abbildung mit den gewünschten Eigenschaften in unserer Hand.
+
+Eine Projektion~$p_V|_{X|_x}$ definiert eine direkte Summen\-zerlegung
+\begin{align*}
+\mathrm{T}_{X|_x}B = \mathrm{V}_{X|_x}B \oplus \mathrm{H}_{X|_x}B
+\end{align*}
+mit dem \mydef{horizontalen} Raum $\mathrm{H}_{X|_x}B=\mathrm{Kern}\ p_V|_{X|_x}$.
+Umgekehrt liefert die Auszeichnung eines horizontalen Raums~$\mathrm{H}_{X|_x}B$ als Komplement zum kanonischen Unterraum~$\mathrm{V}_{X|_x}B$ eindeutig die Projektion~$p_V|_{X|_x}$.
+
+Die Auszeichung\footnote{\label{note:existence}Jedes ($C^\infty$-)Vektorbündel lässt eine solche Auszeichnung zu. Jedes ($C^\infty$-)Vektorbündel kann sogar mit einem \emph{linearen} Zusammenhang, siehe \ref{ssec:linear}, versehen werden. Ein solcher kann z.B. aus trivialen Zusammenhängen in lokalen Trivialisierungen gewonnen, die mit Hilfe einer Zerlegung der Eins zu einem glatten globalen linearen Zusammenhang zusammengesetzt werden.} eines zum Bündel der vertikalen Räume~$\mathrm{V}_{X|_x}B$ komplementären \mydef{Horizontal\-bündels}
+\begin{align*}
+\mathrm{H}B = \coprod_{X|_x} \mathrm{H}_{X|_x}B
+\end{align*}
+stattet jeden Tangential\-raum~$\mathrm{T}_{X|_x}B$ des Vektorbündels~$B$ mit einer Projektion~$p_V|_{X|_x}$ aus.
+Damit können wir nun den gesuchten \mydef{Zusammenhang} in der Form
+\begin{align}
+\label{eq:connection}
+\left.\nabla_\xi X\right|_x
+= (\kappa_{X|_x}^{-1}\,|\,\mathrm{V}_{X|_x}B)\,.\,
+p_V|_{X|_x}\,.\,
+dX|_x
+\,.\,\xi
+\end{align}
+als Verkettung von Abbildungen
+\begin{align*}
+\mathrm{T}_xM 
+\rightarrow \mathrm{T}_{X|_x}B
+\xrightarrow{p_V|_{X|_x}} \mathrm{V}_{X|_x}B
+\rightarrow B_x
+\end{align*}
+angeben.
+Ein Zusammenhang ist also durch ein ausgezeichnetes Horizontalbündel~$\mathrm{H}B$ eindeutig definiert.
+
+\subsection{Konstruktion von Zusammenhängen}
+\label{ssec:constr}
+
+Sei~$\nabla$ ein Zusammenhang auf dem Vektorbündel~$B$ und wiederum~$x\mapsto X|_x$ ein Vektorfeld.
+Der durch den Zusammenhang definierte horizontale Raum~$\mathrm{H}_{X|_x}B$ wird durch die Ableitung~$d\pi|_{X|_x}$ surjektiv und damit aus Dimensions\-gründen isomorph auf den Tangential\-raum~$\mathrm{T}_xM $ abgebildet.
+Die Abbildung
+\begin{align*}
+p_H|_{X|_x}: \mathrm{T}_{X|_x}B &\rightarrow \mathrm{H}_{X|_x}B
+\ ,\nonumber\\
+\beta &\mapsto  (d\pi|_{X|_x}\,|\, \mathrm{H}_{X|_x}B)^{-1}\,.\,d\pi|_{X|_x}\,.\beta
+\end{align*}
+ist die zu $p_V|_{X|_x}$ komplementäre Projektion, so dass 
+\begin{align*}
+p_V|_{X|_x} + p_H|_{X|_x} = \mathrm{id}|_{\mathrm{T}_{X|_x}B}
+\end{align*}
+eine Darstellung der Identität auf~$\mathrm{T}_{X|_x}B$ ist.
+
+Sei nun~$\tilde{\nabla}$ ein weiterer Zusammenhang auf~$B$, der auf~$\mathrm{T}_{X|_x}B$ die Projektionen~$\tilde{p}_V|_{X|_x}$ und~$\tilde{p}_H|_{X|_x}$ liefert.
+Aus der Definition des Zusammenhangs in~\ref{ssec:horizontal} erhalten wir für die Differenz beider Zusammenhänge den Ausdruck
+\begin{align*}
+\tilde{\nabla}_\xi X|_x - \nabla_\xi X|_x 
+&= (\kappa_{X|_x}^{-1}\,|\,\mathrm{V}_{X|_x}B)\,.\,
+\left(\tilde{p}_V|_{X|_x} - p_V|_{X|_x}\right)\,.\,
+dX|_x
+\,.\,\xi
+\ .
+\end{align*}
+Durch Einsetzen der Identität auf~$\mathrm{T}_{X|_x}B$ erhalten wir zunächst
+\begin{align*}
+dX|_x
+&= 
+\left(
+p_V|_{X|_x} + p_H|_{X|_x}
+\right)\,.\,
+dX|_x
+\nonumber\\
+&= 
+\left[
+p_V|_{X|_x} +
+(d\pi|_{X|_x}\,|\, \mathrm{H}_{X|_x}B)^{-1}\,.\,d\pi|_{X|_x}
+\right]\,.\,
+dX|_x
+\nonumber\\
+&= p_V|_{X|_x}\,.\,dX|_x
++ (d\pi|_{X|_x}\,|\, \mathrm{H}_{X|_x}B)^{-1}
+\,.\,\overset{= \mathrm{id}_{\mathrm{T}_xM}}{\overbrace{d(\pi\circ X)|_x}}
+\nonumber\\
+&= p_V|_{X|_x}\,.\,dX|_x
++ (d\pi|_{X|_x}\,|\, \mathrm{H}_{X|_x}B)^{-1}
+\ .
+\end{align*}
+Mit der Komposition von Projektionen~$\tilde{p}_V|_{X|_x}\circ p_V|_{X|_x} = p_V|_{X|_x}$  folgt
+\begin{align*}
+\tilde{\nabla}_\xi X|_x - \nabla_\xi X|_x 
+&= \alpha(X|_x)\,.\,\xi
+\ ,
+\end{align*}
+wobei die lineare Abbildung~$\alpha(X|_x):\mathrm{T}_{x}M\rightarrow B_x$ durch
+\begin{align*}
+\alpha(X|_x) =
+(\kappa_{X|_x}^{-1}\,|\,\mathrm{V}_{X|_x}B)\,.\,
+\left(\tilde{p}_V|_{X|_x} - p_V|_{X|_x}\right)\,.\,
+(d\pi|_{X|_x}\,|\, \mathrm{H}_{X|_x}B)^{-1}
+\end{align*}
+gegeben ist.
+
+Ist auf einem Vektorbündel~$B$ also ein Zusammenhang~$\nabla$ erklärt, können alle anderen Zusammenhänge auf~$B$ in der Form
+\begin{align}
+\label{eq:connection_alpha}
+\nabla^\alpha = \nabla + \alpha
+\end{align}
+angegeben werden.
+Dabei ist die Abbildung
+\begin{align*}
+\alpha: B\times_M \mathrm{T}M &\rightarrow E
+\ ,\nonumber\\
+(v_x, \xi_x) &\mapsto \alpha(v_x)\,.\,\xi_x
+\end{align*}
+in der zweiten Komponente linear.
+Das Vektorbündel~$B\times_M \mathrm{T}M$ bezeichnet hier das Faserprodukt\footnote{Auf das Faserprodukt kommen wir in~\ref{ssec:pullback} zurück.} der Vektorbündel~$\mathrm{T}M$ und~$B$ über~$M$ bezüglich deren Projektionen.
+
+\subsection{Zusammenhänge in Koordinatendarstellung}
+\label{ssec:coords}
+
+Betrachten wir das Vektorbündel~$B$ für einen vorgegebenen Punkt in~$M$ in einer lokalen Trivialisierung~$U\times V$, wobei~$U\subset M$ eine offene Umgebung dieses Punkts und~$V$ ein~$m$-dimensionaler Vektorraum ist.
+Ein Vektorfeld auf $U\times V$
+\begin{align*}
+X: U &\rightarrow U \times V
+\ ,\nonumber\\
+x &\mapsto (x, X|_x)
+\end{align*}
+fassen wir entsprechend als Graphen einer Abbildung~$U\rightarrow V$ auf.
+Im Folgenden verwenden wir das Symbol~$X$ für diese Abbildung.
+
+Das triviale Vektorbündel~$U\times V$ trägt den trivialen Zusammenhang
+\begin{align*}
+\nabla^0 X|_x = dX|_x
+\ ,
+\end{align*}
+wobei~$dX|_x:\mathrm{T}_xU\rightarrow \mathrm{T}_xV \cong V$ hier das gewöhnliche totale Differenzial zwischen Vektorräumen bezeichnet.
+Ein allgemeiner Zusammenhang lässt sich nun nach dem Ergebnis von~\ref{ssec:constr} also in der Form
+\begin{align*}
+\nabla^\alpha X|_x = dX|_x + \alpha(x, X|_x)
+\end{align*}
+schreiben, wobei $\alpha$ eine glatte Abbildung~$U \times V\rightarrow \mathrm{Hom}(\mathrm{T}_xU, V)$ ist.\\
+
+Um den Zusammenhang~$\nabla^\alpha$ in Koordinaten anzugeben, parametrisieren wir~$U$ --- nach eventueller Verkleinerung in eine kleinere Umgebung von~$x$ --- in einer geeigneten Karte.
+Nehmen wir also direkt an, dass $U$ eine offene Menge von~$\mathbb{R}^n$ und~$x\in U\subset\mathbb{R}^n$ ist.
+Für den Vektorraum~$V$ können wir gleichermaßen nach Wahl einer geeigneten Basis annehmen, dass $V=\mathbb{R}^m$ ist.
+
+
+In expliziter Koordinatendarstellung, $x=(x^1, ..., x^n)$, $\xi=(\xi^1, ..., \xi^n)$ und $X|_x= (X^1(x), ..., X^m(x))$, erhalten wir
+\begin{align}
+\label{eq:connection_coords}
+\left(\nabla^\alpha_\xi X|_x\right)^i
+= \sum_{j=1}^n 
+\left(
+\left.
+\frac{\partial X^i}{\partial x^j}
+\right|_x
++ \alpha^i_j(x, X|_x)
+\right)\,\xi^j
+\end{align}
+für $i=1, ...,m$.
+Die Koeffizienten\-funktionen~$\alpha^i_j$ sind dabei die \mydef{Christoffel-Symbole} des Zusammenhangs~$\nabla^\alpha$ in der betrachteten lokalen Trivialisierung und Karte.
+
+\newpage
+
+\section{Lineare Zusammenhänge}
+
+In diesem Abschnitt führen wir lineare Zusammenhänge ein.
+Lineare Zusammenhänge existieren auf allen glatten Vektorbündeln, vgl. die Fußnote~\ref{note:existence} auf Seite~\pageref{note:existence}.
+
+\subsection{Lineare Zusammenhänge}
+\label{ssec:linear}
+
+Ein Zusammenhang~$\nabla$ ist genau dann \mydef{linear}, wenn in jeder lokalen Trivialisierung~$U\times V$ des Vektorbündels~$B$ die durch
+\begin{align*}
+\nabla X|_x = dX|_x + \alpha(x, X|_x)
+\end{align*}
+definierte Abbildung~$\alpha(x, X|_x)$ linear in ihrem zweiten Argument~$X|_x$ ist.
+In lokalen Koordinaten einer solchen lokalen Trivialisierung erhalten wir also die Darstellung
+\begin{align}
+\label{eq:lin_connection_coords}
+\left(\nabla_\xi X|_x\right)^i
+= \sum_{j=1}^n 
+\left(
+\left.
+\frac{\partial X^i}{\partial x^j}
+\right|_x
++ 
+\sum_{k=1}^m\Gamma^i_{kj}(x)\,X^k(x)
+\right)\,\xi^j
+\end{align}
+für $i=1, ...,m$.
+Dabei werden die \mydef{Christoffel-Symbole}~$\Gamma^i_{kj}$ definiert durch
+\begin{align*}
+\alpha^i_j(x, v) = \sum_{k=1}^m\Gamma^i_{kj}(x)\,v^k
+\end{align*}
+für $v=(v^1,...,v^m)\in \mathbb{R}^m$ ($=V$ in der betrachteten Karte).\\
+
+\subsection{Rechenregeln}
+
+Ein linearer Zusammenhang~$\nabla$ erfüllt, wie man nach in einer lokalen Trivialisierung von~$B$ oder direkt in der in~\ref{ssec:linear} angegebenen Koordinaten\-darstellung leicht zeigt, die folgenden charakteristischen Eigenschaften oder Rechenregeln: Sind~$X,Y:M\rightarrow B$ Vektorfelder mit Werten in~$B$, ferner $\Xi,\Pi:M\rightarrow \mathrm{T}M$ Vektorfelder im Tangential\-bündel, $f,g:M\rightarrow \mathbb{R}$ Funktionen auf~$M$ und~$a,b\in\mathbb{R}$, so gilt
+\begin{align*}
+\nabla_\Xi (aX + bY)
+&= a\nabla_\Xi X + b\nabla_\Xi Y
+\quad&(\text{\mydef{Linearität}})
+\ ,\\
+\nabla_{f\Xi+g\Pi}X
+&= f\nabla_\Xi X + g\nabla_\Pi X
+\quad&(\text{\mydef{$C^\infty$-Linearität}})
+\ ,\\
+\nabla_\Xi (fX)
+&= f\,\nabla_\Xi X + (df\,.\,\Xi)\,X 
+\quad&(\text{\mydef{Produktregel}})
+\ .
+\end{align*}
+Umgekehrt definiert eine Abbildung
+\begin{align*}
+\Gamma(\mathrm{T}M)\times\Gamma(B)\rightarrow\Gamma(B)
+\end{align*}
+(wobei $\Gamma(-)$ den Raum der Vektorfelder bezeichnet) mit obigen Eigenschaften  eindeutig einen linearen Zusammenhang.
+
+\newpage
+
+\section{Pull-Back-Zusammenhänge}
+
+Eine glatte Abbildung einer Mannigfaltigkeit in den Grundraum eines Vektorbündels~$B$ definiert durch Zurücknehmen (engl. Pull-Back) ein Vektorbündel vom gleichen Range über der Urbild\-mannigfaltigkeit.
+Wie sich ein Zusammenhang auf~$B$ auf dieses zurückgenommene Vektorbündel übertragen lässt, ist der Gegenstand dieses Abschnitts.
+Von besonderem Interesse ist der Spezialfall von Vektorfeldern entlang einer Kurve im Grundraum eines Vektorbündels.
+
+\subsection{Zurücknehmen eines Zusammenhangs}
+\label{ssec:pullback}
+
+Sei~$I$ eine Mannigfaltigkeit der Dimension~$p$ und~$\gamma: I\rightarrow M$ eine glatte Abbildung in die Mannigfaltigkeit~$M$, über der ein Vektorbündel~$B$ vom Rang~$m$ mit Projektion~$\pi$ erklärt ist.
+Auf den interessanten Spezialfall, in dem~$I$ ein offenes Intervall in~$\mathbb{R}$ und $\gamma$ somit ein Weg in~$M$ ist, gehen wir in Abschnitt~\ref{ssec:covariant_derivative} ein.
+Punkte in~$I$ nennen wir in dieser Voraussicht bereits~$t$ und Tangential\-vektoren an diesen Punkten $\tau=\tau_t\in\mathrm{T}_tI$.
+
+Durch Zurücknehmen mit der Abbildung~$\gamma$ erhält man das Vektorbündel~$\gamma^*B$ (von gleichem Range~$m$) über dem Grundraum~$I$.
+Es handelt sich dabei um das Faserprodukt
+\begin{align*}
+\gamma^*B = I \times_M B = 
+\left\{
+(t, v_x) \in I\times B\ |\ \gamma(t)=\pi(v_x)=x
+\right\}
+\end{align*}
+bezüglich~$\gamma$ und~$\pi$.
+Die Projektion $\gamma^*B\rightarrow I$ des Pull-Back-Vektorbündels ist gegeben durch
+\begin{align*}
+p_I: (t, v_x)\mapsto t
+\ ,
+\end{align*}
+also einfach die Projektion auf die erste Komponente.
+
+Die Projektion auf die zweite Komponente nennen wir~$p_B$, also $p_B(t,v_x)=v_x\in B_x$ für $x=\gamma(t)$.
+Für festes~$t$ ist 
+\begin{align*}
+p_B(t,-): (\gamma^*B)_t\rightarrow B_{\gamma(t)}
+\end{align*}
+offenbar ein Vektorraum\-isomorphismus.\\
+
+Ist nun auf~$B$ ein Zusammenhang~$\nabla$ erklärt, können wir diesen in natürlicher Weise zu einem Zusammenhang~$\gamma^*\nabla$ auf dem Bündel~$\gamma^*B$ zurücknehmen.
+Den Zusammenhang~$\gamma^*\nabla$ nennen wir auch den \mydef{Pull-Back-Zusammenhang} bezüglich~$\gamma$.
+
+Sei dazu $Y:I\rightarrow\gamma^*B$ ein Vektorfeld auf~$I$, d.h. ein Schnitt in~$\gamma^*B$, und sei $\tau\in\mathrm{T}_tI$ ein an den Punkt~$t\in I$ angehefteter Tangential\-vektor.
+Die gewöhnliche Ableitung~$dY|_t$ des Vektorfelds bildet~$\tau$ in den Tangential\-raum $\mathrm{T}_{Y|_t}(\gamma^*B)$ ab, von wo die Ableitung der Faserprodukt\-projektion
+\begin{align*}
+dp_B|_{Y|_t}:
+\mathrm{T}_{Y|_t}(\gamma^*B)
+\rightarrow 
+\mathrm{T}_{p_B(Y|_t)}B
+\end{align*}
+in einen Tangential\-raum an $B$ führt.
+Der Zusammenhang~$\nabla$ auf~$B$ liefert nun eine Projektion auf dessen Vertikal\-raum und damit auf~$B_{\gamma(t)}=p_B(t,(\gamma^*B)_t)$.
+Insgesamt erhalten wir also, vgl. Gl.~(\ref{eq:connection}) in \ref{ssec:horizontal}, in natürlicher Weise die Formel
+\begin{align}
+\label{eq:pullback}
+(\gamma^*\nabla)_\tau Y|_t
+= 
+[p_B(t,-)]^{-1}\,.\,
+(\kappa_{p_B(Y|_t)}^{-1}\,|\,\mathrm{V}_{p_B(Y|_t)}B)\,.\,
+p_V|_{p_B(Y|_t)}\,.\,
+dp_B|_{Y|_t}\,.\,
+dY|_t
+\,.\,\tau
+\end{align}
+für den Zusammenhang~$\gamma^*\nabla$.\\
+
+Sei nun, wie in~\ref{ssec:constr}, mit~$\tilde{\nabla}$ ein weiterer Zusammenhang auf~$B$ gegeben.
+Für dessen Pull-Back~$\gamma^*\tilde{\nabla}$ können wir eine zu Gl.~(\ref{eq:pullback}) analoge Formel angeben oder aber versuchen, diesen durch~$\gamma^*\nabla$ auszudrücken: Eine zu jener in~\ref{ssec:constr} analoge Rechnung
+\begin{align*}
+&dp_B|_{Y|_t}\,.\,dY|_t
+\nonumber\\
+&= \left(
+p_V|_{p_B(Y|_t)} + p_H|_{p_B(Y|_t)}
+\right)\,.\,
+dp_B|_{Y|_t}\,.\,dY|_t
+\nonumber\\
+&= 
+\left[
+p_V|_{p_B(Y|_t)} +
+(d\pi|_{p_B(Y|_t)}\,|\, \mathrm{H}_{p_B(Y|_t)}B)^{-1}\,.\,d\pi|_{p_B(Y|_t)}
+\right]\,.\,
+dp_B|_{Y|_t}\,.\,dY|_t
+\nonumber\\
+&= 
+p_V|_{p_B(Y|_t}\,.\,dp_B|_{Y|_t}\,.\,dY|_t
++ (d\pi|_{p_B(Y|_t}\,|\, \mathrm{H}_{p_B(Y|_t}B)^{-1}
+\,.\,d(\pi\circ p_B\circ Y)|_t
+\nonumber\\
+&= 
+p_V|_{p_B(Y|_t}\,.\,dp_B|_{Y|_t}\,.\,dY|_t
++ (d\pi|_{p_B(Y|_t}\,|\, \mathrm{H}_{p_B(Y|_t}B)^{-1}
+\,.\,d\gamma|_t
+\end{align*}
+(da $\pi\circ p_B\circ Y=\gamma$) liefert
+\begin{align*}
+(\gamma^*\tilde{\nabla})_\tau Y|_t
+- (\gamma^*\nabla)_\tau Y|_t
+&=
+\alpha_\gamma(p_B(Y|_t))\,.\,d\gamma|_t\,.\,\tau
+\ .
+\end{align*}
+Darin ist
+\begin{align*}
+\alpha_\gamma(p_B(Y|_t) = [p_B(t,-)]^{-1}\,.\,\alpha(p_B(Y|_t))
+\end{align*}
+eine Abbildung $\mathrm{T}_{\gamma(t)}M \rightarrow (\gamma^*B)_t$, wobei $\alpha$ mit der gleichnamigen Abbildung aus Gl.~(\ref{eq:connection_alpha}) übereinstimmt.\\
+
+Zum Abschluss geben wir den zurückgenommenen Zusammenhang~$\gamma^*\nabla$ in lokalen Koordinaten um einen gegebenen Punkt in~$I$ an.
+Sei dazu $U\times V$ wie in Abschnitt~\ref{ssec:coords} eine lokale Trivialisierung und~$J\subset I$ eine offene Umgebung des betrachteten Punkts derart, dass das Bild $\gamma(J)$ vollständig in~$U\subset M$ enthalten ist.
+Ein Vektorfeld im (trivialen) Bündel $\gamma^*(U\times V)=I\times_U V=I\times V$ hat wie zuvor die Form eines Graphen,
+\begin{align*}
+Y: I&\rightarrow I\times V
+\ ,\nonumber\\
+t&\mapsto (t, Y|_t)
+\ ,
+\end{align*}
+zu einer Abbildung~$I\rightarrow V$, für die wir im Folgenden das Symbol~$Y$ verwenden.
+Ferner bemerken wir, dass die Abbildung~$p_B(t,-)$ die Identität auf~$V$ ist, im Urbild aufgefasst als an~$t$ angeheftet und im Bild an~$\gamma(t)\in U$.
+
+Bezüglich des durch
+\begin{align*}
+\nabla^0Y|_t = dY|_t: \mathrm{T}_tI \rightarrow V
+\end{align*}
+gegebenen trivialen Zusammenhangs auf $\gamma^*(U\times V)$ können wir also einen vorgegebenen Pull-Back-Zusammenhang~$\gamma^*\nabla^\alpha$ in der Form
+\begin{align*}
+(\gamma^*\nabla^\alpha)|_t = 
+dY|_t 
++ \alpha(\gamma(t), Y|_t)\,.\,d\gamma|_t
+\end{align*}
+angeben, wobei~$\alpha$ dieselbe glatte Abbildung~$U \times V\rightarrow \mathrm{Hom}(\mathrm{T}_{\gamma(t)}M, V)$ wie in~\ref{ssec:coords} bezeichnet.
+
+In expliziter Koordinatendarstellung, $t=(t^1, ..., t^p)$, $\gamma(t)=(\gamma^1(t), ..., \gamma^n(t))$, $\tau=(\tau^1, ..., \tau^p)$ und $Y|_t= (Y^1(t), ..., Y^m(t))$, erhalten wir
+\begin{align}
+\label{eq:pullback_coords}
+\left(\gamma^*\nabla^\alpha_\tau Y|_t\right)^i
+= \sum_{j=1}^p 
+\left(
+\left.
+\frac{\partial Y^i}{\partial t^j}
+\right|_x
++ \sum_{k=1}^n 
+\alpha^i_k(\gamma(t), Y|_t)\,\frac{\partial\gamma^k}{\partial t^j}
+\right)\,\tau^j
+\end{align}
+für $i=1, ...,m$.
+Die Koeffizienten\-funktionen~$\alpha^i_j$ sind dabei wie zuvor die Christoffel-Symbole des Zusammenhangs~$\nabla^\alpha$ in der betrachteten Karte der lokalen Trivialisierung~$U\times V$.
+
+Im Falle eines linearen Zusammenhangs gilt entsprechend
+\begin{align}
+\label{eq:pullback_coords_lin}
+\left(\gamma^*\nabla^\alpha_\tau Y|_t\right)^i
+= \sum_{j=1}^p 
+\left(
+\left.
+\frac{\partial Y^i}{\partial t^j}
+\right|_t
++ \sum_{k=1}^n\sum_{l=1}^m 
+\Gamma^i_{lk}(\gamma(t))\ Y^l(t)\, 
+\left.\frac{\partial\gamma^k}{\partial t^j}\right|_t
+\right)\,\tau^j
+\end{align}
+mit den Christoffel-Symbolen~$\Gamma^i_{lk}$ aus \ref{ssec:linear}.
+
+\subsection{Ableitung entlang einer Kurve}
+\label{ssec:covariant_derivative}
+
+Sei $I\subset\mathbb{R}$ ein offenes Intervall und $\gamma:I\rightarrow M$ ein Weg in der Mannigfaltigkeit~$M$, die der Grundraum des Vektorbündels $\pi:B\rightarrow M$ sei.
+
+Ein \mydef{Vektorfeld längs~$\gamma$} ist eine Abbildung~$Y:I\rightarrow B$ mit der Eigenschaft $\pi\circ Y=\gamma$ und entspricht damit einem Schnitt im Pull-Back-Bündel $\gamma^*B=I\times_M B$.
+Diese Definition schließt den interessanten Spezialfall ein, in dem~$Y$ die Komposition~$X\circ\gamma$ des Weges~$\gamma$ mit einem Vektorfeld~$X$ im Bündel~$B$ ist.\\
+
+Sei $\nabla$ ein Zusammenhang auf~$B$.
+Der Pull-Back-Zusammenhang~$\gamma^*\nabla$ definiert eine (Zeit-)Ableitung nach~$t$, die wir die \mydef{kovariante Ableitung} entlang des Weges~$\gamma$ nennen und die durch
+\begin{align*}
+\left.\frac{\nabla}{dt} Y\right|_t
+= \frac{\gamma^*\nabla_\tau Y|_t}{\tau}
+\end{align*}
+für $\tau\in\mathrm{T}_tI=\mathbb{R}$ mit $\tau\neq 0$ gegeben ist.
+In lokalen Koordinaten erhalten wir aus den Gln.~(\ref{eq:pullback_coords}) und~(\ref{eq:pullback_coords_lin}) die Formel
+\begin{align*}
+\left.\frac{\nabla}{dt} Y^i\right|_t
+=  
+\left.
+\frac{\partial Y^i}{\partial t}
+\right|_x
++ \sum_{k=1}^n 
+\alpha^i_k(\gamma(t), Y|_t)\,\dot{\gamma}^k
+\end{align*}
+im allgemeinen Falle sowie im Falle eines linearen Zusammenhangs
+\begin{align*}
+\left.\frac{\nabla}{dt} Y^i\right|_t
+= 
+\left.
+\frac{\partial Y^i}{\partial t}
+\right|_t
++ \sum_{k=1}^n\sum_{l=1}^m 
+\Gamma^i_{lk}(\gamma(t))\ Y^l(t)\ 
+\dot{\gamma}^k
+\ ,
+\end{align*}
+wobei $\dot{\gamma}^k = \partial\gamma^k/\partial t$.
+
+
+\end{document}
