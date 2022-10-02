@@ -1,0 +1,21 @@
+name: Build LaTeX document
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+      - name: Compile LaTeX document
+        uses: dante-ev/latex-action@latest
+        with:
+          working_directory: src
+          root_file: zusammenhang.tex
+      - run: mkdir outputs
+      - run: cp src/zusammenhang.pdf outputs/zusammenhang.pdf
+      - name: Retrieve pdf output
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: outputs/zusammenhang.pdf    
+ 
