@@ -1,0 +1,471 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{authblk}
+\usepackage{titlesec}
+
+% section title formating
+\renewcommand{\thesection}{\Roman{section}}
+\titleformat{\section}[block]{\normalsize\bfseries}{\thesection.}{1em}{\MakeUppercase}
+\titlespacing*{\section}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+
+\renewcommand{\thesubsection}{\arabic{section}.\Alph{subsection}}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+   
+% custom macros
+\newcommand{\mydef}[1]{\textls{#1}}
+\newcommand{\nul}{\textrm{---}}
+\newcommand{\trans}{^\mathsf{T}}
+
+% %%%%%%%
+% title %
+% %%%%%%%
+
+\title{Herleitung der Transportrate}
+\author{Hendrik Meier}
+
+\affil{Immenstaad am Bodensee}
+\renewcommand\Affilfont{\itshape}
+
+\date{Januar 2023}
+
+
+% %%%%%%%%%%
+% document %
+% %%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+In diesem Aufsatz wird die sogenannte \mydef{Transportrate} für die im NED-Bezugssystem der jeweils aktuellen Position angegebenen Geschwindigkeit berechnet.
+Diese Rechnung wird mit elementaren Methoden durchgeführt.
+
+\section{Koordinatensysteme}
+
+\subsection{Erdfeste Koordinaten}
+
+Im \mydef{erdfesten Koordinatensystem (ECEF)} zeichnen wir als Ursprung den Mittelpunkt eines um die Polarachse rotationssymmetrischen Referenzellipsoiden (z.B. WGS84) aus und wählen ein kartesisches Achsensystem, in dem die dritte Achse zum Nordpol führt und die beiden ersten Achsen in der Äquatorialebene liegen.
+Im Folgenden identifizieren wir unseren Anschauungsraum mit dem ECEF-Koordinatenraum und entsprechend einen Punkt $r$ mit einem ECEF-Koordinatentupel~$(x,y,z)\in\mathbb{R}^3$.
+
+Neben dem erdfesten linearen Koordinatensystem betrachten wir ein ebenso erdfestes System von sphärischen Koordinaten, den sogenannten \mydef{geogaphischen Koordinaten}, hier in der Konvention $\sigma = (\phi, \lambda, h)$ mit der geographischen Breite~$\phi$, der geographischen Länge~$\lambda$ und der negativen (!) Höhe~$h$.
+
+Die Kartenwechselabbildung zwischen ECEF-Koordinaten $r=(x,y,z)$ und geographischen Koordinaten $\sigma = (\phi, \lambda, h)$ ist durch
+\begin{align}
+	r &= \Phi(\sigma)
+	=
+	\begin{pmatrix}
+		\left[
+			N(\phi) - h
+		\right]
+		\cos\phi\cos\lambda
+		\\
+		\left[
+			N(\phi) - h
+		\right]
+		\cos\phi\sin\lambda
+		\\
+		\left[
+			(1 - \varepsilon^2)N(\phi) - h
+		\right]
+		\sin\phi
+	\end{pmatrix}	
+\end{align}
+gegeben.
+Darin ist
+\begin{align}
+\label{eq:N}
+	N(\phi)
+	&=
+	\frac{a}{\sqrt{1 - \varepsilon^2\sin^2\phi}}
+\end{align}
+der längs der Normalen des Ellipsoiden gemessene Abstand zur Polarachse und $\varepsilon=\sqrt{1-b^2/a^2}$ die Exzentrizität.
+Mit $a$ ist hier die Länge der äquatorialen (großen) Halbachse, mit $b$ die Länge der polaren (kleinen) Halbachse bezeichnet.
+
+Zur Umrechnung von (Tangential-)Vektoren in den jeweiligen Koordinatensystemen benötigen wir ferner die Ableitung der Kartenwechselabbildung~$\Phi$. Wir finden
+\begin{align}
+\label{eq:D_Phi}
+	D\Phi(\sigma; \nul)
+	&=
+	\left[
+		M(\phi) - h
+	\right]
+	\begin{pmatrix}
+		-\sin\phi\cos\lambda \\
+		-\sin\phi\sin\lambda \\
+		\cos\phi
+	\end{pmatrix}
+	d\phi
+	\nonumber\\
+	&\quad
+	+
+	\left[
+		N(\phi) - h	
+	\right]\cos\phi
+	\begin{pmatrix}
+		-\sin\lambda \\
+		\cos\lambda \\
+		0
+	\end{pmatrix}
+	d\lambda
+	+
+	\begin{pmatrix}
+		-\cos\phi\cos\lambda \\
+		-\cos\phi\sin\lambda \\
+		-\sin\phi
+	\end{pmatrix}
+	dh
+	\ .
+\end{align}
+Die Funktion
+\begin{align}
+\label{eq:M}
+	M(\phi) &= \frac{1 - \varepsilon^2}{1 - \varepsilon^2\sin^2\phi} N(\phi)
+\end{align}
+ist dabei der Krümmungsradius des Meridians.
+
+\subsection{NED-Koordinaten}
+
+Für einen gegebenen Punkt $\sigma = (\phi, \lambda, h)$ ist die Basis $(\partial/\partial\phi,\partial/\partial\lambda,\partial/\partial h)$ offenbar eine Orthogonalbasis bezüglich des (Standard-)Skalarprodukts der ECEF-Koordinaten.
+Durch Normierung erhalten wir eine Orthonormalbasis und bezüglich dieser die \mydef{NED($\sigma$)-Koordinaten} (Nord-Ost-Unten) zum Punkt~$\sigma$.
+
+Sei~$u$ ein (Tangential-)Vektor am Punkt~$\Phi(\sigma)$ unseres Anschauungsraums.
+Wie zuvor identifizieren wir~$u$ mit dem Koordinatentupel im ECEF-System, $u=u^{\mathrm{ECEF}}$.
+Im NED($\sigma$)-System seien die Koordinaten mit $u^{\mathrm{NED}(\sigma)}$ bezeichnet, und in den geographischen Polarkoordinaten entsprechend mit $u^{\mathrm{geo}(\sigma)}$.
+Für die Basiswechsel folgt aus Gl.~(\ref{eq:D_Phi})
+\begin{align}
+	u^{\mathrm{NED}(\sigma)} &= 
+	\mathfrak{D}^{\mathrm{NED}(\sigma)}_{\mathrm{geo}(\sigma)}
+	\cdot
+	u^{\mathrm{geo}(\sigma)}
+\end{align}
+mit 
+\begin{align}
+	\mathfrak{D}^{\mathrm{NED}(\sigma)}_{\mathrm{geo}(\sigma)} &= 
+	\begin{pmatrix}
+		M(\phi) - h & 0 & 0 \\
+		0 & [N(\phi) - h]\cos\phi & 0 \\
+		0 & 0 & 1				
+	\end{pmatrix}
+\end{align}
+und
+\begin{align}
+	u^{\mathrm{ECEF}} &= 
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\cdot
+	u^{\mathrm{NED}(\sigma)}
+\end{align}
+mit 
+\begin{align}
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)} &= 
+	\begin{pmatrix}
+		-\sin\phi\cos\lambda & -\sin\lambda & -\cos\phi\cos\lambda\\
+		-\sin\phi\sin\lambda & \cos\lambda & -\cos\phi\sin\lambda\\
+		\cos\phi & 0 & -\sin\phi
+	\end{pmatrix}
+	\ .
+\end{align}
+Offenbar ist
+\begin{align}
+\label{eq:D_Phi_decomposition}
+	D\Phi(\sigma; \nul)
+	&=
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\cdot
+	\mathfrak{D}^{\mathrm{NED}(\sigma)}_{\mathrm{geo}(\sigma)}
+	\ .
+\end{align}
+Die Angabe eines Vektors in Koordinaten bezüglich der nicht normierten Basis $(\partial/\partial\phi,\partial/\partial\lambda,\partial/\partial h)$ ist in der Praxis selten interessant.
+
+
+\section{Transportrate}
+
+\subsection{Formulierung des Problems}
+
+Sei
+\begin{align}
+	t \mapsto r(t)
+\end{align}
+mit $t$ aus einem offenen, Null umfassenden Intervall ein Keim einer glatten Trajektorie in unserem Anschauungsraum.
+Zum Zeitpunkt~$t=0$ sei $r(0)=r_0$ und $\dot{r}(0)=v_0$.
+Wir betrachten den Fall, in dem $r_0$ durch geographische Koordinaten $\sigma_0=(\phi_0, \lambda_0, h_0)=\Phi^{-1}(r_0)$ vorliegt und $v_0$ in NED-Koordinaten zum Punkt $\sigma_0$. 
+Das Koeffiziententupel nennen wir entsprechend $v_0^{\mathrm{NED}(\sigma_0)}$
+
+Nach einer (kurzen) $\Delta t$ hat die Trajektorie den Punkt $r(\Delta t) = r_0 + v_0\Delta t + \mathrm{o}(|v_0|)$ erreicht.
+Das NED-Koordinatensystem zum Punkt $r(\Delta t)$ ist in Bezug auf jenes zum Punkt $r_0$ im Allgemeinen verdreht.
+Eine in den NED-Koordinaten des dann aktuellen Punkts $r(\Delta t)$ angegebene Geschwindigkeit zum Zeitpunkt $\Delta t$ enthält also selbst bei gleichförmiger Bewegung Koeffizienten, die von eingangs gegebenen im Allgemeinen abweichen: $v^{\mathrm{NED}(\sigma(\Delta t))}(\Delta t)\neq v_0^{\mathrm{NED}(\sigma_0)}$.
+
+Ziel ist die Rate zu ermitteln, mit welcher die im jeweils aktuellen NED-System angegebene Geschwindigkeit unabhängig von im ECEF-System gemessenen Beschleunigungen rotiert.
+Diese \mydef{Transportrate}~$\omega_{\mathrm{tr}}$ ist durch
+\begin{align}
+\label{eq:omega_tr_def}
+	\frac{d}{dt}
+	\left[
+		\dot{r}
+	\right]^{\mathrm{NED}(\sigma)}
+	&=
+	\omega_{\mathrm{tr}} 
+	\times
+	\left[
+		\dot{r}
+	\right]^{\mathrm{NED}(\sigma)}
+	+ \left[
+		\ddot{r}
+	\right]^{\mathrm{NED}(\sigma)}
+\end{align}
+gegeben.
+Der zweite Term ist dabei die im NED-System ausgedrückte Beschleunigung der Trajektorie.
+
+\subsection{Berechnung der Transportrate}
+
+Die durch Gl.~(\ref{eq:omega_tr_def}) definierte Transportrate~$\omega_{\mathrm{tr}}$ lässt sich unter Zuhilfenahme der in den vorigen Abschnitten erhaltenen Formeln leicht berechnen. 
+Ohne Einschränkung betrachten wir dabei den Zeitpunkt~$t=0$.
+
+Mit der Produktregel erhalten wir
+\begin{align}
+	\left.
+	\frac{d}{dt}
+	\left[
+		\dot{r}
+	\right]^{\mathrm{NED}(\sigma)}
+	\right|_{t=0}
+	&=
+	\left.
+	\frac{d}{dt}
+	\left(
+	\left[
+		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\right]\trans
+	\cdot
+	\left[
+		\dot{r}
+	\right]^{ECEF}
+	\right)
+	\right|_{t=0}
+	\nonumber\\
+	&=
+	\left[
+		\ddot{r}
+	\right]^{\mathrm{NED}(\sigma_0)}
+	+ 
+	\left.
+	\frac{d}{dt}
+	\left(
+	\left[
+		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\right]\trans
+	\right)
+	\right|_{t=0}
+	\cdot
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
+	\cdot
+	\left[
+		\dot{r}
+	\right]^{\mathrm{NED}(\sigma_0)}
+	\ .	
+\end{align}
+Die verbleibende Ableitung führen wir mit Hilfe der Kettenregel aus,
+\begin{align}
+	\left.
+	\frac{d}{dt}
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\right|_{t=0}
+	&=
+	D\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}}
+	\left(
+		\sigma_0;
+	\left.
+	\frac{d\sigma}{dt}
+	\right|_{t=0}		
+	\right)
+	\nonumber\\
+	&=
+	D\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}}
+	\left(
+		\sigma_0;
+		D\Phi^{-1}\left(r_0; 	
+		\left.
+			\frac{dr}{dt}
+		\right|_{t=0}	
+		\right)		
+	\right)	
+	\nonumber\\
+	&=
+	D\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}}
+	\left(
+		\sigma_0;
+		D\Phi^{-1}\left(r_0; 	
+		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
+		\cdot
+		\left[
+			\dot{r}
+		\right]^{\mathrm{NED}(\sigma_0)}
+		\right)		
+	\right)
+	\ .	
+\end{align}
+Für das Richtungsargument in der Ableitung $D\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}}$ verwenden wir den Umkehrsatz und Gl.~(\ref{eq:D_Phi_decomposition}),
+\begin{align}
+	D\Phi^{-1}(t_0; \nul)
+	&=
+	\left[
+		D\Phi(\sigma_0; \nul)
+	\right]^{-1} 
+	=
+	\left[
+		\mathfrak{D}^{\mathrm{NED}(\sigma_0)}_{\mathrm{geo}(\sigma_0)}
+	\right]^{-1}
+	\cdot
+	\left[
+		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
+	\right]^{-1}
+	\ ,
+\end{align}
+und erhalten schließlich
+\begin{align}
+	&D\Phi^{-1}\left(r_0; 	
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
+	\cdot
+	\left[
+		\dot{r}
+	\right]^{\mathrm{NED}(\sigma_0)}
+	\right)
+	=
+	\left[
+		\mathfrak{D}^{\mathrm{NED}(\sigma_0)}_{\mathrm{geo}(\sigma_0)}
+	\right]^{-1}
+	\cdot
+	\left[
+		\dot{r}
+	\right]^{\mathrm{NED}(\sigma_0)}
+	\nonumber\\
+	&=
+	\frac{v_{0,\mathrm{N}}^{\mathrm{NED}(\sigma_0)}}
+	     {M(\phi_0) - h}
+	\frac{\partial}{\partial\phi}
+	+
+	\frac{v_{0,\mathrm{E}}^{\mathrm{NED}(\sigma_0)}}
+	     {[N(\phi_0) - h]\cos\phi_0}
+	\frac{\partial}{\partial\lambda}
+	+
+	v_{0,\mathrm{D}}^{\mathrm{NED}(\sigma_0)}
+	\frac{\partial}{\partial h}
+	\ .
+\end{align}
+Dabei bezeichnen die Indizes der  $\mathrm{N}$, $\mathrm{E}$ und $\mathrm{D}$ die Nord-, Ost- und Untenkomponenten.
+
+Die Auswertung
+\begin{align}
+	&\left[
+		D\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}}
+		\left(
+			\sigma_0;
+			\nul
+		\right)
+	\right]\trans
+	\cdot
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
+	\nonumber\\
+	&=
+	\left[	
+	\left.
+	\frac{\partial \mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}}
+	{\partial\phi}
+	\right|_{\sigma_0}
+	\right]\trans	
+	\cdot
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
+	\ d\phi
+	+
+	\left[	
+	\left.
+	\frac{\partial \mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}}
+	{\partial\lambda}
+	\right|_{\sigma_0}
+	\right]\trans	
+	\cdot
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}	
+	\ d\lambda
+	\nonumber\\
+	&=
+	\begin{pmatrix}
+		0 & 0 & 1\\
+		0 & 0 & 0 \\
+		-1 & 0 & 0
+	\end{pmatrix}		
+	\ d\phi
+	+
+	\begin{pmatrix}
+		0 & -\sin\phi_0 & 0 \\
+		\sin\phi_0 & 0 & \cos\phi_0 \\
+		0 & -\cos\phi_0 & 0
+	\end{pmatrix}		
+	\ d\lambda	
+\end{align}
+liefert nun die Formel
+\begin{align}
+	\left.
+	\frac{d}{dt}
+	\left[
+		\dot{r}
+	\right]^{\mathrm{NED}(\sigma)}
+	\right|_{t=0}
+	&=
+	\left[
+		\ddot{r}
+	\right]^{\mathrm{NED}(\sigma_0)}
+	+ 
+	\omega_{\mathrm{tr}}(0)
+	\times
+	v_{0}^{\mathrm{NED}(\sigma_0)}	
+\end{align}
+mit der in NED-Koordinaten ausgedrückten Transportrate
+\begin{align}
+	\omega_{\mathrm{tr}}(0)
+	&=          
+	\frac{v_{0,\mathrm{E}}^{\mathrm{NED}(\sigma_0)}}
+         {N(\phi_0) - h}
+	\begin{pmatrix}
+		1 \\ 0 \\ \tan\phi_0
+	\end{pmatrix}
+	+
+	\frac{v_{0,\mathrm{N}}^{\mathrm{NED}(\sigma_0)}}
+         {M(\phi_0) - h}
+	\begin{pmatrix}
+		0 \\ 1 \\ 0
+	\end{pmatrix} 	
+	\ .
+\end{align}
+
+\subsection{Zusammenfassung}
+
+Für eine gegebene geographische Position $\sigma=(\phi,\lambda,h)$ und einer in zu $\sigma$ gehörenden NED-Koordinaten gegebenen Geschwindigkeit
+$v^{\mathrm{NED}(\sigma)}$ beträgt die (im selben NED-System ausgedrückte) Transportrate
+\begin{align}
+	\omega_{\mathrm{tr}}
+	&=         
+	\frac{v_{\mathrm{E}}^{\mathrm{NED}(\sigma)}}
+         {N(\phi) - h}
+	\begin{pmatrix}
+		1 \\ 0 \\ \tan\phi
+	\end{pmatrix}
+	+
+	\frac{v_{\mathrm{N}}^{\mathrm{NED}(\sigma)}}
+         {M(\phi) - h}
+	\begin{pmatrix}
+		0 \\ 1 \\ 0
+	\end{pmatrix}    	
+	\ .
+\end{align}
+Die Krümmungsradien $N(\phi)$ und $M(\phi)$ sind in Gln.~(\ref{eq:N}) und (\ref{eq:M}) definiert worden.
+
+\end{document}

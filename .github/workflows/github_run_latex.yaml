@@ -10,12 +10,22 @@ jobs:
         uses: dante-ev/latex-action@latest
         with:
           working_directory: src
-          root_file: zusammenhang.tex
+          root_file: zshng/zusammenhang.tex
+      - name: Compile LaTeX document
+        uses: dante-ev/latex-action@latest
+        with:
+          working_directory: src
+          root_file: trprtrate/transportrate.tex
       - run: mkdir outputs
       - run: cp src/zusammenhang.pdf outputs/zusammenhang.pdf
+      - run: cp src/transportrate.pdf outputs/transportrate.pdf
       - name: Retrieve pdf output
         uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: outputs/zusammenhang.pdf    
- 
+          path: outputs/zusammenhang.pdf
+      - name: Retrieve pdf output
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: outputs/transportrate.pdf
