@@ -47,7 +47,7 @@
 \begin{document}
 \maketitle
 
-In diesem Aufsatz wird die sogenannte \mydef{Transportrate} für die im NED-Bezugssystem der jeweils aktuellen Position angegebenen Geschwindigkeit berechnet.
+In diesem Aufsatz wird die sogenannte \mydef{Transportrate} berechnet, die die Rotation von Koordinaten in den NED-Bezugssystem längs einer Trajektorie beschreibt.
 Diese Rechnung wird mit elementaren Methoden durchgeführt.
 
 \section{Koordinatensysteme}
@@ -189,7 +189,7 @@ Die Angabe eines Vektors in Koordinaten bezüglich der nicht normierten Basis $(
 
 \section{Transportrate}
 
-\subsection{Formulierung des Problems}
+\subsection{Definition}
 
 Sei
 \begin{align}
@@ -202,79 +202,80 @@ Das Koeffiziententupel nennen wir entsprechend $v_0^{\mathrm{NED}(\sigma_0)}$
 
 Nach einer (kurzen) $\Delta t$ hat die Trajektorie den Punkt $r(\Delta t) = r_0 + v_0\Delta t + \mathrm{o}(|v_0|)$ erreicht.
 Das NED-Koordinatensystem zum Punkt $r(\Delta t)$ ist in Bezug auf jenes zum Punkt $r_0$ im Allgemeinen verdreht.
-Eine in den NED-Koordinaten des dann aktuellen Punkts $r(\Delta t)$ angegebene Geschwindigkeit zum Zeitpunkt $\Delta t$ enthält also selbst bei gleichförmiger Bewegung Koeffizienten, die von eingangs gegebenen im Allgemeinen abweichen: $v^{\mathrm{NED}(\sigma(\Delta t))}(\Delta t)\neq v_0^{\mathrm{NED}(\sigma_0)}$.
+Die NED-Koordinaten eines Vektorfeldes am dann aktuellen Punkts $r(\Delta t)$ weichen also selbst im Falle eines zeitunabhängigen homogenen Vektorfeldes von jenen im Punkte $r_0$ ab.
+Dies trifft insbesondere auch auf die Geschwindigkeit zu.
 
-Ziel ist die Rate zu ermitteln, mit welcher die im jeweils aktuellen NED-System angegebene Geschwindigkeit unabhängig von im ECEF-System gemessenen Beschleunigungen rotiert.
-Diese \mydef{Transportrate}~$\omega_{\mathrm{tr}}$ ist durch
+Ziel ist es, die \mydef{Transportrate}~$\omega_{\mathrm{tr}}$ zu ermitteln, mit welcher NED-Koordinaten längs einer Trajektorie rotieren.
+Für eine in geographischen Koordinaten gegebene Trajektorie $t \mapsto \sigma(t)$ definieren wir sie als schiefsymmetrische Matrix durch
 \begin{align}
 \label{eq:omega_tr_def}
+	\Omega_{\mathrm{tr}}
+	&=
+	\left[
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\right]\trans
+	\cdot
+	\frac{d}{dt}
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\in\mathfrak{so}(3)
+\end{align}
+und als (axialen) Vektor durch die Identifikation~$\Omega_{\mathrm{tr}}=\omega_{\mathrm{tr}}\times\nul$.
+
+Mit Hilfe der Transportrate lässt sich die Zeitentwicklung der in laufenden NED-Koordinaten zum jeweils aktuellen Punkt~$\sigma=\sigma(t)$ angegebenen Geschwindigkeit~$v^{\mathrm{NED}(\sigma)}=\mathfrak{C}_{\mathrm{ECEF}}^{\mathrm{NED}(\sigma)}\cdot \dot{r}$ bequem schreiben.
+Mit
+\begin{align}
+	\frac{d}{dt}
+	v^{\mathrm{NED}(\sigma)}
+	&=
+	\frac{d}{dt}
+	\left(
+	\left[
+		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\right]\trans
+	\cdot
+	\dot{r}
+	\right)
+	\nonumber\\
+	&=
+	\left(
 	\frac{d}{dt}
 	\left[
-		\dot{r}
-	\right]^{\mathrm{NED}(\sigma)}
-	&=
-	\omega_{\mathrm{tr}} 
-	\times
+		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\right]\trans
+	\right)
+	\cdot
+	\dot{r}
+	+
 	\left[
-		\dot{r}
-	\right]^{\mathrm{NED}(\sigma)}
+		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
+	\right]\trans
+	\cdot
+	\ddot{r}		
+	\ .		
+\end{align}
+folgt
+\begin{align}
+	\frac{d}{dt}
+	v^{\mathrm{NED}(\sigma)}
+	&=
+	-\omega_{\mathrm{tr}}
+	\times
+	v^{\mathrm{NED}(\sigma)}
 	+ \left[
 		\ddot{r}
 	\right]^{\mathrm{NED}(\sigma)}
+	\ .	
 \end{align}
-gegeben.
-Der zweite Term ist dabei die im NED-System ausgedrückte Beschleunigung der Trajektorie.
+Der zweite Term ist darin die im NED-System ausgedrückte Beschleunigung der Trajektorie.
 
 \subsection{Berechnung der Transportrate}
 
 Die durch Gl.~(\ref{eq:omega_tr_def}) definierte Transportrate~$\omega_{\mathrm{tr}}$ lässt sich unter Zuhilfenahme der in den vorigen Abschnitten erhaltenen Formeln leicht berechnen. 
 Ohne Einschränkung betrachten wir dabei den Zeitpunkt~$t=0$.
 
-Mit der Produktregel erhalten wir
+Die Zeitableitung in Gl.~(\ref{eq:omega_tr_def}) führen wir zunächst mit Hilfe der Kettenregel aus,
 \begin{align}
-	\left.
-	\frac{d}{dt}
-	\left[
-		\dot{r}
-	\right]^{\mathrm{NED}(\sigma)}
-	\right|_{t=0}
-	&=
-	\left.
-	\frac{d}{dt}
-	\left(
-	\left[
-		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
-	\right]\trans
-	\cdot
-	\left[
-		\dot{r}
-	\right]^{ECEF}
-	\right)
-	\right|_{t=0}
-	\nonumber\\
-	&=
-	\left[
-		\ddot{r}
-	\right]^{\mathrm{NED}(\sigma_0)}
-	+ 
-	\left.
-	\frac{d}{dt}
-	\left(
-	\left[
-		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
-	\right]\trans
-	\right)
-	\right|_{t=0}
-	\cdot
-	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
-	\cdot
-	\left[
-		\dot{r}
-	\right]^{\mathrm{NED}(\sigma_0)}
-	\ .	
-\end{align}
-Die verbleibende Ableitung führen wir mit Hilfe der Kettenregel aus,
-\begin{align}
+\label{eq:dC_dt}
 	\left.
 	\frac{d}{dt}
 	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
@@ -306,16 +307,64 @@ Die verbleibende Ableitung führen wir mit Hilfe der Kettenregel aus,
 		D\Phi^{-1}\left(r_0; 	
 		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
 		\cdot
-		\left[
-			\dot{r}
-		\right]^{\mathrm{NED}(\sigma_0)}
+		v^{\mathrm{NED}(\sigma_0)}
 		\right)		
 	\right)
 	\ .	
 \end{align}
-Für das Richtungsargument in der Ableitung $D\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}}$ verwenden wir den Umkehrsatz und Gl.~(\ref{eq:D_Phi_decomposition}),
+Die Ableitung $D\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}}$ können wir nun durch
 \begin{align}
-	D\Phi^{-1}(t_0; \nul)
+\label{eq:D_C}
+	&
+	\left[
+	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
+	\right]\trans
+	\cdot
+	D\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}}
+	\left(
+		\sigma_0;
+		\nul
+	\right)
+	\nonumber\\
+	&=
+	\left[
+		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
+	\right]\trans
+	\left.
+	\frac{\partial \mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}}
+	{\partial\phi}
+	\right|_{\sigma_0}
+	\ d\phi
+	+
+	\left[
+		\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
+	\right]\trans	
+	\cdot
+	\left.
+	\frac{\partial \mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}}
+	{\partial\lambda}
+	\right|_{\sigma_0}
+	\ d\lambda
+	\nonumber\\
+	&=
+	\begin{pmatrix}
+		0 & 0 & -1\\
+		0 & 0 & 0 \\
+		1 & 0 & 0
+	\end{pmatrix}		
+	\ d\phi
+	+
+	\begin{pmatrix}
+		0 & \sin\phi_0 & 0 \\
+		-\sin\phi_0 & 0 & -\cos\phi_0 \\
+		0 & \cos\phi_0 & 0
+	\end{pmatrix}		
+	\ d\lambda
+\end{align}
+näher bestimmen.
+Für das Richtungsargument im letzten Schritt der Gl.~(\ref{eq:dC_dt}) verwenden wir den Umkehrsatz und Gl.~(\ref{eq:D_Phi_decomposition}),
+\begin{align}
+	D\Phi^{-1}(r_0; \nul)
 	&=
 	\left[
 		D\Phi(\sigma_0; \nul)
@@ -332,21 +381,18 @@ Für das Richtungsargument in der Ableitung $D\mathfrak{C}^{\mathrm{ECEF}}_{\mat
 \end{align}
 und erhalten schließlich
 \begin{align}
+\label{eq:D_Phi_v}
 	&D\Phi^{-1}\left(r_0; 	
 	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
 	\cdot
-	\left[
-		\dot{r}
-	\right]^{\mathrm{NED}(\sigma_0)}
+	v^{\mathrm{NED}(\sigma_0)}
 	\right)
 	=
 	\left[
 		\mathfrak{D}^{\mathrm{NED}(\sigma_0)}_{\mathrm{geo}(\sigma_0)}
 	\right]^{-1}
 	\cdot
-	\left[
-		\dot{r}
-	\right]^{\mathrm{NED}(\sigma_0)}
+	v^{\mathrm{NED}(\sigma_0)}
 	\nonumber\\
 	&=
 	\frac{v_{0,\mathrm{N}}^{\mathrm{NED}(\sigma_0)}}
@@ -363,88 +409,27 @@ und erhalten schließlich
 \end{align}
 Dabei bezeichnen die Indizes der  $\mathrm{N}$, $\mathrm{E}$ und $\mathrm{D}$ die Nord-, Ost- und Untenkomponenten.
 
-Die Auswertung
+Einsetzen von Gl.~(\ref{eq:D_Phi_v}) in Gl.~(\ref{eq:D_C}) liefert nun die gesuchte Transportrate
 \begin{align}
-	&\left[
-		D\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}}
-		\left(
-			\sigma_0;
-			\nul
-		\right)
-	\right]\trans
-	\cdot
-	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
-	\nonumber\\
+	\Omega_{\mathrm{tr}}(0)
 	&=
-	\left[	
-	\left.
-	\frac{\partial \mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}}
-	{\partial\phi}
-	\right|_{\sigma_0}
-	\right]\trans	
-	\cdot
-	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}
-	\ d\phi
-	+
-	\left[	
-	\left.
-	\frac{\partial \mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}}
-	{\partial\lambda}
-	\right|_{\sigma_0}
-	\right]\trans	
-	\cdot
-	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma_0)}	
-	\ d\lambda
-	\nonumber\\
-	&=
-	\begin{pmatrix}
-		0 & 0 & 1\\
-		0 & 0 & 0 \\
-		-1 & 0 & 0
-	\end{pmatrix}		
-	\ d\phi
-	+
-	\begin{pmatrix}
-		0 & -\sin\phi_0 & 0 \\
-		\sin\phi_0 & 0 & \cos\phi_0 \\
-		0 & -\cos\phi_0 & 0
-	\end{pmatrix}		
-	\ d\lambda	
-\end{align}
-liefert nun die Formel
-\begin{align}
-	\left.
-	\frac{d}{dt}
-	\left[
-		\dot{r}
-	\right]^{\mathrm{NED}(\sigma)}
-	\right|_{t=0}
-	&=
-	\left[
-		\ddot{r}
-	\right]^{\mathrm{NED}(\sigma_0)}
-	+ 
-	\omega_{\mathrm{tr}}(0)
-	\times
-	v_{0}^{\mathrm{NED}(\sigma_0)}	
-\end{align}
-mit der in NED-Koordinaten ausgedrückten Transportrate
-\begin{align}
-	\omega_{\mathrm{tr}}(0)
-	&=          
-	\frac{v_{0,\mathrm{E}}^{\mathrm{NED}(\sigma_0)}}
-         {N(\phi_0) - h}
-	\begin{pmatrix}
-		1 \\ 0 \\ \tan\phi_0
-	\end{pmatrix}
-	+
 	\frac{v_{0,\mathrm{N}}^{\mathrm{NED}(\sigma_0)}}
          {M(\phi_0) - h}
 	\begin{pmatrix}
-		0 \\ 1 \\ 0
-	\end{pmatrix} 	
-	\ .
+		0 & 0 & -1\\
+		0 & 0 & 0 \\
+		1 & 0 & 0
+	\end{pmatrix}
+	+
+	\frac{v_{0,\mathrm{E}}^{\mathrm{NED}(\sigma_0)}}
+         {N(\phi_0) - h}
+	\begin{pmatrix}
+		0 & \tan\phi_0 & 0 \\
+		-\tan\phi_0 & 0 & -1 \\
+		0 & 1 & 0
+	\end{pmatrix}
 \end{align}
+zum Zeitpunkt~$t=0$ als schiefsymmetrische Matrix.
 
 \subsection{Zusammenfassung}
 
@@ -456,13 +441,13 @@ $v^{\mathrm{NED}(\sigma)}$ beträgt die (im selben NED-System ausgedrückte) Tra
 	\frac{v_{\mathrm{E}}^{\mathrm{NED}(\sigma)}}
          {N(\phi) - h}
 	\begin{pmatrix}
-		1 \\ 0 \\ \tan\phi
+		1 \\ 0 \\ -\tan\phi
 	\end{pmatrix}
 	+
 	\frac{v_{\mathrm{N}}^{\mathrm{NED}(\sigma)}}
          {M(\phi) - h}
 	\begin{pmatrix}
-		0 \\ 1 \\ 0
+		0 \\ -1 \\ 0
 	\end{pmatrix}    	
 	\ .
 \end{align}
