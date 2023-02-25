@@ -54,13 +54,14 @@ Diese Rechnung wird mit elementaren Methoden durchgeführt.
 
 \subsection{Erdfeste Koordinaten}
 
-Im \mydef{erdfesten Koordinatensystem (ECEF)} zeichnen wir als Ursprung den Mittelpunkt eines um die Polarachse rotationssymmetrischen Referenzellipsoiden (z.B. WGS84) aus und wählen ein kartesisches Achsensystem, in dem die dritte Achse zum Nordpol führt und die beiden ersten Achsen in der Äquatorialebene liegen.
-Im Folgenden identifizieren wir unseren Anschauungsraum mit dem ECEF-Koordinatenraum und entsprechend einen Punkt $r$ mit einem ECEF-Koordinatentupel~$(x,y,z)\in\mathbb{R}^3$.
+Im erdfesten \mydef{geozentrischen Koordinatensystem (ECEF)} zeichnen wir als Ursprung den Mittelpunkt eines um die Polarachse rotationssymmetrischen Referenzellipsoiden (z.B. WGS84) aus und wählen ein kartesisches Achsensystem, in dem die dritte Achse zum Nordpol führt und die beiden ersten Achsen in der Äquatorialebene liegen.
+Im Folgenden identifizieren wir unseren Anschauungsraum mit dem ECEF-Koordinatenraum und entsprechend einen Punkt $r$ mit einem ECEF-Koordinatentupel~$(x,y,z)\in\mathbb{R}^3$ in einer vorgegebenen Längeneinheit.
 
-Neben dem erdfesten linearen Koordinatensystem betrachten wir ein ebenso erdfestes System von sphärischen Koordinaten, den sogenannten \mydef{geogaphischen Koordinaten}, hier in der Konvention $\sigma = (\phi, \lambda, h)$ mit der geographischen Breite~$\phi$, der geographischen Länge~$\lambda$ und der negativen (!) Höhe~$h$.
+Neben dem erdfesten linearen Koordinatensystem betrachten wir ein ebenso erdfestes System von sphärischen Koordinaten, den sogenannten \mydef{geogaphischen Koordinaten}, hier in der Konvention $\sigma = (\phi, \lambda, h)$ mit der geographischen Breite~$\phi$, der geographischen Länge~$\lambda$ und der negativen (!) Höhe~$h$ bezüglich der Ellipsoid\-oberfläche.
 
 Die Kartenwechselabbildung zwischen ECEF-Koordinaten $r=(x,y,z)$ und geographischen Koordinaten $\sigma = (\phi, \lambda, h)$ ist durch
 \begin{align}
+\label{eq:transition_map_geo2ecef}
 	r &= \Phi(\sigma)
 	=
 	\begin{pmatrix}
@@ -88,7 +89,7 @@ Darin ist
 	&=
 	\frac{a}{\sqrt{1 - \varepsilon^2\sin^2\phi}}
 \end{align}
-der längs der Normalen des Ellipsoiden gemessene Abstand zur Polarachse und $\varepsilon=\sqrt{1-b^2/a^2}$ die Exzentrizität.
+der längs der Normalen zum Ellipsoiden gemessene Abstand zur Polarachse und $\varepsilon=\sqrt{1-b^2/a^2}$ die Exzentrizität.
 Mit $a$ ist hier die Länge der äquatorialen (großen) Halbachse, mit $b$ die Länge der polaren (kleinen) Halbachse bezeichnet.
 
 Zur Umrechnung von (Tangential-)Vektoren in den jeweiligen Koordinatensystemen benötigen wir ferner die Ableitung der Kartenwechselabbildung~$\Phi$. Wir finden
@@ -172,9 +173,10 @@ mit
 		-\sin\phi\sin\lambda & \cos\lambda & -\cos\phi\sin\lambda\\
 		\cos\phi & 0 & -\sin\phi
 	\end{pmatrix}
+	\in\mathrm{SO}(3)
 	\ .
 \end{align}
-Offenbar ist
+Durch Komposition erhalten wir also
 \begin{align}
 \label{eq:D_Phi_decomposition}
 	D\Phi(\sigma; \nul)
@@ -200,13 +202,13 @@ Zum Zeitpunkt~$t=0$ sei $r(0)=r_0$ und $\dot{r}(0)=v_0$.
 Wir betrachten den Fall, in dem $r_0$ durch geographische Koordinaten $\sigma_0=(\phi_0, \lambda_0, h_0)=\Phi^{-1}(r_0)$ vorliegt und $v_0$ in NED-Koordinaten zum Punkt $\sigma_0$. 
 Das Koeffiziententupel nennen wir entsprechend $v_0^{\mathrm{NED}(\sigma_0)}$
 
-Nach einer (kurzen) $\Delta t$ hat die Trajektorie den Punkt $r(\Delta t) = r_0 + v_0\Delta t + \mathrm{o}(|v_0|)$ erreicht.
+Nach einer (kurzen) Zeit~$\Delta t$ hat die Trajektorie den Punkt $r(\Delta t) = r_0 + v_0\Delta t + \mathrm{o}(\Delta t)$ erreicht.
 Das NED-Koordinatensystem zum Punkt $r(\Delta t)$ ist in Bezug auf jenes zum Punkt $r_0$ im Allgemeinen verdreht.
 Die NED-Koordinaten eines Vektorfeldes am dann aktuellen Punkts $r(\Delta t)$ weichen also selbst im Falle eines zeitunabhängigen homogenen Vektorfeldes von jenen im Punkte $r_0$ ab.
 Dies trifft insbesondere auch auf die Geschwindigkeit zu.
 
 Ziel ist es, die \mydef{Transportrate}~$\omega_{\mathrm{tr}}$ zu ermitteln, mit welcher NED-Koordinaten längs einer Trajektorie rotieren.
-Für eine in geographischen Koordinaten gegebene Trajektorie $t \mapsto \sigma(t)$ definieren wir sie als schiefsymmetrische Matrix durch
+Für eine in geographischen Koordinaten gegebene Trajektorie $t \mapsto \sigma(t)$ definieren wir sie als die schiefsymmetrische Matrix
 \begin{align}
 \label{eq:omega_tr_def}
 	\Omega_{\mathrm{tr}}
@@ -219,7 +221,7 @@ Für eine in geographischen Koordinaten gegebene Trajektorie $t \mapsto \sigma(t
 	\mathfrak{C}^{\mathrm{ECEF}}_{\mathrm{NED}(\sigma)}
 	\in\mathfrak{so}(3)
 \end{align}
-und als (axialen) Vektor durch die Identifikation~$\Omega_{\mathrm{tr}}=\omega_{\mathrm{tr}}\times\nul$.
+oder als (axialen) Vektor durch die Identifikation~$\Omega_{\mathrm{tr}}=\omega_{\mathrm{tr}}\times\nul$.
 
 Mit Hilfe der Transportrate lässt sich die Zeitentwicklung der in laufenden NED-Koordinaten zum jeweils aktuellen Punkt~$\sigma=\sigma(t)$ angegebenen Geschwindigkeit~$v^{\mathrm{NED}(\sigma)}=\mathfrak{C}_{\mathrm{ECEF}}^{\mathrm{NED}(\sigma)}\cdot \dot{r}$ bequem schreiben.
 Mit
