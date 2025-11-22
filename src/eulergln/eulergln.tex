@@ -1,0 +1,491 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{authblk}
+\usepackage{titlesec}
+
+% section title formating
+\renewcommand{\thesection}{\Roman{section}}
+\titleformat{\section}[block]{\normalsize\bfseries}{\thesection.}{1em}{\MakeUppercase}
+\titlespacing*{\section}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+
+\renewcommand{\thesubsection}{\arabic{section}.\Alph{subsection}}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+   
+% custom macros
+\newcommand{\mydef}[1]{\textls{#1}}
+\newcommand{\nul}{\textrm{---}}
+\newcommand{\trans}{^\mathsf{T}}
+
+% %%%%%%%
+% title %
+% %%%%%%%
+
+\title{Herleitung der Eulerschen Kreiselgleichungen aus den Lagrange-Gleichungen auf~$\mathrm{SO}(3)$}
+\author{Hendrik Meier}
+
+\affil{Immenstaad am Bodensee}
+\renewcommand\Affilfont{\itshape}
+
+\date{November 2023}
+
+
+% %%%%%%%%%%
+% document %
+% %%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+\section{Motivation}
+
+\subsection{Eulersche Gleichungen}
+
+Wirken keine äußeren Momente, so ist der Drehimpuls~$L^I$, aufgefasst als Vektor im $\mathbb{R}^3$, im Inertialsystem ($I$) erhalten, $\dot{L}^I=0$.
+Im körperfesten Bezugssystem ($B$) ist der Drehimpuls~$L^B=R\trans L^I$ durch die Zeitabhängigkeit der Lagematrix~$R\in\mathrm{SO}(3)$ im Allgemeinen nicht konstant, sondern genügt der durch einfaches Differenzieren erhaltenen Gleichung
+\begin{align}
+	\dot{L}^B &= L^B \times \omega
+	\ ,
+\end{align}
+wobei die (körperfest gemessene) Winkelgeschwindigkeit~$\omega$ kinematisch durch die  Lage gegeben ist, $[\omega\times]=\Omega=R\trans\dot{R}$.
+
+Körperfester Drehimpuls~$L^B$ und Winkelgeschwindigkeit~$\omega$ sind über den Trägheitstensor~$J$, hier aufgefasst als Operator auf $\mathbb{R}^3$, miteinander verknüpft,
+\begin{align}
+\label{eq:l_b}
+	L^B &= J\cdot\omega
+	\ .
+\end{align}
+Wir erhalten somit
+\begin{align}
+\label{eq:euler_homogen}
+	J\cdot\dot{\omega} &=  -\omega\times(J\cdot\omega)
+	\ .
+\end{align}
+Dies sind die \mydef{Eulerschen Kreiselgleichungen} für den Fall, dass keine äußeren Momente wirken.
+
+\subsection{Kinetische Energie}
+
+Ein \mydef{starrer Körper} sei definiert durch $n\geq 1$ Massepunkte der Massen~$m_i$, $i\in\{1,\ldots,n\}$, die bezüglich eines gewählten körperfesten Ursprungs~$O$ die zeitlich konstanten körperfesten Positionen~$r_i^B\in\mathbb{R}^3$ einnehmen.
+Wir nehmen an, dass der Ursprung~$O$ des körperfesten Systems mit jenem des betrachteten Inertialsystems zu jeder Zeit übereinstimmt, betrachten also ausschließlich rotatorische Bewegung des starren Körpers.
+
+Die kinetische Energie des starren Körpers lautet im Inertialsystem
+\begin{align}
+	T = \frac{1}{2}\sum_i m_i 
+	\left|
+		\dot{r}_i^I
+	\right|^2
+	\ .
+\end{align}
+Durch Übergang ins körperfeste System erhalten wir
+\begin{align}
+	T &= 
+	\frac{1}{2}\sum_i m_i 
+	\left|
+		\frac{d}{dt}
+		\left(
+			Rr_i^B
+		\right)
+	\right|^2
+	=
+	\frac{1}{2}\sum_i m_i 
+	\left|
+		\omega\times r_i^B
+	\right|^2
+	\nonumber\\
+	&=
+	\frac{1}{2}\sum_i m_i
+	\left(
+	\left|r_i^B\right|^2
+	\left|\omega\right|^2	
+	- 
+	\langle
+		r_i^B,\omega
+	\rangle^2
+	\right)
+	\nonumber\\
+	&=
+	\frac{1}{2} J\cdot(\omega\otimes\omega)
+	\ ,
+\end{align}
+wobei wir den \mydef{Trägheitstensor}~$J$ hier in natürlicher Weise als $(0,2)$-Tensor
+\begin{align}
+\label{eq:j_02}
+	J &=
+	\sum_i m_i
+	\left(
+	\left|r_i^B\right|^2
+	\langle\nul,\nul\rangle
+	- 
+	\langle
+		r_i^B,\nul
+	\rangle
+	\otimes
+	\langle
+		r_i^B,\nul
+	\rangle
+	\right)	
+\end{align}
+definieren.
+Drücken wir die kinetische Energie durch die (kartesischen) Koordinaten der Winkelgeschwindigkeit $\omega=(\omega_\alpha)_{\alpha\in\{1,2,3\}}$ aus,
+so erhalten wir
+\begin{align}
+\label{eq:t_omega}
+	T &= \frac{1}{2} \sum_{\alpha,\beta=1}^3 J_{\alpha\beta}\omega_\alpha\omega_\beta
+	\ .
+\end{align}
+Die kinetische Energie nach Gl.~(\ref{eq:t_omega}) hängt nur von der (körperfest gemessenen) Winkelgeschwindigkeit~$\omega$ ab, wohingegen die Lage~$R$ in der Formel nicht erscheint.
+Dies ist physikalisch auf Grund der Isotopie des Raumes verständlich.
+
+Fasst man hingegen Gl.~(\ref{eq:t_omega}) ``in naiver Weise'' als Lagrange-Funktion auf, so scheint es unmöglich, die Eulerschen Gleichungen~(\ref{eq:euler_homogen}) zu erhalten.
+Diesen scheinbaren Widerspruch aufzulösen, ist Ziel dieses Aufsatzes.
+
+\section{Lagrange-Gleichungen des starren Körpers}
+
+Wir betrachten einen Keim der Bewegung des starren Körpers.
+Diesen setzen wir über einem den Zeitpunkt~$t=0$ umfassenden Intervall~$I$ an,
+\begin{align}
+\label{eq:r_t}
+	R: I &\rightarrow \mathrm{SO}(3)
+	\ ,\\\nonumber
+	t &\mapsto R(t)
+	\ .
+\end{align}
+Für die kinetische Energie gilt
+\begin{align}
+	T &= 
+	\frac{1}{2}\sum_i m_i 
+	\left|				
+		\dot{R}(t)r_i^B
+	\right|^2
+	=
+	\frac{1}{2}\sum_i m_i 
+	\left\langle
+		r_i^B, \dot{R}\trans(t)\dot{R}(t)\,r_i^B
+	\right\rangle
+	\nonumber\\
+\label{eq:t_rdot}
+	&= \frac{1}{2}
+	\mathrm{Sp}\left[
+		\tilde{J}
+		\cdot
+		\dot{R}\trans(t)\dot{R}(t)
+	\right]
+\end{align}
+mit dem Operator~$\tilde{J}$, der für $u\in\mathbb{R}^3$ durch
+\begin{align}
+	\tilde{J}\cdot u = \sum_i m_i 
+	r_i^B
+	\left\langle
+		r_i^B, u
+	\right\rangle		
+\end{align}
+definiert ist.
+Bezeichnen wir mit~$J$ auch den Gl.~(\ref{eq:j_02}) entsprechenden $(1,1)$-Tensor, gelten offenbar die Beziehungen
+\begin{align}
+	J &= \mathrm{Sp}[\tilde{J}]\,\mathrm{id}_{\mathbb{R}^3} - \tilde{J}
+	\ \ \text{bzw.}\ \ 
+	\tilde{J} = 
+	\frac{1}{2}
+	\mathrm{Sp}[J]\,\mathrm{id}_{\mathbb{R}^3}
+	- J
+	\ .
+\end{align}
+
+\subsection{Generalisierte Koordinaten}
+
+Ziel ist die Herleitung der Lagrange-Gleichungen zum Zeitpunkt~$t=0$.
+Dazu führen wir \mydef{Normalkoordinaten}~$\theta$ für den Tangentialraum an~$R_0=R(0)$ ein.
+Diesen identifizieren wir mit $\mathbb{R}^3$, wobei die Lie-Klammer durch das Standardvektorprodukt ausgedrückt wird.
+Wir verwenden ferner~$\Theta$ als Bezeichnung für die $\theta$ entsprechende schiefsymmetrische Matrix, d.h. $\Theta\cdot u=\theta\times u$ für alle $u\in\mathbb{R}^3$.
+
+Die Exponentialabbildung in die Lie-Gruppe~$\mathrm{SO}(3)$ nimmt in den betrachteten Normalkoordinaten die Form
+\begin{align}
+	\mathrm{Exp}: 
+	\mathrm{T}_{R_0}\mathrm{SO}(3)\cong\mathbb{R}^3
+	&\rightarrow \mathrm{SO}(3)
+	\nonumber\\
+	\theta
+	&\mapsto
+	R_0\,\exp\Theta
+\end{align}
+an, wobei $\exp$ die Matrixexponentialfunktion ist.
+Für die schiefsymmetrischen Argumente~$\Theta$ können wir $\exp$ auch mit Hilfe der Formel von Rodrigues
+\begin{align}
+\label{eq:rodrigues}
+	\exp\Theta
+	&= \mathrm{id}_{\mathbb{R}^3} 
+	+ \frac{\sin|\theta|}{|\theta|}\,\Theta
+	+ \frac{1 - \cos|\theta|}{|\theta|^2}\,\Theta^2
+\end{align}
+auswerten.
+
+Die Normalkoordinaten~$\theta$ dienen uns im Folgenden als die generalisierten Koordinaten zur Herleitung der Lagrange-Gleichungen.
+Den Keim der Bewegung des starren Körpers aus Gl.~(\ref{eq:r_t}) betrachten wir entsprechend als Weg
+\begin{align}
+\label{eq:theta_t}
+	t\mapsto\theta(t)
+\end{align}
+mit $\theta(0)=0$, so dass $\mathrm{Exp}[\theta(t)]=R(t)$ für alle $t\in I$.
+
+In diesen Koordinaten entspricht die Geschwindigkeit~$\dot{\theta}(0)$ der körperfest gemessenen Winkelgeschwindigkeit~$\omega_0$ zum Zeitpunkt~$t=0$.
+Es ist nämlich
+\begin{align}
+	\Omega_0 \coloneqq \Omega(0) &=
+	\left.	
+	R\trans(t)\frac{d}{dt}R(t)
+	\right|_{t=0}
+	=
+	\left.	
+	\frac{d}{dt}\exp\Theta(t)
+	\right|_{t=0}
+	\nonumber\\
+	\label{eq:omega_dot_theta}
+	&=
+	\left.	
+	\frac{d}{dt}(\mathrm{id}_{\mathbb{R}^3} + \Theta(t) + \ldots)
+	\right|_{t=0}
+	=\dot{\Theta}(0)
+	\ ,
+\end{align}
+da $\Theta(0)=0$ ist.
+Für die zum Zeitpunkt~$t=0$ körperfest gemessene Winkelbeschleunigung~$\dot{\omega}_0$ erhalten wir analog
+\begin{align}
+	\dot{\Omega}_0 \coloneqq \dot{\Omega}(0) &=
+	\left.
+	\frac{d}{dt}
+	\left(
+	R\trans(t)\frac{d}{dt}R(t)
+	\right)
+	\right|_{t=0}
+	\nonumber\\
+	&=
+	\left.
+	\frac{d}{dt}
+	\left[
+	(\mathrm{id}_{\mathbb{R}^3} - \Theta(t) + \ldots)
+	\frac{d}{dt}
+	\left(
+		\mathrm{id}_{\mathbb{R}^3} 
+		+ \Theta(t)
+		+ \frac{1}{2}\Theta^2(t)
+		+ \ldots
+	\right)
+	\right]
+	\right|_{t=0}
+	\nonumber\\
+	\label{eq:dot_omega_ddot_theta}
+	&=\ddot{\Theta}(0)
+	\ .
+\end{align}
+Die körperfest gemessenen Winkelgeschwindigkeiten und -beschleunigungen stimmen damit zum Zeitpunkt $t=0$ mit den entsprechenden Ableitungen der Normalkoordinaten überein.
+
+\subsection{Lagrange-Funktion}
+
+In Abwesenheit von außen wirkender Momente ist die \mydef{Lagrange-Funktion}~$\mathcal{L}$ allein durch die kinetische Energie gegeben.
+Einsetzen der generalisierten Koordinaten in Gl.~(\ref{eq:t_rdot}) liefert
+\begin{align}
+\label{eq:lagrange}
+	\mathcal{L}(\theta, \dot{\theta})
+	&=
+	\frac{1}{2}
+	\mathrm{Sp}\left[
+		\tilde{J}
+		\cdot
+		\left(
+			\frac{d}{dt}
+			\exp[-\Theta]
+		\right)		
+		\left(
+			\frac{d}{dt}
+			\exp[\Theta]
+		\right)	
+	\right]
+	\ .
+\end{align}
+Die Ableitungen sind darin rein formal aufzufassen, um die Abhängigkeit von $\theta$ und $\dot{\theta}$ darzustellen.
+Eine explizite Darstellung von~$d\exp[\Theta]/dt$ durch die Formel~(\ref{eq:rodrigues}) von Rodrigues ergibt etwa
+\begin{align}
+	\frac{d}{dt}
+	\exp[\Theta]
+	&= 
+	\frac{|\theta|\cos|\theta|-\sin|\theta|}{|\theta|^2}
+	\frac{\langle
+		\theta,\dot{\theta}
+	\rangle}{|\theta|}
+	\,\Theta
+	+ \frac{\sin|\theta|}{|\theta|}\,\dot{\Theta}
+	\nonumber\\
+	&\quad
+	+ \frac{|\theta|\sin|\theta|-2(1 - \cos|\theta|)}{|\theta|^3}
+	\frac{\langle
+		\theta,\dot{\theta}
+	\rangle}{|\theta|}\,\Theta^2
+	+ \frac{1 - \cos|\theta|}{|\theta|^2}\,
+	\left(
+		\Theta\dot{\Theta} + \dot{\Theta}\Theta
+	\right)
+	\ .
+\end{align}
+Die Lagrange-Funktion~$\mathcal{L}(\theta, \dot{\theta})$, Gl.~(\ref{eq:lagrange}), ist quadratisch in~$\dot{\theta}$.
+Taylor-Entwicklung in $\theta$ liefert
+\begin{align}
+	\mathcal{L}(\theta, \dot{\theta})
+	&=
+	-\frac{1}{2}
+	\mathrm{Sp}\left[
+		\tilde{J}
+		\cdot
+		\left(
+			\dot{\Theta}^2
+			+ \frac{1}{2}
+			\left(
+				\Theta\dot{\Theta}^2
+				-
+				\dot{\Theta}^2\Theta
+			\right)
+			+ \mathrm{O}(|\dot{\theta}|^2|\theta|^2)
+		\right)	
+	\right]
+	\ .
+\end{align}
+Die nicht ausgeschriebenen Terme~$\mathrm{O}(|\dot{\theta}|^2|\theta|^2)$ spielen für die abschließende Auswertung zum Zeitpunkt~$t=0$ keine Rolle, da mit $\theta=0$ auch deren Ableitung verschwindet.
+Auf Grund der Symmetrie von $\tilde{J}$ folgt
+\begin{align}
+\label{eq:lagrange_approx}
+	\mathcal{L}(\theta, \dot{\theta})
+	&\simeq
+	-\frac{1}{2}
+	\mathrm{Sp}\left[
+		\tilde{J}
+		\cdot
+		\left(
+			\mathrm{id}_{\mathbb{R}^3}
+			+
+			\Theta
+		\right)
+		\cdot
+		\dot{\Theta}^2
+	\right]
+\end{align}
+unter Beibehaltung nur der später relevanten Terme.
+Mit den bekannten Rechenregeln für Vektorprodukte lässt sich die Spur umschreiben als
+\begin{align}
+\label{eq:l_approx}
+	\mathcal{L}(\theta, \dot{\theta})
+	&\simeq
+	-\frac{1}{2}\left(
+		\langle
+			\dot{\theta},
+			\tilde{J}\cdot\dot{\theta}
+		\rangle
+		-
+		|\dot{\theta}|^2\,
+		\mathrm{Sp}\tilde{J}
+		+
+		\langle
+		\theta\times\dot{\theta},
+		\tilde{J}\cdot\dot{\theta}
+		\rangle		
+	\right)
+	\nonumber\\
+	&=
+	\frac{1}{2}\left(
+		\langle
+			\dot{\theta},
+			J\cdot\dot{\theta}
+		\rangle
+		-
+		\langle
+			\theta\times\dot{\theta},
+			J\cdot\dot{\theta}
+		\rangle
+	\right)
+	\ .
+\end{align}
+Gleichung~(\ref{eq:l_approx}) zeigt bereits, warum der ``naive'' Ansatz, Gl.~(\ref{eq:t_omega}) als Lagrange-Funktion zu verwenden, unvollständig ist:
+Gleichung~(\ref{eq:t_omega}) für die kinetische Energie entspricht offenbar dem Wert von~$\mathcal{L}(\theta, \dot{\theta})$ an der Stelle~$\theta=0$, ohne aber darüber hinaus Informationen über die Abhängigkeit der kinetischen Energie von den Koordinaten~$\theta$ zu enthalten.
+
+
+Für die Gradienten der Lagrange-Funktion nach~$\theta$ bzw. $\dot{\theta}$ verwenden wir die Bezeichnungen $\nabla_{\theta}\mathcal{L}$ bzw. $\nabla_{\dot{\theta}}\mathcal{L}$.
+Zum Beispiel erhalten wir für den hier als Tangentialvektor aufgefassten zu~$\theta$ konjugierten Impuls
+\begin{align}
+\label{eq:l_conj}
+	L &= \nabla_{\dot{\theta}}(\theta, \dot{\theta})
+	\simeq
+	J\cdot\dot{\theta}
+	+
+	\frac{1}{2}
+	\left(
+	\theta\times(J\cdot\dot{\theta})
+	-J\cdot
+	(\theta\times\dot{\theta})
+	\right)
+	\ .
+\end{align}
+Für den Zeitpunkt~$t=0$ des betrachteten, durch Gln.~(\ref{eq:r_t}) und~(\ref{eq:theta_t}) beschriebenen Weges in $\mathrm{SO}(3)$ folgt mit $\theta(0)=0$ sowie $\dot{\theta}(0)=\omega_0$, siehe Gl.~(\ref{eq:omega_dot_theta}), dass 
+\begin{align}
+	L(0) &= J\cdot\omega_0
+\end{align}
+gleich dem in Gl.(\ref{eq:l_b}) angegebenen Drehimpuls~$L^B$ im körperfesten System ist.
+
+\subsection{Lagrange-Gleichungen}
+
+In den (generalisierten) Koordinaten~$(\theta, \dot{\theta})$ der betrachteten lokalen Trivialisierung des Tangentialbündels~$\mathrm{T}\mathrm{SO}(3)$ lauten die Lagrange-Gleichungen
+\begin{align}
+	\frac{d}{dt}\nabla_{\dot{\theta}}\mathcal{L}
+	=
+	\nabla_{\theta}\mathcal{L}
+	\ .
+\end{align}
+Einsetzen von Gl.~(\ref{eq:l_approx}) bzw. für die linke Seite direkt von Gl.~(\ref{eq:l_conj}) gibt
+\begin{align}
+	J\cdot\ddot{\theta}
+	+
+	\frac{1}{2}
+	\left(
+	\dot{\theta}\times(J\cdot\dot{\theta})
+	+ \theta\times(J\cdot\ddot{\theta})
+	-J\cdot
+	(\theta\times\ddot{\theta})
+	\right)
+	&\simeq
+	-\frac{1}{2}
+	\dot{\theta}\times(J\cdot\dot{\theta})
+	\ ,
+\end{align}
+also
+\begin{align}
+	J\cdot\ddot{\theta}
+	+
+	\dot{\theta}\times(J\cdot\dot{\theta})
+	&\simeq
+	\frac{1}{2}
+	\left(
+	J\cdot
+	(\theta\times\ddot{\theta})
+	- \theta\times(J\cdot\ddot{\theta})
+	\right)
+	\ .
+\end{align}
+Die Auswertung des betrachteten Weges in $\mathrm{SO}(3)$, vgl. Gln.~(\ref{eq:r_t}) und~(\ref{eq:theta_t}), zum Zeitpunkt~$t=0$ liefert mit $\theta(0)=0$ sowie $\dot{\theta}(0)=\omega_0$ und $\ddot{\theta}(0)=\dot{\omega}_0$, siehe Gln.~(\ref{eq:omega_dot_theta}) und~(\ref{eq:dot_omega_ddot_theta}), die Beziehung
+\begin{align*}
+	J\cdot\dot{\omega}_0
+	+
+	\omega_0\times(J\cdot\omega_0)
+	&= 0
+	\ .
+\end{align*}
+Dies sind wiederum die (homogenen) Eulerschen Kreiselgleichungen aus Gl.~(\ref{eq:euler_homogen}).
+
+
+\end{document}
