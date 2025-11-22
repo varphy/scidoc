@@ -20,12 +20,12 @@ jobs:
       - run: cp src/zusammenhang.pdf outputs/zusammenhang.pdf
       - run: cp src/transportrate.pdf outputs/transportrate.pdf
       - name: Retrieve pdf output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: my-artifact
           path: outputs/zusammenhang.pdf
       - name: Retrieve pdf output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: my-artifact
           path: outputs/transportrate.pdf
