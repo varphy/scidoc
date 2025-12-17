@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="70.101013mm"
+   height="46.028328mm"
+   viewBox="0 0 70.101014 46.028328"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="ellipsen_arg.svg"
+   inkscape:export-filename="ellipsen_arg.pdf"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="242.89118"
+     inkscape:cy="54.800776"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2" />
+  <defs
+     id="defs1">
+    <rect
+       x="359.5"
+       y="211.25"
+       width="88.25"
+       height="52.5"
+       id="rect33" />
+    <marker
+       style="overflow:visible"
+       id="Triangle"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Triangle arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowWideHeavy-7"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide, heavy arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="m 1,0 -3,3 h -2 l 3,-3 -3,-3 h 2 z"
+         id="path3-3" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowWideHeavy-7-4"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide, heavy arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="m 1,0 -3,3 h -2 l 3,-3 -3,-3 h 2 z"
+         id="path3-3-8" />
+    </marker>
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer7"
+     inkscape:label="KreisFlaeche"
+     style="display:inline"
+     transform="translate(-80.168745,-31.607077)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Ellipse"
+     style="display:inline"
+     transform="translate(-80.168745,-31.607077)">
+    <path
+       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#338000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.4, 0.2;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+       d="m 129.97063,55.135411 -6.99271,-20.2404"
+       id="path16-1" />
+    <path
+       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.399998, 0.2;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+       d="m 116.73085,55.176173 h 33.53891"
+       id="path13-0" />
+    <path
+       style="font-variation-settings:normal;display:inline;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.399997, 0.2;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+       d="M 80.268795,55.176173 H 94.567306"
+       id="path13-0-1" />
+    <ellipse
+       style="fill:none;stroke:#338000;stroke-width:0.2;stroke-dasharray:none"
+       id="path1-3"
+       cx="110.16875"
+       cy="55.135406"
+       rx="29.900002"
+       ry="22.4" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer8"
+     inkscape:label="ExzentrischeAnomalie"
+     style="display:inline"
+     transform="translate(-80.168745,-31.607077)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Kreis"
+     style="display:inline"
+     transform="translate(-80.168745,-31.607077)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="BeschriftungEllipse"
+     style="display:inline"
+     transform="translate(-80.168745,-31.607077)">
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;word-spacing:0px;display:inline;stroke-width:0.264583"
+       x="129.97063"
+       y="49.756748"
+       id="text34-9-8-2"><tspan
+         sodipodi:role="line"
+         id="tspan38"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum Italic';fill:#338000"
+         x="129.97063"
+         y="49.756748">ν</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;word-spacing:0px;display:inline;stroke-width:0.264583"
+       x="134.43967"
+       y="58.201485"
+       id="text34-9-8-2-1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         x="134.43967"
+         y="58.201485"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Linux Biolinum G';-inkscape-font-specification:'Linux Biolinum G Italic';fill:#800080">ω</tspan></text>
+    <path
+       style="font-variation-settings:normal;display:inline;vector-effect:none;fill:none;fill-opacity:1;stroke:#338000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker-start:url(#ArrowWideHeavy-7);stop-color:#000000"
+       id="path37-6"
+       sodipodi:type="arc"
+       sodipodi:cx="129.97063"
+       sodipodi:cy="55.135384"
+       sodipodi:rx="4.8494687"
+       sodipodi:ry="4.8494687"
+       sodipodi:start="4.4331363"
+       sodipodi:end="0"
+       sodipodi:arc-type="arc"
+       d="m 128.63393,50.473775 a 4.8494687,4.8494687 0 0 1 4.25518,0.788651 4.8494687,4.8494687 0 0 1 1.93099,3.872958"
+       sodipodi:open="true" />
+    <path
+       style="font-variation-settings:normal;display:inline;vector-effect:none;fill:none;fill-opacity:1;stroke:#800080;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker-start:url(#ArrowWideHeavy-7-4);stop-color:#000000"
+       id="path37-6-4"
+       sodipodi:type="arc"
+       sodipodi:cx="132.40681"
+       sodipodi:cy="55.38961"
+       sodipodi:rx="6.3238297"
+       sodipodi:ry="6.351366"
+       sodipodi:start="0"
+       sodipodi:end="0.85521133"
+       sodipodi:arc-type="arc"
+       d="m 138.73064,55.38961 a 6.3238297,6.351366 0 0 1 -2.17502,4.793437"
+       sodipodi:open="true" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Koordinatensystem"
+     style="display:inline"
+     transform="translate(-80.168745,-31.607077)">
+    <path
+       style="font-variation-settings:normal;display:inline;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.199998;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker-end:url(#Triangle);stop-color:#000000"
+       d="m 129.98726,55.121533 12.4833,-16.314715"
+       id="path12-1-6-7" />
+    <path
+       style="font-variation-settings:normal;display:inline;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.199999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker-end:url(#Triangle);stop-color:#000000"
+       d="m 129.97062,55.135384 16.11332,12.351503"
+       id="path12-1-6-7-0" />
+    <circle
+       style="font-variation-settings:normal;display:inline;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.2, 0.4;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none"
+       id="path33-2"
+       cx="129.97063"
+       cy="55.13541"
+       r="0.31875786" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;word-spacing:0px;display:inline;stroke-width:0.264583"
+       x="144.6593"
+       y="65.207146"
+       id="text34-1"><tspan
+         sodipodi:role="line"
+         id="tspan34-2"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Linux Biolinum G';-inkscape-font-specification:'Linux Biolinum G Italic';stroke-width:0.264583"
+         x="144.6593"
+         y="65.207146">x<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan36">O</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;word-spacing:0px;display:inline;stroke-width:0.264583"
+       x="142.71817"
+       y="36.711094"
+       id="text34-1-0"><tspan
+         sodipodi:role="line"
+         id="tspan34-2-6"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Linux Biolinum G';-inkscape-font-specification:'Linux Biolinum G Italic';stroke-width:0.264583"
+         x="142.71817"
+         y="36.711094">y<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan36-1">O</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;word-spacing:0px;display:inline;stroke-width:0.264583"
+       x="123.47818"
+       y="34.366596"
+       id="text34-1-0-6"><tspan
+         sodipodi:role="line"
+         id="tspan34-2-6-1"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Linux Biolinum G';-inkscape-font-specification:'Linux Biolinum G Italic';stroke-width:0.264583"
+         x="123.47818"
+         y="34.366596">P</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;word-spacing:0px;display:inline;stroke-width:0.264583"
+       x="95.028259"
+       y="56.256992"
+       id="text34-1-0-6-1"><tspan
+         sodipodi:role="line"
+         id="tspan34-2-6-1-4"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Linux Biolinum G';-inkscape-font-specification:'Linux Biolinum G';stroke-width:0.264583"
+         x="95.028259"
+         y="56.256992">Apsidenlinie</tspan></text>
+    <circle
+       style="font-variation-settings:normal;display:inline;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.2, 0.4;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none"
+       id="path33-2-0"
+       cx="122.97797"
+       cy="34.895164"
+       r="0.31875786" />
+  </g>
+</svg>
