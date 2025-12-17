@@ -349,9 +349,9 @@ Taylor-Entwicklung in $\theta$ liefert
 			\dot{\Theta}^2
 			+ \frac{1}{2}
 			\left(
-				\Theta\dot{\Theta}^2
-				-
 				\dot{\Theta}^2\Theta
+				-
+				\Theta\dot{\Theta}^2
 			\right)
 			+ \mathrm{O}(|\dot{\theta}|^2|\theta|^2)
 		\right)	
@@ -370,7 +370,7 @@ Auf Grund der Symmetrie von $\tilde{J}$ folgt
 		\cdot
 		\left(
 			\mathrm{id}_{\mathbb{R}^3}
-			+
+			-
 			\Theta
 		\right)
 		\cdot
@@ -391,7 +391,7 @@ Mit den bekannten Rechenregeln für Vektorprodukte lässt sich die Spur umschrei
 		-
 		|\dot{\theta}|^2\,
 		\mathrm{Sp}\tilde{J}
-		+
+		-
 		\langle
 		\theta\times\dot{\theta},
 		\tilde{J}\cdot\dot{\theta}
@@ -420,7 +420,7 @@ Für die Gradienten der Lagrange-Funktion nach~$\theta$ bzw. $\dot{\theta}$ verw
 Zum Beispiel erhalten wir für den hier als Tangentialvektor aufgefassten zu~$\theta$ konjugierten Impuls
 \begin{align}
 \label{eq:l_conj}
-	L &= \nabla_{\dot{\theta}}(\theta, \dot{\theta})
+	L &= \nabla_{\dot{\theta}}\mathcal{L}(\theta, \dot{\theta})
 	\simeq
 	J\cdot\dot{\theta}
 	+
