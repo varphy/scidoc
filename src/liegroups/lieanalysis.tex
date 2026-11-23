@@ -1,0 +1,1010 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{authblk}
+\usepackage{titlesec}
+
+\usepackage{xcolor}
+\usepackage{empheq}
+\usepackage{tikz-cd} 
+
+% section title formating
+\renewcommand{\thesection}{\Roman{section}}
+\titleformat{\section}[block]{\normalsize\bfseries}{\thesection.}{1em}{\MakeUppercase}
+\titlespacing*{\section}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+
+\renewcommand{\thesubsection}{\arabic{section}.\Alph{subsection}}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
+   
+% custom macros
+\newcommand{\mydef}[1]{\textls{#1}}
+\newcommand{\nul}{\textrm{---}}
+\newcommand{\trans}{^\mathsf{T}}
+
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\dt}{\mathrm{d}}
+\newcommand{\Dt}{\mathrm{D}}
+\newcommand{\Tt}{\mathrm{T}}
+\newcommand{\ad}{\mathrm{ad}}
+\newcommand{\Ad}{\mathrm{Ad}}
+
+\newcommand{\cZ}{\mathcal{Z}}
+\newcommand{\cS}{\mathcal{S}}
+
+\newcommand*\resultbox[1]{%
+  \colorbox{blue!10}{\hspace{1em}#1\hspace{1em}}}
+\newcommand*\definitionbox[1]{%
+  \colorbox{yellow!20}{\hspace{1em}#1\hspace{1em}}}
+
+
+% %%%%%%%
+% title %
+% %%%%%%%
+
+\title{Zu Analysis und Zusammenhängen von Lie-Gruppen}
+\author{Hendrik Meier}
+
+\affil{Oberuhldingen}
+
+\affil{}
+\renewcommand\Affilfont{\itshape}
+
+\date{\today}
+
+
+% %%%%%%%%%%
+% document %
+% %%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+Dieser Aufsatz diskutiert auf einführender Weise Aspekte der Analysis und Zusammenhangstheorie auf Lie-Gruppen.
+Motivation ist dabei, im Kontext der Navigation zu klären, welcher Zusammenhang den Transport von Fehlervektoren bzw. Kovarianzen der Lage geometrisch adäquat beschreibt.
+
+Es ist dem Autoren dabei ein Anliegen, die Notation möglichst transparent zu halten --- zum Beispiel in Bezug auf die Verwendung der Klammer $[-,-]$,
+die in der differenzialgeometrischen Literatur etwa sowohl für Ableitungen als auch für die algebraische Lie-Klammer verwendet wird.
+
+\section{Differenzialrechnung auf Lie-Gruppen}
+
+\subsection{Parallelisierung von Lie-Gruppen}
+
+Sei $G$ ein Lie-Gruppe der Dimension~$n$.\footnote{
+	In diesem Aufsatz betrachten wir ausschließlich glatte ($C^\infty$) Lie-Gruppen.
+}
+Mithilfe der \emph{Rechtsmultiplikation}
+parallelisieren wir $G$, indem wir an einem Punkt $g\in G$ angeheftete Tangentialvektoren $\xi_g\in\Tt_gG$ mit einem Vektor im Tangentialraum $\xi=\xi_e\in\Tt_eG$ des neutralen Elements~$e$ identifizieren,
+\begin{align}
+	\xi = \Tt R_g|_e^{-1}\cdot\xi_g
+	\ ,
+\end{align}
+wobei
+\begin{align}
+	R_g: G &\rightarrow G
+	\ ,\nonumber\\
+	h &\mapsto hg
+\end{align}
+die Rechtsmultiplikation und $\Tt R_g|_h: \Tt_hG\rightarrow\Tt_{hg}G$ ihre Ableitung bezeichnen.\footnote{
+Für (koordinatenfrei geschriebene) Ableitungen auf Mannigfaltigkeiten verwenden wir, dem Lehrbuch \cite{StorchWiebe2005} folgend, das Symbol $\Tt$.
+Das Symbol $\Dt$ beschränken wir auf Ableitungen von Abbildungen zwischen Vektorräumen, wozu insbesondere auch $\mathfrak{g}=\Tt_eG$ gehört.
+}
+
+Im Folgenden nennen wir den Tangentialraum $\Tt_eG$ am neutralen Element
+\begin{empheq}[box=\definitionbox]{align}
+	\mathfrak{g} := \Tt_eG
+	\ .
+\end{empheq}
+Das praktische Rechnen mit Tangentialvektoren wird ausschließlich in $\mathfrak{g}$ erfolgen,
+wobei wir jedoch in Formeln und Herleitungen transparent zwischen $\mathfrak{g}$ und einem durch $\mathfrak{g}$ repräsentierten Tangentialraum $\Tt_gG$ unterscheiden wollen.
+
+Sei umgekehrt $\xi\in\Tt_eG$ ein am neutralen Element angehefteter Tangentialvektor.
+Über die Rechtsmultiplikation definieren wir das \mydef{rechtsinvariante} Vektorfeld
+\begin{align}
+	X_\xi: G &\rightarrow \Tt G
+	\ ,\nonumber\\
+	g &\mapsto \Tt R_g|_e\cdot\xi \in\Tt_g G
+	\ .
+\end{align}
+Ein Vektorfeld $X$ nennen wir genau dann \mydef{rechtsinvariant}, wenn
+\begin{align}
+	X|_{hg} &= \Tt R_g|_h\cdot X|_{h}
+\end{align}
+für alle $g\in G$ gilt.
+Ein rechtsinvariantes Vektorfeld~$X$ ist über seinen Wert $X|_e$ am neutralen Element offenbar eindeutig bestimmt und kann daher mit dem Tangentialvektor $\xi=X|_e\in\Tt_eG$ identifiziert werden.
+
+\subsection{Differenziation auf Lie-Gruppen}
+
+Die Ableitung einer differenzierbaren Abbildung $F:G\rightarrow G$ an einer Stelle $g\in G$ ist zunächst die Abbildung 
+\begin{align*}
+	\Tt F|_g:
+	\Tt_gG\rightarrow\Tt_{F(g)}G
+	\ .
+\end{align*}
+Zum praktischen Rechnen identifizieren wir mit Hilfe der Parallelisierung Urbild- und Bildraum mit $\mathfrak{g}=\Tt_eG$.
+Die auf diese Weise in $\mathfrak{g}$ behandelte Ableitung bezeichnen wir mit ``$\Dt$'',
+\begin{empheq}[box=\definitionbox]{align}
+	\Dt F|_g: 
+	\mathfrak{g} &\rightarrow \mathfrak{g}
+	\ ,\nonumber\\
+	\xi &\mapsto 
+	\Tt R_{F(g)}^{-1}|_{F(g)}
+	\cdot \Tt F|_g
+	\cdot \Tt R_{g}|_e
+	\ ,
+\end{empheq}
+wobei das letzte Verkettungsglied auch als $\Tt R_{F(g)}^{-1}|_{F(g)}=\Tt R_{F(g)}|_e^{-1}$ geschrieben werden kann.
+
+\subsubsection{Multiplikation}
+
+Es bezeichne 
+\begin{align}
+	\mathrm{mult}:G\times G\rightarrow G
+\end{align}
+die Multiplikationsabbildung $(g,h)\mapsto gh$,
+wobei das Produkt $G\times G$ seine topologische, analytische und algebraische Struktur von $G$ erbt.
+Zur Bestimmung von $\Dt\,\mathrm{mult}|_{g,h}$ seien für $\varepsilon>0$ die Kurvenkeime $\gamma,\eta: (-\varepsilon,\varepsilon)\rightarrow G$ mit $\gamma(0)=g$ und $\dot{\gamma}(0)=\xi_g\in\Tt_gG$ sowie $\eta(0)=h$ und $\dot{\eta}(0)=\upsilon_h\in\Tt_hG$ gegeben.
+
+Damit berechnen wir einerseits
+\begin{align*}
+	\Tt\,\mathrm{mult}|_{(g,h)}\cdot (\xi_g, 0)
+	&= \frac{\dt}{\dt t}
+		R_h\gamma(t)
+	\Big|_{t=0}
+	= \Tt R_h|_g\cdot\xi_g
+	\in \Tt_{gh}G
+	\ ,
+\end{align*}
+andererseits
+\begin{align*}
+	\Tt\,\mathrm{mult}|_{(g,h)}\cdot (0, \upsilon_h)
+	&= \frac{\dt}{\dt t}
+		L_g\eta(t)
+	\Big|_{t=0}
+	= \Tt L_g|_h\cdot\upsilon_h
+	\in \Tt_{gh}G
+	\ ,
+\end{align*}
+wobei $L_g:h\mapsto gh$ die Linksmultiplikation bezeichnet.
+Wir finden mit
+\begin{empheq}[box=\resultbox]{align}
+	\Tt\,\mathrm{mult}|_{(g,h)}\cdot (\xi_g, \upsilon_h)
+	&= \Tt R_h|_g\cdot\xi_g + \Tt L_g|_h\cdot\upsilon_h
+	\ .
+\end{empheq}
+die Produktregel für 
+$\Tt\,\mathrm{mult}|_{(g,h)}:\Tt_gG\times\Tt_hG\rightarrow\Tt_{hg}G$.
+
+Aufgefasst als Abbildung $\mathfrak{g}\times\mathfrak{g}\rightarrow\mathfrak{g}$ finden wir
+\begin{align*}
+	\Dt\,\mathrm{mult}|_{(g,h)}\cdot (\xi, 0)
+	&= 
+	\Tt R_{gh}^{-1}|_{gh}
+	\cdot
+	\Tt R_h|_g
+	\cdot
+	\Tt R_g|_g
+	\cdot\xi
+	\nonumber\\
+	&= \Tt (R_{(gh)^{-1}}\circ R_h\circ R_g)|_e\cdot\xi
+	= \xi
+\end{align*}
+und
+\begin{align*}
+	\Dt\,\mathrm{mult}|_{(g,h)}\cdot (0, \upsilon)
+	&=
+	\Tt R_{gh}^{-1}|_{gh}
+	\cdot	
+	\Tt L_g|_h
+	\cdot
+	\Tt R_h|_e
+	\cdot
+	\upsilon
+	=
+	\Tt
+	(R_{g^{-1}}\circ L_g)|_e
+	\cdot
+	\upsilon	
+	\ .
+\end{align*}
+Zusammengefasst ist also
+\begin{empheq}[box=\resultbox]{align}
+	\Dt\,\mathrm{mult}|_{(g, h)} \cdot (\xi, \upsilon)
+	&=
+	\xi + \Ad(g)\cdot\upsilon
+	\ ,
+\end{empheq}
+wobei
+\begin{empheq}[box=\definitionbox]{align}
+\label{eq:Ad}
+	\Ad: G&\rightarrow \mathrm{GL}(\mathfrak{g})
+	\ ,\nonumber\\
+	g &\mapsto
+	\Tt
+	(R_{g^{-1}}L_g)|_e
+\end{empheq}
+die \mydef{adjungierte Darstellung} von $G$ bezeichnet.
+
+\subsubsection{Inversenbildung}
+
+Sei
+\begin{align}
+	\mathrm{inv}:G\rightarrow G
+\end{align} 
+die Abbildung der Inversenbildung $g\mapsto g^{-1}$.
+
+Wir drücken dazu die \emph{konstante} Abbildung auf das neutrale Element als Komposition
+\begin{alignat}{2}
+	G 
+	&\rightarrow G\times G 
+	&&\rightarrow G
+	\ ,\nonumber\\
+	g 
+	&\mapsto
+	\begin{pmatrix}
+		\mathrm{inv}(g) \\ g
+	\end{pmatrix}
+	&&\mapsto \mathrm{mult}(\mathrm{inv}(g), g) = e
+\end{alignat}
+aus.
+Für $g\in G$ in $\xi_g\in\Tt_gG$ gilt dann nach der Kettenregel
+\begin{align*}
+	\mathfrak{g}\ni	
+	0 &= 
+	\Tt\,\mathrm{mult}|_{(g^{-1},g)}
+	\cdot
+	\begin{pmatrix}
+		\Tt\,\mathrm{inv}|_{g} \cdot \xi_g \\
+		\xi_g
+	\end{pmatrix}
+	\nonumber\\
+	&= 
+	\Tt R_g|_{g^{-1}}\cdot \Tt\,\mathrm{inv}|_{g} \cdot \xi_g
+	+ \Tt L_{g^{-1}}|_g\cdot \xi_g
+	\ .
+\end{align*}
+Folglich finden wir mit $\xi_g=\Tt R_g|_e\cdot \xi$ für die Ableitung $\Dt\,\mathrm{inv}|_{g}:\mathfrak{g}\rightarrow\mathfrak{g}$
+\begin{align*}
+	\Dt\,\mathrm{inv}|_{g} \cdot \xi
+	&= -\Tt L_{g^{-1}}|_g\cdot \Tt R_g|_e \cdot \xi
+	= -\Tt (L_{g^{-1}}\circ R_g)|_e \cdot \xi
+	\ ,
+\end{align*}
+also
+\begin{empheq}[box=\resultbox]{align}
+	\Dt\,\mathrm{inv}|_{g}
+	&= -\Ad(g^{-1})
+	\ .
+\end{empheq}
+
+\subsection{Vektorfelder auf Mannigfaltigkeiten}
+
+Wir tragen in diesem Abschnitt grundlegende Eigenschaften von Vektorfeldern auf Mannigfaltigkeiten zusammen.\footnote{
+	Wir betrachten durchweg glatte ($C^\infty$) Mannigfaltigkeiten.
+}
+Sei dazu $X$ allgemein ein Vektorfeld einer Mannigfaltigkeit $M$ der Dimension~$n$.
+
+\subsubsection{Push-Forward eines Vektorfelds}
+
+Sei $F:M\rightarrow N$ ein Diffeomorphismus auf die Mannigfaltigkeit~$N$.
+Mit $F$ können wir $X$ als \mydef{Push-Forward}  auf $N$ transportieren,
+\begin{align}
+	F_*X: N &\rightarrow \Tt N
+	\ ,\nonumber\\
+	q &\mapsto \Tt F|_{F^{-1}(q)}\cdot X|_{F^{-1}(q)}
+	\ .
+\end{align}
+
+\subsubsection{Fluss eines Vektorfelds}
+
+Integralkurven $t\mapsto\gamma(t)\in M$ zu einem Vektorfeld~$X$ sind Kurven, deren Geschwindigkeiten durch Vektorfeld gegeben sind,
+\begin{align*}
+	\dot{\gamma}(t) &= X|_{\gamma(t)}
+	\ .
+\end{align*}
+Flüsse bieten eine übersichtliche Darstellung über Integralkurven.
+
+Aus der Theorie gewöhnlicher Differenzialgleichungen folgt die Existenz eines offenen Intervalls $I\subset\mathbb{R}$ mit $0\in I$ und für jedes $p_0\in M$ die Existenz einer offenen Menge $V\subset M$ mit $p_0\in V$, auf deren Produkt der \mydef{Fluss}
+\begin{align}
+	\Phi_X: I\times V \rightarrow M
+\end{align}
+mit
+\begin{align}
+	\frac{\dt}{\dt t}\Phi_X(t; p) = X|_{\Phi_X(t; p)}
+\end{align}
+wohldefiniert und glatt ist.
+Die Kurve $t\mapsto\Phi_X(t; p)$ ist für $p$ fix die eindeutige Integralkurve durch $p$.
+
+Der Fluss $\Phi_X$ des (zeitunabhängigen!) Vektorfelds~$X$ erfüllt offenbar die \mydef{Halbgruppeneigenschaft} im Sinne von
+\begin{align}
+	\Phi_X(t_1 + t_2; -)
+	&= \Phi_X(t_2; \Phi_X(t_1; -))
+	\ ,
+\end{align}
+sofern beide Seiten existieren.
+Außerdem ist $\Phi_X(0; -)=\mathrm{id}$.
+
+
+\subsubsection{Lie-Produkt von Vektorfeldern}
+
+Für $t\in I$ ist $\Phi_X(t):=\Phi_X(t;-)$ ein (mindestens) \emph{lokaler} Diffeomorphismus auf sein Bild.
+Seine Umkehrung bezeichnen wir mit $\Phi_X^{-1}(t):q\mapsto\Phi_X^{-1}(t;q)$, wobei $\Phi_X^{-1}(t;q)=\Phi_X(-t;q)$.
+Sei nun $Y$ ein weiteres Vektorfeld auf $M$.
+
+Das \mydef{Lie-Produkt} der Vektorfelder $X$ und $Y$ definieren wir als
+\begin{align}
+	[X, Y]\big|_{p} &:= 
+	\frac{\dt}{\dt t}
+	\big(
+		[\Phi_X(t)]_* Y
+	\big)
+	\big|_{p}
+	\Big|_{t=0}
+\end{align}
+für alle $p\in M$.
+
+Ist beispielsweise $M=\mathbb{R}^n$, was \emph{lokal} durch Wahl einer Karte stets erreicht werden kann, finden wir für
+\begin{align*}
+	[X, Y]\big|_{p}
+	&=
+	\frac{\dt}{\dt t}
+	\Big(
+		\Dt\Phi_X(t)|_{\Phi_X^{-1}(t, p)}
+		\cdot
+		Y|_{\Phi_X^{-1}(t, p)}
+	\Big)\Big|_{t=0}
+\end{align*}
+unter Verwendung von
+\begin{align*}
+	\Phi_X(t; p)
+	&= p + t X|_{p} + \mathrm{O}(t^2)
+	\ ,\nonumber\\
+	\Phi_X^{-1}(t; p)
+	&= p - t X|_{p} + \mathrm{O}(t^2)
+	\ ,\nonumber\\
+	\Dt\Phi_X(t)\big|_{p}
+	&= \mathrm{id} + t\,\Dt X|_{p} + \mathrm{O}(t^2)
+	\ ,\nonumber\\
+	Y|_{\Phi_X^{-1}(t, p)}
+	&= Y|_{p} - t\,\Dt Y|_{p}\cdot X|_{p} + \mathrm{O}(t^2)
+\end{align*}
+explizit
+\begin{align}
+	[X, Y]\big|_{p}
+	&=
+	\Dt X|_{p}
+	\cdot
+	Y|_{p}
+	-
+	\Dt Y|_{p}
+	\cdot
+	X|_{p}
+	\ .
+\end{align}
+Das Lie-Produkt entspricht damit der \mydef{Lie-Klammer} von Vektorfeldern.
+Die Jacobi-Identität der Lie-Klammer, die dem Raum der Vektorfelder die algebraische Struktur einer Lie-Algebra gibt, bestätigt man durch direktes Überprüfen.
+
+Die Lie-Klammer ist auch im Mannigfaltigkeitsfall unabhängig von der Wahl einer Karte:
+Ist $F$ ein Diffeomorphismus auf $M=\mathbb{R}^n$, so ist nämlich
+\begin{align}
+	[F_*X, F_*Y]\big|_{p}
+	&= 
+	\Dt \big(
+		\Dt F|_{F^{-1}(p)} \cdot X|_{F^{-1}(p)}
+	\big)\big|_p
+	\cdot
+	\Dt F|_{F^{-1}(p)} \cdot Y|_{F^{-1}(p)}
+	- [X\leftrightarrow Y]
+	\nonumber\\
+	&=
+	\Dt^2F|_{F^{-1}(p)}
+	\cdot
+	(X|_{F^{-1}(p)}\otimes Y|_{F^{-1}(p)})
+	\nonumber\\
+	&\quad 
+	+
+	\Dt F|_{F^{-1}(p)} 
+	\cdot \Dt X|_{F^{-1}(p)}
+	\cdot Y|_{F^{-1}(p)}
+	- [X\leftrightarrow Y]
+	\nonumber\\
+	&= \Dt F|_{F^{-1}(p)}
+	\cdot
+	[X, Y]|_{F^{-1}(p)}
+	\nonumber\\
+	&= F_*[X, Y]|_p
+	\ .
+\end{align}
+Dabei ist verwendet worden, dass für Vektoren $u,v\in\mathbb{R}^n$
+\begin{align*}
+	\Dt_v(\Dt_u F|_{F^{-1}(p)})\big|_p
+	&=
+	\Dt_{\Dt F^{-1}|_p\cdot v}
+	\Dt_u F\big|_{F^{-1}(p)}
+	=:
+	\Dt^2F|_{F^{-1}(p)}\cdot(u \otimes \Dt F|_{F^{-1}(p)}^{-1}\cdot v)
+\end{align*}
+mit $\Dt F^{-1}|_p=\Dt F|_{F^{-1}(p)}^{-1}$ gilt, dass
+\begin{align*}
+	\Dt \big(
+		X|_{F^{-1}(p)}
+	\big)\big|_p
+	&=
+	\Dt X|_{F^{-1}(p)}
+	\cdot \Dt F|_{p}^{-1}
+\end{align*}
+ist sowie dass $\Dt^2$ symmetrisch ist.
+
+\subsection{Lie-Algebren}
+
+\subsubsection{Lie-Klammer auf $\mathfrak{g}$}
+
+Sei wieder $G$ eine Lie-Gruppe der Dimension $n$ und seien $\xi_1,\xi_2\in\mathfrak{g}=\Tt_eG$ zwei Tangentialvektoren am neutralen Element mit zugehörigen rechtsinvarianten Vektorfeldern~$X_{\xi_1}$ und $X_{\xi_2}$.
+Die Lie-Klammer $[X_{\xi_1}, X_{\xi_2}]$ ist wegen
+\begin{align*}
+	(R_g)_*[(R_g)_*X_{\xi_1}, (R_g)_*{\xi_2}]
+\end{align*}
+ebenfalls rechtsinvariant und identifizierbar mit einem Tangentialvektor in $\Tt_eG$.
+Damit trägt $\mathfrak{g}=\Tt_eG$ die Struktur einer \mydef{Lie-Algebra}.
+Um die algebraische Lie-Klammer auf $\mathfrak{g}$ von der differenziellen Lie-Klammer $[-,-]$ zwischen beliebigen Vektorfeldern auf $G$ zu unterscheiden, definieren wir für $\xi_1,\xi_2\in\Tt_eG$
+\begin{empheq}[box=\definitionbox]{align}
+	[-,-]_\mathfrak{g}:
+	\mathfrak{g}\times\mathfrak{g}
+	&\rightarrow \mathfrak{g}
+	\ ,\nonumber\\
+	(\xi_1,\xi_2) &\mapsto
+	[\xi_1,\xi_2]_\mathfrak{g}
+	:= [X_{\xi_1}, X_{\xi_2}]
+	\ .
+\end{empheq}
+$[-,-]_\mathfrak{g}$ ist eine bilineare Abbildung auf $\mathfrak{g}$ mit Werten in $\mathfrak{g}$.
+
+Sei speziell $\xi_1,\ldots,\xi_n$ eine Basis von $\mathfrak{g}$.
+Dann lässt sich schreiben
+\begin{align}
+	[\xi_i,\xi_j]_\mathfrak{g}
+	&= \sum_{k=1}^n f^k_{ij} \xi_k
+	\ .
+\end{align}
+Die \mydef{Strukturkonstanten} $f^k_{ij}\in\mathbb{R}$ bezüglich einer gegebenen Basis bestimmen eindeutig die Lie-Algebrastruktur von $\mathfrak{g}$.
+	
+\subsubsection{Fluss eines rechtsinvarianten Vektorfeldes}
+
+Sei $\xi\in\mathfrak{g}$ und $X_\xi:g\mapsto\Tt R_g|_e\cdot\xi$ das zugehörige rechtsinvariante Vektorfeld.
+
+Sei $\gamma:(-\varepsilon,\varepsilon)\rightarrow G$ eine das neutrale Element passierende lokale Integralkurve zu $X_\xi$,
+\begin{align*}
+	\gamma(t) &= e
+	\\
+	\dot{\gamma}(t) &= X_\xi|_{\gamma(t)}
+	\ .
+\end{align*}
+Die Rechnung
+\begin{align*}
+	\frac{\dt}{\dt t}
+	\big(
+		L_{\gamma(t)}\,g
+	\big)
+	\Big|_{t=0}
+	&=
+	\frac{\dt}{\dt t}
+	\big(
+		\gamma(t)\,g
+	\big)
+	\Big|_{t=0}	
+	=
+	\Tt R_g|_{e} \cdot X_\xi|_{e}
+	= X_\xi|_{g}		
+\end{align*}
+zeigt, dass der Fluss zu $X_\xi$ lokal durch Linksmultiplikation einer Integralkurve durch das neutrale Element gegeben ist,
+\begin{align}
+	\Phi_{X_\xi}(t; -)
+	&= L_{\gamma(t)}
+	\ .
+\end{align}
+
+\subsubsection{Adjungierte Darstellung}
+
+Die adjungierte Darstellung $\Ad:G\rightarrow\mathrm{GL}(\mathfrak{g})$ nach Gl.~(\ref{eq:Ad}) ist ein Homomorphismus von Lie-Gruppen.
+Hier soll seine Ableitung
+\begin{empheq}[box=\definitionbox]{align}
+	\ad:=\Dt\,\Ad|_e: \mathfrak{g}\rightarrow\mathfrak{gl}(\mathfrak{g})
+\end{empheq}
+im Tangentialraum $\mathfrak{g}$ des neutralen Elements bestimmt werden.
+
+Nach Definition ist für $g\in G$ und $\upsilon\in\mathfrak{g}$ mit zugehörigem rechtsinvarianten Vektorfeld~$Y_\upsilon$
+\begin{align*}
+	\Ad(g)\cdot\upsilon
+	&= 
+	\Tt(L_{g}R_{g^{-1}})|_e\,\upsilon
+	=
+	\Tt L_{g}|_{g^{-1}}
+	\cdot
+	\upsilon_{g^{-1}}
+	=  
+	\big(
+		[L_{g}]_* Y_\upsilon
+	\big)
+	\big|_e
+	\ .	
+\end{align*}
+Sei  $\gamma:(-\varepsilon,\varepsilon)\rightarrow G$ mit $\gamma(0)=e$ und $\dot{\gamma}=X_\xi|_{\gamma(t)}$, insbesondere mit $\dot{\gamma}(0)=\xi\in\mathfrak{g}$	eine Integralkurve zum rechtsinvarianten Vektorfeld $X_\xi$.
+Es folgt
+\begin{align*}
+	\Dt_{\xi}\Ad|_e\cdot\upsilon
+	&=
+	\frac{\dt}{\dt t}
+	\Ad|_{\gamma(t)}\cdot\upsilon
+	\Big|_{t=0}
+	=
+	\frac{\dt}{\dt t}
+	\big(
+		[L_{\gamma(t)}]_* Y_\upsilon
+	\big)
+	\big|_e
+	\Big|_{t=0}
+	\ .
+\end{align*}
+Da $L_{\gamma(t)}=\Phi_{X_\xi}(t;-)$, folgt
+\begin{align*}
+	\Dt_{\xi}\Ad|_e\cdot\upsilon
+	&=
+	[X_\xi,Y_\upsilon] = [\xi, \upsilon]_\mathfrak{g}
+	\ .
+\end{align*}
+$\ad(\xi)$ ist also der durch
+\begin{empheq}[box=\resultbox]{align}
+	\ad(\xi): \upsilon\mapsto[\xi,\upsilon]_\mathfrak{g}
+\end{empheq}
+gegebene Endomorphismus auf~$\mathfrak{g}$.
+
+Mit der Jacobi-Identität auf $\mathfrak{g}$ folgt durch
+\begin{align*}
+	\ad([\xi_1,\xi_2])
+	&= [[\xi_1,\xi_2], -]
+	= -[[\xi_2,-], \xi_1]-[[-,\xi_1], \xi_2]
+	\nonumber\\
+	&= \ad(\xi_1)\circ \ad(\xi_2) - \ad(\xi_2)\circ \ad(\xi_1)
+	\ ,
+\end{align*}
+dass $\ad$ ein Lie-Algebrahomomorphismus $\mathfrak{g}\rightarrow\mathfrak{gl}(\mathfrak{g})$ ist.
+	
+\subsection{Liesche Exponentialabbildung}
+
+\subsubsection{Vorbetrachtungen}
+
+Sei $\xi\in\mathfrak{g}=\Tt_eG$ ein Element der Lie-Algebra zur Lie-Gruppe~$G$ und $X_\xi$ das zugehörige rechtsinvariante Vektorfeld.
+Der Fluss $\Phi_{X_\xi}(t;e)$ ist mindestens lokal für ein hinreichend kleines $t=\Delta t$ definiert.
+Wir setzen nun $g=\Phi_{X_\xi}(\Delta t;e)$ und 
+\begin{align*}
+	\tilde{\Phi}_{X_\xi}(t;g)
+	&= R_g\circ\Phi_{X_\xi}(t;e)
+\end{align*}
+Eine einfache Prüfung ergibt, dass $\tilde{\Phi}_{X_\xi}(0;g)=g$ und
+\begin{align*}
+	\frac{\dt}{\dt t}
+		\tilde{\Phi}_{X_\xi}(t;g)
+	\Big|_{t=0}
+	= \Tt R_g|_e \cdot X_\xi|_e
+	= \Tt R_g|_e \cdot \xi
+	\ ,
+\end{align*}
+woraus folgt, dass $\tilde{\Phi}_{X_\xi}(t;g)=\Phi_{X_\xi}(t;g)$.
+Der Fluss mit Startpunkt $g$ wird also auf den am neutralen Element~$e$ startenden Fluss zurückgeführt.
+Damit impliziert nun die Existenz von $\Phi_{X_\xi}(\Delta t;e)$ jene von $\Phi_{X_\xi}(\Delta t;g)=\Phi_{X_\xi}(2\Delta t;e)$,
+woraus wir folgern, dass der Fluss $\Phi_{X_\xi}$ zum rechtsinvarianten Vektorfeld~$X_\xi$ auf ganz $\mathbb{R}\times G$ existiert.
+
+\subsubsection{Definition der Exponentialabbildung}
+
+Die angestellten Vorbetrachtungen begründen die Definition der \mydef{Exponentialabbildung} gemäß
+\begin{empheq}[box=\definitionbox]{align}
+	\exp: 
+	\mathfrak{g} &\rightarrow G
+	\ ,\nonumber\\
+	\xi &\mapsto \exp\xi := \Phi_{X_\xi}(1; e)
+	\ .
+\end{empheq}
+Umgekehrt ist mit Hilfe der Exponentialabbildung der Fluss eines \emph{rechtsinvarianten} Vektorfelds $X_\xi$ mit $\xi\in\mathfrak{g}$ durch
+\begin{align}
+	\Phi_{X_\xi}(t;g)
+	&= \exp(t\xi)\,g
+\end{align}
+gegeben.
+
+\subsubsection{Eigenschaften der Exponentialabbildung}
+
+Wir notieren in diesem Abschnitt einige anaytischen und algebraischen Eigenschaften der Exponentialabbildung.
+
+\paragraph{Einparametergruppe.}
+Die Abbildung $t\mapsto\exp(t\xi)$ für festes $\xi\in\mathfrak{g}$ ist ein Gruppenhomomorphismus $(\mathbb{R},+)\rightarrow G$.
+
+\paragraph{Ableitung der Einparametergruppe.}
+Die Ableitung von $t\mapsto\exp(t\xi)$ lautet
+\begin{align}
+	\frac{\dt}{\dt t}\exp(t\xi)
+	&= 
+	\frac{\dt}{\dt t}
+	\Phi_{X_\xi}(t;e)
+	= X_\xi|_{\exp(t\xi)}
+	= \Tt R_{\exp(t\xi)}|_e\cdot\xi
+	\in \Tt_{\exp(t\xi)}G
+	\ .
+\end{align}
+In der Parallelisierung entspricht dieses Ergebnis $\xi\in\mathfrak{g}$.
+
+\paragraph{Ableitung im Ursprung.}
+Für die Exponentialabbildung erhalten wir für $\xi\in\mathfrak{g}$ und $\upsilon\in\Tt_\xi\mathfrak{g}=\mathfrak{g}$
+\begin{align}
+\label{eq:dExp0}
+	\Dt\exp|_\xi \cdot\upsilon
+	&=
+	\Tt R_{\exp(\xi)}^{-1}|_{\exp(\xi)}
+	\cdot
+	\frac{\dt}{\dt t}
+		\exp(\xi + t\upsilon)
+	\Big|_{t=0}
+	\ ,
+\end{align}
+woraus für den Ursprung~$\xi=0$
+\begin{align*}
+	\Dt\exp|_0 \cdot\upsilon
+	&=
+	\frac{\dt}{\dt t}
+		\exp(t\upsilon)
+	\Big|_{t=0}
+	= X_\upsilon|_e = \upsilon
+	\ ,
+\end{align*}
+also
+\begin{empheq}[box=\resultbox]{align}
+	\Dt\exp|_0
+	&=
+	\mathrm{id}
+\end{empheq}
+folgt.
+
+\paragraph{Normalkoordinaten.}
+Da die Ableitung von $\exp$ im Ursprung gleich der Identität ist,
+existiert ein Gebiet $U\subset\mathfrak{g}$, auf dem $\exp$ ein Diffeomorphismus auf $V=\exp U$ ist.
+Die Umkehrabbildung
+\begin{empheq}[box=\definitionbox]{align}
+	\ln=\exp^{-1}
+\end{empheq}
+auf $V$ ist damit also eine lokale Karte von $G$ um das neutrale Element.
+Über die (Rechts-)Multiplikation gewinnt man entsprechend eine lokale Karte um jedes $g\in G$.
+
+Sei $\xi_1,\ldots,\xi_n$ eine Basis von $\mathfrak{g}$.
+Indem wir Vektoren $\xi\in\mathfrak{g}$ bezüglich dieser Basis parametrisieren, $\xi=\sum_{i=1}^n x^i\xi_i$ mit $x^i\in\mathbb{R}$,
+gewinnen wir lokale Koordinaten für $G$.
+Diese nennen wir \mydef{(liesche) Normalkoordinaten}.
+
+\subsubsection{Exponentialabbildung und adjungierte Darstellung}
+
+Das Diagramm
+\begin{center}
+\begin{tikzcd}
+\mathfrak{g} \arrow{d}{\exp} \arrow{r}{\ad}
+&\mathfrak{gl}(\mathfrak{g}) \arrow{d}{\exp}\\
+G \arrow{r}{\Ad}
+& \mathrm{GL}(\mathfrak{g})
+\end{tikzcd}
+\end{center}
+illustriert zwei Wege für Abbildungen $\mathfrak{g}\rightarrow\mathrm{GL}(\mathrm{g})$.
+Dabei ist $\exp:\mathfrak{gl}(\mathfrak{g})\rightarrow\mathrm{GL}(\mathfrak{g})$ die ``gewöhnliche'' Operatorexponentialfunktion.
+
+Dass sie übereinstimmen, dass also
+\begin{empheq}[box=\resultbox]{align}
+	\Ad\circ\exp &= \exp\circ\ad
+\end{empheq}
+ist, soll hier gezeigt werden.
+
+Sei dazu $\xi\in\mathfrak{\xi}$ beliebig.
+Wir betrachten zwei Kurven in $\mathrm{GL}(\mathfrak{g})$,
+\begin{align*}
+	\Gamma_1: t&\mapsto \exp(t\,\ad(\xi))
+	\ ,\\
+	\Gamma_2: t&\mapsto \Ad(\exp(t\xi))
+	\ .
+\end{align*}
+$\Gamma_1$ ist nach Definition eine Einparametergruppe.
+Dass dies auch $\Gamma_2$ ist, folgt aus
+\begin{align*}
+	\Gamma_2(t+s)
+	&= \Ad(\exp((t+s)\xi))
+	= \Ad(\exp(t\xi)\exp(s\xi))
+	\nonumber\\
+	&= \Ad(\exp(t\xi)\cdot\Ad(\exp(s\xi)
+	\ .
+\end{align*}
+Es ist außerdem
+\begin{align*}
+	\dot{\Gamma}_1(0)
+	&= \ad(\xi)
+\end{align*}
+und
+\begin{align*}
+	\dot{\Gamma}_2(0)
+	&= \Dt\,\Ad|_e\cdot \xi = \ad(\xi) = \dot{\Gamma}_1(0)
+	\ .
+\end{align*}
+Aufgrund der Einparametergruppeneigenschaft gilt für $i=1,2$
+\begin{align*}
+	\dot{\Gamma}_i(t)
+	&=
+	\frac{\dt}{\dt s}
+	\Gamma_i(s+t)
+	\Big|_{s=0}
+	= \dot{\Gamma}_i(0)\Gamma_i(t)
+	= \ad(\xi)\circ\Gamma_i(t)
+\end{align*}
+(wobei $\Gamma_i(t)$ und $\ad(\xi)$ vermöge der Einparametergruppe kommutieren).
+
+Beide Kurven erfüllen also dieselbe gewöhnliche Differenzialgleichung ersten Grades und haben wegen $\Gamma_1(0)=\Gamma_2(0)=\mathrm{id}$ überdies den gleichen Anfangswert.
+Damit stimmen $\Gamma_1$ und $\Gamma_2$ überein, 
+so dass die Gleichheit $\Gamma_1(1)=\Gamma_2(1)$ die zu zeigende Aussage ergibt.
+
+\subsubsection{Ableitung der Exponentialfunktion}
+
+Ausgehend von Gl.~(\ref{eq:dExp0}) betrachten wir die Ableitung mit um den Faktor $s$ skalierten Tangentialvektoren,
+\begin{align*}
+	\Dt\exp|_{s\xi} \cdot s\upsilon
+	&=
+	\Tt R_{\exp(s\xi)}^{-1}|_{\exp(s\xi)}
+	\cdot
+	\frac{\dt}{\dt t}
+		\exp(s\xi + st\upsilon)
+	\Big|_{t=0}
+	\nonumber\\
+	&=
+	\frac{\dt}{\dt t}
+		\exp(s\xi + st\upsilon)
+		\exp(-s\xi)
+	\Big|_{t=0}
+\end{align*}
+Mit Hilfe der durch 
+\begin{align*}
+	h_{\xi,\upsilon}(t, s)
+	&:= 
+	\exp(s\xi + st\upsilon)\exp(-s\xi)
+\end{align*}
+definierten Abbildung $h_{\xi,\upsilon}:\mathbb{R}^2\rightarrow G$ schreiben wir
+\begin{align*}
+	\Dt\exp|_{s\xi} \cdot s\upsilon
+	&= \dot{h}_{\xi, \upsilon}(0, s)
+	\ ,
+\end{align*}
+wobei
+\begin{align*}
+	\dot{h}_{\xi, \upsilon}(t, s)
+	&= \frac{\dt}{\dt t} h_{\xi, \upsilon}(t, s)
+	\ .
+\end{align*}
+Wir notieren einige in der Folge wichtige Eigenschaften dieser Abbildung,
+\begin{align*}
+	h_{\xi,\upsilon}(0, s)
+	&= e
+	\ ,\\
+	\dot{h}_{\xi, \upsilon}(0, s) 
+	&\in\mathfrak{g}
+	\ ,\\
+	\dot{h}_{\xi, \upsilon}(0, 0)
+	&= 0
+	\ ,\\
+	\dot{h}_{\xi, \upsilon}(0, 1)
+	&= \Dt\exp|_{\xi} \cdot \upsilon
+	\ .
+\end{align*}
+Die explizite Berechnung von $\dot{h}_{\xi, \upsilon}(0, s)$ erfolgt über die Ableitung nach $s$, beginnend mit der Produktregel (für $\Tt\,\mathrm{mult}$),
+\begin{align*}
+	\frac{\partial}{\partial s}
+	\dot{h}_{\xi, \upsilon}(0, s)	
+	&=
+	\frac{\dt}{\dt t}	
+	\Big(
+		\Tt R_{\exp(-s\xi)}
+		|_{\exp(s\xi + st\upsilon)}
+		\cdot	
+		\frac{\partial}{\partial s}\exp(s\xi + st\upsilon)
+	\nonumber\\
+	&\qquad\qquad+
+		\Tt L_{\exp(s\xi + st\upsilon)}
+		|_{\exp(-s\xi)}		
+		\cdot			
+		\frac{\partial}{\partial s}
+		\exp(-s\xi)
+	\Big)	
+	\Big|_{t=0}
+	\nonumber\\	
+	&=
+	\frac{\dt}{\dt t}	
+	\Big(
+		\Tt R_{\exp(-s\xi)}
+		|_{\exp(s\xi + st\upsilon)}
+		\cdot	
+		\Tt R_{\exp(s\xi + st\upsilon)}
+		|_e
+		\cdot
+		(\xi + t\upsilon)
+	\nonumber\\
+	&\qquad\qquad-
+		\Tt L_{\exp(s\xi + st\upsilon)}
+		|_{\exp(-s\xi)}	
+		\cdot
+		\Tt R_{\exp(-s\xi)}
+		|_e
+		\cdot
+		\xi
+	\Big)	
+	\Big|_{t=0}
+	\nonumber\\	
+	&=
+	\frac{\dt}{\dt t}	
+	\Big(
+		\Tt R_{h_{\xi, \upsilon}(t, s)}
+		|_e
+		\cdot
+		(\xi + t\upsilon)
+	\nonumber\\
+	&\qquad\qquad-
+		\Tt L_{h_{\xi, \upsilon}(t, s)}
+		|_{e}	
+		\cdot
+		\Ad(\exp(-s\xi))
+		\cdot
+		\xi
+	\Big)	
+	\Big|_{t=0}
+	\ .
+\end{align*}
+Mit
+\begin{align*}
+	\frac{\dt}{\dt t}	
+	\Big(
+		\Tt R_{h_{\xi, \upsilon}(t, s)}
+		|_e
+		\cdot
+		t\upsilon
+	\Big)
+	\Big|_{t=0}
+	&=
+	\Tt R_{h_{\xi, \upsilon}(0, s)}
+	|_e
+	\cdot
+	\upsilon
+	= \upsilon
+\end{align*}
+und
+\begin{align*}
+	\Ad(\exp(-s\xi))\cdot\xi
+	&= \exp(\ad(-s\xi))\cdot\xi
+	= \xi
+\end{align*}
+erhalten wir 
+\begin{align*}
+	\frac{\partial}{\partial s}
+	\dot{h}_{\xi, \upsilon}(0, s)	
+	&=
+	\upsilon +
+	\frac{\dt}{\dt t}		
+	\Big(
+		\Tt R_{h_{\xi, \upsilon}(t, s)}
+		|_e -
+		\Tt L_{h_{\xi, \upsilon}(t, s)}
+		|_{e}
+	\Big)
+	\Big|_{t=0}
+	\cdot\xi
+	\ .
+\end{align*}
+Mit
+\begin{align*}
+	\big(
+	\Tt R_{h_{\xi, \upsilon}(t, s)}
+	|_e -
+	\Tt L_{h_{\xi, \upsilon}(t, s)}
+	|_{e}
+	\big)\big|_{t=0}
+	&= 0
+\end{align*}
+sowie $\Tt L_{h_{\xi, \upsilon}(0, s)^{-1}}|_{h_{\xi, \upsilon}(0, s)}=\mathrm{id}$ (was trivial ist) folgt
+\begin{align*}
+	&\frac{\dt}{\dt t}	
+	\Big(
+		\Tt R_{h_{\xi, \upsilon}(t, s)}
+		|_e -
+		\Tt L_{h_{\xi, \upsilon}(t, s)}
+		|_{e}	
+	\Big)	
+	\Big|_{t=0}
+	\nonumber\\
+	&=
+	\frac{\dt}{\dt t}
+	\big(
+		\Tt L_{h_{\xi, \upsilon}(t, s)^{-1}}
+		|_{h_{\xi, \upsilon}(t, s)} \cdot
+		\Tt R_{h_{\xi, \upsilon}(t, s)}
+		|_e -
+		\mathrm{id}	
+	\big)
+	\Big|_{t=0}
+	\nonumber\\
+	&=
+	\frac{\dt}{\dt t}
+		\Ad(h_{\xi, \upsilon}(t, s)^{-1})
+	\Big|_{t=0}
+	= \ad(-\dot{h}_{\xi, \upsilon}(0, s))
+	\ .
+\end{align*}
+Zusammengefasst erhalten wir
+\begin{align*}
+	\frac{\partial}{\partial s}
+	\dot{h}_{\xi, \upsilon}(0, s)
+	&=
+	\ad(-\dot{h}_{\xi, \upsilon}(0, s))\cdot\xi + \upsilon
+	= \ad(\xi)\cdot\dot{h}_{\xi, \upsilon}(0, s) + \upsilon
+	\ .
+\end{align*}
+Dies ist eine gewöhnliche Diffenzialgleichung für $\dot{h}_{\xi, \upsilon}(0, s)$ auf dem endlichdimensionalen Vektorraum $\mathfrak{g}$.
+Mit dem Anfangswert $\dot{h}_{\xi, \upsilon}(0, 0)=0$ finden wir
+\begin{align*}
+	\dot{h}_{\xi, \upsilon}(0, s)
+	&=
+	\int_0^s
+	\exp((s-s')\,\ad(\xi))\cdot{\upsilon}
+	\ \dt s'
+\end{align*}
+und mit $\dot{h}_{\xi, \upsilon}(0, 1)=\Dt\exp|_{\xi}\cdot\upsilon$ schließlich
+\begin{empheq}[box=\resultbox]{align}
+	\Dt\exp|_{\xi}
+	&= E(\ad(\xi))
+	\ ,
+\end{empheq}
+wobei
+\begin{align}
+	E(x) &:=
+	\int_0^1
+	\mathrm{e}^{(1-s')x}\ \dt s'
+	= \frac{\mathrm{e}^x-1}{x}
+	= 1 + \frac{1}{2}x + \frac{1}{6}x^2 + \ldots
+	\ .
+\end{align}
+
+\section{Zusammenhänge auf Lie-Gruppen}
+
+\subsection{Flacher Zusammenhang}
+
+\subsection{Lie-Gruppen als riemannsche Mannigfaltigkeiten}
+
+\subsection{Liesche und riemannsche Exponentialabbildungen}
+
+\section{Anwendung in der Navigation}
+
+
+
+
+\begin{thebibliography}{9}
+
+\bibitem{Gallot2005}
+Sylvestre Gallot, Dominique Hulin, Jacques Lafontaine:
+\textit{Riemannian Geometry}.
+3rd Edition, Universitext, Springer, Berlin/Heidelberg, 2005.
+
+\bibitem{StorchWiebe2005}
+Uwe Storch, Hartmut Wiebe:
+\textit{Lehrbuch der Mathematik, Band 4: Analysis auf Mannigfaltigkeiten -- Funktionentheorie -- Funktionalanalysis}.
+Spektrum Akademischer Verlag, Heidelberg, 2005.
+
+\end{thebibliography}
+
+
+
+\end{document}
