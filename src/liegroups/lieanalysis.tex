@@ -70,10 +70,14 @@
 \maketitle
 
 Dieser Aufsatz diskutiert auf einführender Weise Aspekte der Analysis und Zusammenhangstheorie auf Lie-Gruppen.
-Motivation ist dabei, im Kontext der Navigation zu klären, welcher Zusammenhang den Transport von Fehlervektoren bzw. Kovarianzen der Lage geometrisch adäquat beschreibt.
+Die ursprüngliche Motivation ist dabei gewesen, im Kontext der Navigation zu klären, welcher Zusammenhang den Transport von Fehlervektoren und Kovarianzen für die Raumlage geometrisch adäquat beschreibt.
+Im Vergleich zu dieser doch überschaubaren Motivation ist der Aufsatz recht lang geworden, zum Einen da er keine Lücken lassen wollte und da er zum Anderen auch den einen oder anderen Abstecher mitnahm.
 
-Es ist dem Autoren dabei ein Anliegen, die Notation möglichst transparent zu halten --- zum Beispiel in Bezug auf die Verwendung der Klammer $[-,-]$,
-die in der differenzialgeometrischen Literatur etwa sowohl für Ableitungen als auch für die algebraische Lie-Klammer verwendet wird.
+Es wird vorausgesetzt, dass der Leser mit dem Begriff der Lie-Gruppe und allgemeiner dem Mannigfaltigkeitsbegriff vertraut ist.
+Darüber hinaus wird eine grundlegende Vertrautheit grundlegender Konzepte der Differenzialgeometrie vorausgesetzt, wie sie am Ende des mathematischen Grundstudiums in der Regel vorliegen.
+
+Es ist dem Autor dabei ein Anliegen, die Notation möglichst transparent zu halten. Beispielsweise wird in der differenzialgeometrischen Literatur häufig die gleiche $[-,-]$-Notation sowohl für Ableitungen als auch für die algebraische Lie-Klammer verwendet, was hier vermieden werden soll.
+Auch ist es Intention, miteinander identifizierbare, jedoch nicht gleiche Räume in der Notation sauber zu unterscheiden und die entsprechenden Transformationen stets explizit mitzuführen.
 
 \section{Differenzialrechnung auf Lie-Gruppen}
 
@@ -96,7 +100,8 @@ wobei
 \end{align}
 die Rechtsmultiplikation und $\Tt R_g|_h: \Tt_hG\rightarrow\Tt_{hg}G$ ihre Ableitung bezeichnen.\footnote{
 Für (koordinatenfrei geschriebene) Ableitungen auf Mannigfaltigkeiten verwenden wir, dem Lehrbuch \cite{StorchWiebe2005} folgend, das Symbol $\Tt$.
-Das Symbol $\Dt$ beschränken wir auf Ableitungen von Abbildungen zwischen Vektorräumen, wozu insbesondere auch $\mathfrak{g}=\Tt_eG$ gehört.
+Das Symbol $\Dt$ beschränken wir auf Ableitungen von Abbildungen in Vektorräume, in denen Vektoren nach Wahl einer Basis einfach komponentenweise abgeleitet werden.
+Dazu gehört insbesondere auch $\mathfrak{g}=\Tt_eG$.
 }
 
 Im Folgenden nennen wir den Tangentialraum $\Tt_eG$ am neutralen Element
@@ -106,13 +111,25 @@ Im Folgenden nennen wir den Tangentialraum $\Tt_eG$ am neutralen Element
 \end{empheq}
 Das praktische Rechnen mit Tangentialvektoren wird ausschließlich in $\mathfrak{g}$ erfolgen,
 wobei wir jedoch in Formeln und Herleitungen transparent zwischen $\mathfrak{g}$ und einem durch $\mathfrak{g}$ repräsentierten Tangentialraum $\Tt_gG$ unterscheiden wollen.
+Über den Bündeldiffeomorphismus
+\begin{empheq}[box=\definitionbox]{align}
+\label{eq:Psi1}
+	\Psi_1: G\times\mathfrak{g} 
+	&\rightarrow\Tt G
+	\ ,\nonumber\\
+	(g, \xi)
+	&\mapsto \Tt R_g|_e\cdot\xi
+	\in \Tt_gG
+\end{empheq}
+formalisieren wir die Parallelisierung des Tangentialbündels $\Tt G$.
 
-Sei umgekehrt $\xi\in\Tt_eG$ ein am neutralen Element angehefteter Tangentialvektor.
-Über die Rechtsmultiplikation definieren wir das \mydef{rechtsinvariante} Vektorfeld
+Sei $\xi\in\mathfrak{g}=\Tt_eG$ ein am neutralen Element angehefteter Tangentialvektor.
+Durch die Abbildung $\Tt R_g|e:\mathfrak{g}\rightarrow\Tt_gG$ 
+Über $\Psi_1$ definieren wir das rechtsinvariante Vektorfeld
 \begin{align}
 	X_\xi: G &\rightarrow \Tt G
 	\ ,\nonumber\\
-	g &\mapsto \Tt R_g|_e\cdot\xi \in\Tt_g G
+	g &\mapsto \Psi_1(g, \xi)\in\Tt_g G
 	\ .
 \end{align}
 Ein Vektorfeld $X$ nennen wir genau dann \mydef{rechtsinvariant}, wenn
@@ -120,7 +137,7 @@ Ein Vektorfeld $X$ nennen wir genau dann \mydef{rechtsinvariant}, wenn
 	X|_{hg} &= \Tt R_g|_h\cdot X|_{h}
 \end{align}
 für alle $g\in G$ gilt.
-Ein rechtsinvariantes Vektorfeld~$X$ ist über seinen Wert $X|_e$ am neutralen Element offenbar eindeutig bestimmt und kann daher mit dem Tangentialvektor $\xi=X|_e\in\Tt_eG$ identifiziert werden.
+Ein rechtsinvariantes Vektorfeld~$X$ ist über seinen Wert $X|_e$ am neutralen Element eindeutig bestimmt und kann daher mit dem Tangentialvektor $\xi=X|_e\in\mathfrak{g}$ identifiziert werden.
 
 \subsection{Differenziation auf Lie-Gruppen}
 
@@ -230,7 +247,7 @@ wobei
 	\ ,\nonumber\\
 	g &\mapsto
 	\Tt
-	(R_{g^{-1}}L_g)|_e
+	(R_{g^{-1}}\circ L_g)|_e
 \end{empheq}
 die \mydef{adjungierte Darstellung} von $G$ bezeichnet.
 
@@ -272,7 +289,15 @@ Für $g\in G$ in $\xi_g\in\Tt_gG$ gilt dann nach der Kettenregel
 	+ \Tt L_{g^{-1}}|_g\cdot \xi_g
 	\ .
 \end{align*}
-Folglich finden wir mit $\xi_g=\Tt R_g|_e\cdot \xi$ für die Ableitung $\Dt\,\mathrm{inv}|_{g}:\mathfrak{g}\rightarrow\mathfrak{g}$
+Damit ist einerseits
+\begin{empheq}[box=\resultbox]{align}
+	\Tt\,\mathrm{inv}|_{g}
+	&= -\Tt (R_{g^{-1}}\circ L_{g^{-1}})|_g
+\end{empheq}
+für die Ableitung der Inversen 
+$\Tt\,\mathrm{inv}|_{g}:\Tt_gG\rightarrow\Tt_{g^{-1}}G$.
+
+Andererseits finden wir mit $\xi_g=\Tt R_g|_e\cdot \xi$ für die Ableitung $\Dt\,\mathrm{inv}|_{g}:\mathfrak{g}\rightarrow\mathfrak{g}$
 \begin{align*}
 	\Dt\,\mathrm{inv}|_{g} \cdot \xi
 	&= -\Tt L_{g^{-1}}|_g\cdot \Tt R_g|_e \cdot \xi
@@ -306,7 +331,7 @@ Mit $F$ können wir $X$ als \mydef{Push-Forward}  auf $N$ transportieren,
 
 \subsubsection{Fluss eines Vektorfelds}
 
-Integralkurven $t\mapsto\gamma(t)\in M$ zu einem Vektorfeld~$X$ sind Kurven, deren Geschwindigkeiten durch Vektorfeld gegeben sind,
+Integralkurven $t\mapsto\gamma(t)\in M$ zu einem Vektorfeld~$X$ sind Kurven, deren Geschwindigkeiten an einem Ort durch das dortige Vektorfeld gegeben sind,
 \begin{align*}
 	\dot{\gamma}(t) &= X|_{\gamma(t)}
 	\ .
@@ -324,7 +349,7 @@ mit
 wohldefiniert und glatt ist.
 Die Kurve $t\mapsto\Phi_X(t; p)$ ist für $p$ fix die eindeutige Integralkurve durch $p$.
 
-Der Fluss $\Phi_X$ des (zeitunabhängigen!) Vektorfelds~$X$ erfüllt offenbar die \mydef{Halbgruppeneigenschaft} im Sinne von
+Der Fluss $\Phi_X$ des (zeitunabhängigen) Vektorfelds~$X$ erfüllt offenbar die \mydef{Halbgruppeneigenschaft} im Sinne von
 \begin{align}
 	\Phi_X(t_1 + t_2; -)
 	&= \Phi_X(t_2; \Phi_X(t_1; -))
@@ -469,7 +494,7 @@ Um die algebraische Lie-Klammer auf $\mathfrak{g}$ von der differenziellen Lie-K
 $[-,-]_\mathfrak{g}$ ist eine bilineare Abbildung auf $\mathfrak{g}$ mit Werten in $\mathfrak{g}$.
 
 Sei speziell $\xi_1,\ldots,\xi_n$ eine Basis von $\mathfrak{g}$.
-Dann lässt sich schreiben
+Dann gibt es eine Darstellung
 \begin{align}
 	[\xi_i,\xi_j]_\mathfrak{g}
 	&= \sum_{k=1}^n f^k_{ij} \xi_k
@@ -561,13 +586,12 @@ Da $L_{\gamma(t)}=\Phi_{X_\xi}(t;-)$, folgt
 	[X_\xi,Y_\upsilon] = [\xi, \upsilon]_\mathfrak{g}
 	\ .
 \end{align*}
-$\ad(\xi)$ ist also der durch
+$\ad(\xi)$ ist also die durch
 \begin{empheq}[box=\resultbox]{align}
 	\ad(\xi): \upsilon\mapsto[\xi,\upsilon]_\mathfrak{g}
 \end{empheq}
-gegebene Endomorphismus auf~$\mathfrak{g}$.
-
-Mit der Jacobi-Identität auf $\mathfrak{g}$ folgt durch
+gegebene Derivation auf~$\mathfrak{g}$.
+Mit der Jacobi-Identität auf $\mathfrak{g}$ folgt nämlich durch
 \begin{align*}
 	\ad([\xi_1,\xi_2])
 	&= [[\xi_1,\xi_2], -]
@@ -622,7 +646,7 @@ gegeben.
 
 \subsubsection{Eigenschaften der Exponentialabbildung}
 
-Wir notieren in diesem Abschnitt einige anaytischen und algebraischen Eigenschaften der Exponentialabbildung.
+Wir notieren in diesem Abschnitt einige analytische und algebraische Eigenschaften der Exponentialabbildung.
 
 \paragraph{Einparametergruppe.}
 Die Abbildung $t\mapsto\exp(t\xi)$ für festes $\xi\in\mathfrak{g}$ ist ein Gruppenhomomorphismus $(\mathbb{R},+)\rightarrow G$.
@@ -707,7 +731,7 @@ Dass sie übereinstimmen, dass also
 \end{empheq}
 ist, soll hier gezeigt werden.
 
-Sei dazu $\xi\in\mathfrak{\xi}$ beliebig.
+Sei dazu $\xi\in\mathfrak{g}$ beliebig.
 Wir betrachten zwei Kurven in $\mathrm{GL}(\mathfrak{g})$,
 \begin{align*}
 	\Gamma_1: t&\mapsto \exp(t\,\ad(\xi))
@@ -978,9 +1002,704 @@ wobei
 	\ .
 \end{align}
 
+\newpage
+
 \section{Zusammenhänge auf Lie-Gruppen}
 
-\subsection{Flacher Zusammenhang}
+Dieser Teil ist der Diskussion von Zusammenhängen auf Lie-Gruppen gewidmet,
+die aus Sicht mancher Anwendung, insbesondere der Navigation, interessant sind.
+Ein allgemeiner Überblick über Zusammenhänge auf Lie-Gruppen ist nicht Ziel.
+Auch beschränken wir uns im Detail auf affine Zusammenhänge auf dem (parallelisierten) Tangentialbündel.
+
+\subsection{Parallelisierung von $\Tt G$ und $\Tt\Tt G$}
+
+\subsubsection{$\Tt G$ als Lie-Gruppe}
+
+Das Tangentialbündel $\Tt G$ einer Lie-Gruppe~$G$ ist vermöge der Multiplikation
+\begin{align}
+	\mathrm{mult}_{\Tt G}:
+	\Tt G\times\Tt G 
+	&\rightarrow \Tt G
+	\ ,\nonumber\\
+	(\xi_g, \upsilon_h)
+	&\mapsto
+	\Tt\,\mathrm{mult}|_{(g,h)}
+	\cdot
+	(\xi_g, \upsilon_h)
+\end{align}
+und Inversenbildung
+\begin{align}
+	\mathrm{inv}_{\Tt G}:
+	\Tt G
+	&\rightarrow \Tt G
+	\ ,\nonumber\\
+	\xi_g
+	&\mapsto
+	\Tt\,\mathrm{inv}|_{g}
+	\cdot
+	\xi_g
+\end{align}
+selbst eine Lie-Gruppe.
+Dabei ist der Nullvektor $0_e=0\in\Tt_eG=\mathfrak{g}$ am neutralen Element von $G$ das neutrale Element von $\Tt G$.
+
+Die Abbildung $\Psi_1^{-1}:\xi_g\mapsto\Tt R_{g^{-1}}|_g\cdot \xi_g$, vgl. Gl.~(\ref{eq:Psi1}), definiert den Diffeomorphimus $\Tt G\rightarrow G\times\mathfrak{g}$, den wir zur Parallelisierung von $G$ verwenden.
+Über diesen transportieren wir die Lie-Gruppenstruktur auf $G\times\mathfrak{g}$ und finden mit
+\begin{align*}
+	&\Tt R_{(gh)^{-1}}|_{gh}
+	\cdot
+	\Tt\mathrm{mult}|_{(g,h)}
+	\cdot
+	\begin{pmatrix}
+		\Tt R_g|_e\cdot \xi \\
+		\Tt R_h|_e\cdot \upsilon
+	\end{pmatrix}
+	\nonumber\\
+	&=
+	\Tt(R_{(gh)^{-1}}\circ R_h\circ R_g)|_e\cdot\xi
+	+
+	\Tt(R_{(gh)^{-1}}\circ L_g\circ R_h)|_e\cdot\xi
+	\nonumber\\
+	&= \xi + \Ad(g)\cdot\upsilon 
+\end{align*}
+für die Multiplikation
+\begin{align}
+	\mathrm{mult}_{G\ltimes_{\Ad}\mathfrak{g}}:
+	(G\times\mathfrak{g})\times(G\times\mathfrak{g})
+	&\rightarrow G\times\mathfrak{g}
+	\nonumber\\
+	((g,\xi), (h,\upsilon))
+	&\mapsto
+	(gh, \xi + \Ad(g)\cdot\upsilon)
+	\ .
+\end{align}
+Die Lie-Gruppenstruktur ist damit jene des semidirekten Produkts
+$G\ltimes_{\Ad}\mathfrak{g}$ mittels des Homomorphismus $\Ad:G\rightarrow\mathrm{GL}(\mathfrak{g})$.
+Ihr neutrales Element ist $(e,0)$, 
+das inverse Element zu $(g,\xi)$ ist offenbar $(g^{-1},-\Ad(g^{-1})\cdot\xi)$.
+
+Die Abbildung~$\Psi_1:G\ltimes_{\Ad}\mathfrak{g}\rightarrow\Tt G$ ist somit nach Konstruktion ein Lie-Gruppen\-isomorphismus.
+
+\subsubsection{Lie-Algebra von $\Tt G$}
+
+Vermöge $\Psi_1$ können wir die Lie-Algebrastruktur von $\Tt G$ statt auf $\Tt G$ im semidirekten Produkt $G\ltimes_{\Ad}\mathfrak{g}$ studieren.
+Dazu führen wir zunächst die Rechtsmultiplikation\footnote{
+	Für die Rechtsmultiplikation auf $G\ltimes_{\Ad}\mathfrak{g}$ und später auch $\Tt G$ verwenden wir ebenfalls das Symbol ``$R$''.
+	Durch das Argument im Index, hier $(g,\xi)$, sollte aber jeweils klar sein, in welchem Raum $R$ operiert.
+}
+ein.
+Sei dazu $(g,\xi)\in G\ltimes_{\Ad}\mathfrak{g}$ und
+\begin{align}
+	R_{(g,\xi)}=\mathrm{mult}_{G\ltimes_{\Ad}\mathfrak{g}}
+	(-, (g,\xi)):
+	G\ltimes_{\Ad}\mathfrak{g} &\rightarrow G\ltimes_{\Ad}\mathfrak{g}
+	\ .
+\end{align}
+Sei $\Xi|_{(e,0)}=(\Xi_1, \Xi_2)\in\mathfrak{g}\times\mathfrak{g}$ und sei $\Gamma=(\Gamma_1,\Gamma_2):(-\varepsilon,\varepsilon)\rightarrow G\ltimes_{\Ad}\mathfrak{g}$ eine Kurve mit $\Gamma_1(0)=h$, $\Gamma_2(0)=\upsilon$, $\dot{\Gamma}_1(0)=\Tt R_h|_e\cdot\Xi_1$ und $\dot{\Gamma}_2(0)=\Xi_2$.
+Dann ist
+\begin{align*}
+	\frac{\dt}{\dt t}
+	\big(
+		R_{(g,\xi)}\cdot\Gamma(t)
+	\big)
+	\Big|_{t=0}
+	&=
+	\frac{\dt}{\dt t}
+	\begin{pmatrix}
+		\Gamma_1(t)\,g \\
+		\Gamma_2(t) + \Ad(\Gamma_1(t))\cdot\xi
+	\end{pmatrix}
+	\Big|_{t=0}
+	\nonumber\\
+	&=
+	\begin{pmatrix}
+		\Tt R_g|_h\cdot\Tt R_h|_e\cdot\Xi_1 \\
+		\Xi_2 + \Dt_{\Xi_1}\Ad|_{h}\cdot\xi
+	\end{pmatrix}
+	\ .
+\end{align*}
+Durch Auswerten bei $(h,\upsilon)=(e,0)$ finden wir für das durch $\Xi|_{(e,0)}$ definierte rechtsinvariante Feld $\Xi$ somit
+\begin{empheq}[box=\resultbox]{align}
+	\Xi|_{(g,\xi)}
+	&=
+	\Tt R_{(g,\xi)}|_{(e,0)}
+	\cdot
+	\Xi|_{(e,0)}
+	=
+	\begin{pmatrix}
+		\Tt R_g|_e\cdot\Xi_1 \\
+		\Xi_2 + \ad(\Xi_1)\cdot\xi
+	\end{pmatrix}
+	\in
+	\Tt_gG\times\mathfrak{g}
+	\ ,
+\end{empheq}
+wobei $\Tt_\xi\mathfrak{g}$ und $\mathfrak{g}$ miteinander identifiziert werden.
+
+Für die Linksmultiplikation finden wir analog das Differenzial
+\begin{align*}
+	\Tt L_{(g,\xi)}|_{(h,\upsilon)}
+	\cdot
+	\dot{\Gamma}(0)
+	&=
+	\frac{\dt}{\dt t}
+	\big(
+		L_{(g,\xi)}\cdot\Gamma(t)
+	\big)
+	\Big|_{t=0}
+	=
+	\frac{\dt}{\dt t}
+	\begin{pmatrix}
+		g\,\Gamma_1(t) \\
+		\xi + \Ad(g)\cdot\Gamma_2(t)
+	\end{pmatrix}
+	\Big|_{t=0}
+	\nonumber\\
+	&=	
+	\begin{pmatrix}
+		\Tt L_g|_h\cdot\dot{\Gamma}_1(0) \\
+		\Ad(g)\cdot{\Gamma}_2(0)
+	\end{pmatrix}
+	\ ,
+\end{align*}
+also $\Tt L_{(g,\xi)}|_{(h,\upsilon)}=\Tt L_g|_h\oplus\Ad(g)$.
+
+Sei im Folgenden $\Gamma$ eine \emph{Integralkurve} zum rechtsinvarianten Vektorfeld $\Xi$, also $\dot{\Gamma}(t)=\Xi|_{\Gamma(t)}$, 
+mit $\Gamma(0)=(e,0)$
+Sei ferner $\Upsilon$ ein weiteres durch $\Upsilon|_{(e,0)}=(\Upsilon_1, \Upsilon_2)\in\mathfrak{g}\times\mathfrak{g}$ definiertes rechtsinvariantes Vektorfeld.
+Damit berechnen wir die Lie-Klammer gemäß
+\begin{align*}
+	\big[
+		\Xi|_{(e,0},\Upsilon|_{(e,0}
+	\big]^{\mathfrak{g}\times\mathfrak{g}}
+	&= 
+	\frac{\dt}{\dt t}
+	\big(
+		[L_{\Gamma(t)}]_*
+		\Psi
+	\big)|_{(e,0)}
+	\Big|_{t=0}
+	\ .
+\end{align*}
+Mit
+\begin{align*}
+	\big(
+		[L_{\Gamma(t)}]_*
+		\Psi
+	\big)|_{(e,0)}
+	&=
+	\Tt	L_{\Gamma(t)}|_{\Gamma(t)^{-1}}
+	\cdot
+	\Tt R_{\Gamma(t)^{-1}}|_{(e,0)}
+	\cdot
+	\begin{pmatrix}
+		\Upsilon_1 \\ \Upsilon_2
+	\end{pmatrix}
+	\nonumber\\
+	&=
+	\begin{pmatrix}
+		\Ad(\Gamma_1(t))
+		\cdot\Upsilon_1
+		\\
+		\Ad(\Gamma_1(t))\cdot\Upsilon_2
+		-
+		\Ad(\Gamma_1(t))
+		\cdot\ad(\Upsilon_1)
+		\cdot\Ad(\Gamma_1(t))^{-1}
+		\cdot\Gamma_2(t)
+	\end{pmatrix}
+\end{align*}
+finden wir schließlich
+\begin{empheq}[box=\resultbox]{align}
+	\Big[
+		\begin{pmatrix}
+			\Xi_1 \\ \Xi_2
+		\end{pmatrix}
+		,
+		\begin{pmatrix}
+			\Upsilon_1 \\ \Upsilon_2
+		\end{pmatrix}
+	\Big]^{\mathfrak{g}\times\mathfrak{g}}
+	&=
+	\begin{pmatrix}
+		 \ad(\Xi_1)\cdot\Upsilon_1
+		 \\
+		 \ad(\Xi_1)\cdot\Upsilon_2
+		 -
+ 		 \ad(\Upsilon_1)\cdot\Xi_2
+	\end{pmatrix}	
+	\nonumber\\
+	&=
+	\begin{pmatrix}
+		[\Xi_1,\Upsilon_1]^\mathfrak{g}
+		 \\
+		 [\Xi_1,\Upsilon_2]^\mathfrak{g}
+		 -
+		 [\Upsilon_1,\Xi_2]^\mathfrak{g}
+	\end{pmatrix}	
+	\ .
+\end{empheq}
+
+\subsubsection{Parallelisierung von $\Tt\Tt G$}
+
+Sei $(h,\upsilon)\in G\times\mathfrak{g}$ und sei $(\Xi_1,\Xi_2)\in \mathfrak{g}\times\mathfrak{g}$.
+Wir betrachten eine glatte Kurve $\Gamma=(\Gamma_1,\Gamma_2):(-\varepsilon,\varepsilon)\rightarrow G\times\mathfrak{g}$ mit Startpunkt $\Gamma(0)=(h,\upsilon)$ und Startgeschwindigkeit $\dot{\Gamma}(0)=(\Tt R_h|_e\cdot\Xi_1,\Xi_2)$.\footnote{
+	Wir identifizieren den Vektorraum $\Tt_\upsilon\mathfrak{g}$ mit dem Vektorraum $\mathfrak{g}$ selbst.
+	--- Für die Kurve können wir beispielsweise $\Gamma(t)=(\exp(t\Xi_1)h,\upsilon + t\Xi_2)$ wählen.
+}
+
+Ableiten der Parallelisierung $\Psi_1:G\times\mathfrak{g}\rightarrow\Tt G$ längs der betrachteten Kurve ergibt
+\begin{align*}
+	\frac{\dt}{\dt t}
+		\Psi_1(\Gamma(t))
+	\Big|_{t=0}
+	&=
+	\Tt\Psi_1
+	\big|_{(h,\upsilon)}
+	\cdot
+	\begin{pmatrix}
+		\Tt R_h|_e\cdot\Xi_1 \\
+		\Xi_2
+	\end{pmatrix}
+	\ ,
+\end{align*}
+was die Abbildung
+\begin{empheq}[box=\definitionbox]{align}
+	\Psi_2:
+	(G\times\mathfrak{g})\times(\mathfrak{g}\times\mathfrak{g})
+	&\rightarrow \Tt\Tt G
+	\ ,\nonumber\\
+	(h,\upsilon\,;\,\Xi_1,\Xi_2)
+	&\mapsto
+	\Tt\Psi_1
+	\big|_{(h,\upsilon)}
+	\cdot
+	\begin{pmatrix}
+		\Tt R_h|_e\cdot\Xi_1 \\
+		\Xi_2
+	\end{pmatrix}	
+\end{empheq}
+motiviert.
+$\Psi_2$ ist konstruktionsbedingt offenbar ein Diffeomorphismus.
+
+Sei
+\begin{empheq}[box=\definitionbox]{align}
+	\psi_2=\Psi_2(e,0;-,-): \mathfrak{g}\times\mathfrak{g}
+	&\rightarrow \Tt_{0_e}\Tt G
+	\ .
+\end{empheq}
+Die Abbildung $\psi_2$ ist ein Lie-Algebraisomorphismus, wenn $\mathfrak{g}\times\mathfrak{g}$ die Lie-Klammer $[-,-]^{\mathfrak{g}\times\mathfrak{g}}$ trägt. 
+Wegen $\Psi_2(e, 0;\Xi_1,\Xi_2)=\Tt\Psi_1|_{(e,0)}\cdot(\Xi_1,\Xi_2)$ ist nämlich
+\begin{empheq}[box=\resultbox]{align}
+	\psi_2
+	&= \Tt\Psi_1
+	\big|_{(e,0)}
+\end{empheq}
+und $\Psi_1$ ein Lie-Gruppenisomorphimus.
+
+Die Abbildung~$\Psi_2$ lässt sich aus $\psi_2$ mit Hilfe der Rechtsmultiplikation auf $\Tt G$,
+\begin{align}
+	R_{\upsilon_h}:
+	\Tt G &\rightarrow \Tt G
+	\ ,\nonumber\\
+	\xi_g
+	&\mapsto 
+	\mathrm{mult}_{\Tt G}(\xi_g, \upsilon_h)
+	\ ,
+\end{align}
+wobei $\upsilon_h\in\Tt_hG$ und $\xi_g\in\Tt_gG$, rekonstruieren.
+
+Wir beobachten zunächst, dass
+\begin{align*}
+	R_{\upsilon_h}\Psi_1(g, \xi)
+	&= \xi_g\upsilon_h
+	= \Psi_1(gh, \xi + \Ad(g)\cdot\upsilon)
+\end{align*}
+ist.
+Sei $\Gamma=(\Gamma_1,\Gamma_2):(-\varepsilon,\varepsilon)\rightarrow G\ltimes_{\Ad}\mathfrak{g}$ eine Kurve mit $\Gamma(0)=(e,0)$ und $\dot{\Gamma}(0)=(\Xi_1,\Xi_2)$.
+Wir finden einerseits
+\begin{align*}
+	\frac{\dt}{\dt t}
+		R_{\upsilon_h}\Psi_1(\Gamma(t))
+	\Big|_{t=0}
+	&=
+	\Tt R_{\upsilon_h}|_{(e,0)}
+	\cdot
+	\Psi_2(e,0\,;\, \Xi_1, \Xi_2)
+	\ ,
+\end{align*}
+andererseits
+\begin{align*}
+	\frac{\dt}{\dt t}
+		\Psi_1(
+			\Gamma_1(t)\,h, 
+			\Gamma_2(t) + \Ad(\Gamma_1(t))\cdot\upsilon
+		)
+	\Big|_{t=0}
+	&=
+	\Tt\Psi_1
+	\big|_{(h,\upsilon)}
+	\cdot
+	\begin{pmatrix}
+		\Tt R_h|_e\cdot\Xi_1 \\
+		\Xi_2
+		+ \ad(\Xi_1)\cdot\upsilon
+	\end{pmatrix}
+	\nonumber\\
+	&=
+	\Psi_2(
+		h, \upsilon
+		\,;\,
+		\Xi_1, \Xi_2 + \ad(\Xi_1)\cdot\upsilon
+	)
+	\ .
+\end{align*}
+Zusammengefasst finden wir
+\begin{empheq}[box=\resultbox]{align}
+	\Psi_2(
+		h, \upsilon
+		\,;\,
+		\Xi_1, \Xi_2
+	)
+	&=
+	\Tt R_{\upsilon_h}|_{(e,0)}
+	\cdot
+	\psi_2(
+		\Xi_1, \Xi_2 - \ad(\Xi_1)\cdot\upsilon
+	)
+	\ .
+\end{empheq}
+
+
+\subsection{Zusammenhänge auf $G$}
+
+\subsubsection{Vertikalraum}
+
+In der Parallelisierung $(G\times\mathfrak{g})\times(\mathfrak{g}\times\mathfrak{g})$ können der zweite und vierte Faktor, wie bereits zuvor getan, identifiziert werden.
+In der Tat ist der vierte Faktor der trivial parallelisierte Tangentialraum an einem Punkt~$\upsilon$ des zweiten Faktors, eines Vektorraums.\footnote{
+	Formal kann etwa die Kurve 
+\begin{align*}
+	H=(H_1,H_2): \mathbb{R} &\rightarrow G\times\mathfrak{g}
+	\ ,\nonumber\\
+	t&\mapsto(g, t\zeta)
+\end{align*}
+betrachtet werden.
+Sie identifiziert $H(1)=(g,\zeta)\in G\times\mathfrak{g}$ und $\dot{H}(0)=(0,\zeta)\in\mathfrak{g}\times\mathfrak{g}$ miteinander.
+In praktischen Rechnungen werden Vektoren (bei gleicher Basis) einfach miteinander verrechnet.
+}
+
+Sei $\Gamma=(\Gamma_1,\Gamma_2):(-\varepsilon,\varepsilon)\rightarrow G\times\mathfrak{g}$ wieder eine Kurve mit mit Startpunkt $\Gamma(0)=(h,\upsilon)$ und Startgeschwindigkeit $\dot{\Gamma}(0)=(\Tt R_h|_e\cdot\Xi_1,\Xi_2)$.
+Mit $\pi$ bezeichnen wir die Bündelprojektion $\Tt G\rightarrow G$ und betrachten die Komposition
+\begin{center}
+\begin{tikzcd}
+\Pi:\ 
+(-\varepsilon,\varepsilon)
+\arrow{r}{\Gamma}
+& G\times\mathfrak{g}
+\arrow{r}{\Psi_1}
+& \Tt G
+\arrow{r}{\pi}
+& G
+\ .
+\end{tikzcd}
+\end{center}
+Offenbar ist $\Pi(t)=\Gamma_1(t)$ und damit
+\begin{align*}
+	\dot{\Pi}(0)
+	&= \Psi_1(h,\Xi_1)
+	\ .
+\end{align*}
+Andererseits ist nach der Kettenregel
+\begin{align*}
+	\dot{\Pi}(0)
+	&= 
+	\Tt\pi
+	\big|_{\Psi_1(h,\upsilon)}
+	\cdot
+	\Tt\Psi_1
+	\big|_{(h,\upsilon)}
+	\cdot
+	\dot{\Gamma}(0)
+	= \Tt\pi
+	\big|_{\Psi_1(h,\upsilon)}
+	\cdot
+	\Psi_2(h,\upsilon\,;\,\Xi_1,\Xi_2)
+	\ .
+\end{align*}
+Wir finden somit für die Ableitung der Bündelprojektion die Formel
+\begin{empheq}[box=\resultbox]{align}
+	\Psi_1^{-1}\circ\Tt\pi\circ\Psi_2:
+	(h,\upsilon\,;\,\Xi_1,\Xi_2) \mapsto (h,\Xi_1)
+	\ .
+\end{empheq}
+Für festes $(h,\upsilon)$ ist damit der Kern von $\Psi_1^{-1}\circ\Tt\pi\circ\Psi_2$ der zweite Faktor in $\mathfrak{g}\times\mathfrak{g}=\psi_2^{-1}(\Tt_{e,0}\Tt G)$.
+Somit beschreibt das (triviale) Unterbündel $(G\times\mathfrak{g})\times(\{0\}\times\mathfrak{g})$ von $(G\times\mathfrak{g})\times(\mathfrak{g}\times\mathfrak{g})$ in der durch $\Psi_1$ und $\Psi_2$ gegebenen Parallelisierung den \mydef{Vertikalraum} über $\Tt G$ bezüglich der Submersion~$\pi$.
+
+Vektoren im Vertikalraum lassen sich, wie eingangs erwähnt, unmittelbar im Vektorraum $\mathfrak{g}=\Tt_eG$ verrechnen.
+Um einem Tangentialvektor $\psi_2(\Xi_1,\Xi_2)\in\Tt_{(e,0)}\Tt G$ im Tangentialraum $\Tt_eG$ ``wiederzuverwerten'', ist also eine Projektion auf den Vertikalraum festzulegen.
+
+\subsubsection{Ableitung von Vektorfeldern}
+
+Ein Vektorfeld $Y$ auf einer Lie-Gruppe $G$ ist ein Schnitt im Tangentialbündel, d.~h. eine Abbildung $Y:G\rightarrow\Tt G$ mit der Eigenschaft $\pi\circ Y=\mathrm{id}$.
+Als (glatte) Abbildung zwischen den Mannigfaltigkeiten $G$ und $\Tt G$ besitzt ein Vektorfeld stets die Ableitung
+\begin{align*}
+	\Tt Y: \Tt G\rightarrow \Tt\Tt G
+	\ .
+\end{align*}
+Nützlicher als diese Ableitung sind in der Regel durch Zusammenhänge definierte kovariante Ableitungen, deren Ergebnisse wieder Vektorfelder auf $G$ sind.
+Statt Zusammenhänge direkt durch Rechenvorschriften einzuführen, betrachten wir zunächst die Ableitung $\Tt Y$.
+
+Ein Vektorfeld $Y$ können wir über die Parallelisierung mit einer Abbildung $G\rightarrow\mathfrak{g}$ identifizieren.
+Wir definieren das $Y$ eindeutig zugeordnete \mydef{trivialisierte Feld}
+\begin{empheq}[box=\definitionbox]{align}
+	Y^\mathfrak{g}: 
+	G &\rightarrow \mathfrak{g}
+	\ ,\nonumber\\
+	g &\mapsto 
+	\Tt R_{g^{-1}}|_g \cdot Y|_g
+	\ ,
+\end{empheq}
+wobei der Superskript $\mathfrak{g}$ andeutet, dass $Y^\mathfrak{g}|_h\in\mathfrak{g}$ ist.
+Neben $Y^\mathfrak{g}$ verwenden wir auch den Graphen
+\begin{empheq}[box=\definitionbox]{align}
+	\tilde{Y}^\mathfrak{g}: 
+	G &\rightarrow G\times\mathfrak{g}
+	\ ,\nonumber\\
+	g &\mapsto 
+	(g, Y^\mathfrak{g}|_g)
+	\ .
+\end{empheq}
+
+Sei $\gamma:(-\varepsilon,\varepsilon)\rightarrow$ eine glatte Kurve in $G$ mit $\gamma(0)=g$ und $\dot{\gamma}(0)=\Psi_1(g,\xi)=\Tt R_g|_e\cdot\xi$ mit $g\in G$ und $\xi\in\mathfrak{g}$.
+Wir betrachten die Komposition
+\begin{center}
+\begin{tikzcd}
+Y\circ\gamma:\ 
+(-\varepsilon,\varepsilon)
+\arrow{r}{\gamma}
+& G
+\arrow{r}{\tilde{Y}^\mathfrak{g}}
+& G\times\mathfrak{g}
+\arrow{r}{\Psi_1}
+& \Tt G
+\end{tikzcd}
+\end{center}
+und berechnen
+\begin{align*}
+	\frac{\dt}{\dt t}
+		(Y\circ\gamma)(t)
+	\Big|_{t=0}
+	&=
+	\Tt\Psi_1
+	|_{(g, Y^\mathfrak{g}|_{g})}
+	\cdot
+	\frac{\dt}{\dt t}
+		(\tilde{Y}^\mathfrak{g}
+		\circ\gamma)(t)
+	\Big|_{t=0}
+	\nonumber\\
+	&=
+	\Tt\Psi_1
+	|_{(g, Y^\mathfrak{g}|_{g})}
+	\cdot
+	\begin{pmatrix}
+		\Tt R_g|_e\cdot\xi\\
+		\Dt Y^\mathfrak{g}|_{g}
+		\cdot
+		\Tt R_g|_e\cdot\xi
+	\end{pmatrix}
+	\ .
+\end{align*}
+Durch Vergleich mit
+\begin{align*}
+	\Psi_2(h,\upsilon\,;\,\Xi_1,\Xi_2)
+	&=
+	\Tt\Psi_1
+	\big|_{(h,\upsilon)}
+	\cdot
+	\begin{pmatrix}
+		\Tt R_{h}|_e\cdot\Xi_1 \\
+		\Xi_2
+	\end{pmatrix}		
+\end{align*}
+finden wir in den Trivialisierungen
+\begin{empheq}[box=\resultbox]{align}
+\label{eq:TX}
+	\Psi_2^{-1}\circ\Tt Y|_g\circ\Psi_1(g,-):
+	\mathfrak{g}
+	&\rightarrow
+	(\{g\}\times\{Y^\mathfrak{g}|_{g}\})
+	\times(\mathfrak{g}\times\mathfrak{g})
+	\ ,\nonumber\\
+	\upsilon
+	&\mapsto
+	(
+	g, Y^\mathfrak{g}|_{g}
+	\,;\,
+	\xi,
+	\Dt Y^\mathfrak{g}|_{g}
+	\cdot
+	\Tt R_g|_e\cdot\xi
+	)
+	\ .
+\end{empheq}
+
+\subsubsection{Affine Zusammenhänge}
+
+Um aus Formel (\ref{eq:TX}) eine kovariante Ableitung zu gewinnen, bedarf es lediglich einer Projektion auf den Vertikalraum.
+Die allgemeinste Form eine solchen Projektion lautet
+\begin{align}
+K: (\xi, \Dt Y^\mathfrak{g}|_{g}\cdot\xi)
+	&\mapsto 
+	(0, 
+	\Dt Y^\mathfrak{g}|_{g}\cdot
+	\Tt R_g|_e\cdot\xi
+	+ \kappa(g, Y^\mathfrak{g}|_{g})\cdot\xi
+	)
+	\ .
+\end{align}
+Der \mydef{Konnektor} $K$ mit seiner durch $\kappa(g, Y^\mathfrak{g}|_{g}): \mathfrak{g}\rightarrow\mathfrak{g}$ bestimmten Projektion definiert einen Zusammenhang.
+
+Hängt $\kappa$ für alle $g\in G$ linear von $Y^\mathfrak{g}|_{g}$ ab,
+ist also
+\begin{align}
+	\kappa(g, Y^\mathfrak{g}|_{g})\cdot\xi
+	&= \kappa|_g(Y^\mathfrak{g}|_{g}\otimes\xi)
+\end{align}
+bilinear in $Y^\mathfrak{g}|_{g}$ und $\xi$,
+so definiert $\kappa$ einen \mydef{affinen Zusammenhang} auf $\Tt G$.
+Die Identifizierung $\mathfrak{g}$ und $\Tt_0\mathfrak{g}$ liefert die zugehörige \mydef{kovariante Ableitung}
+\begin{empheq}[box=\definitionbox]{align}	
+	\nabla^\kappa_{\xi_g} Y|_g
+	&=
+	\Psi_1\big(
+		g\,,\  
+		\Dt Y^\mathfrak{g}|_{g}\cdot\xi_g
+		+ \kappa|_g(Y^\mathfrak{g}|_{g}\otimes\Tt R_{g^{-1}}|_g\cdot\xi_g)
+	\big)
+	\nonumber\\
+	&=
+	\Tt R_g|_e\cdot
+	\big(
+		\Dt Y^\mathfrak{g}|_{g}\cdot\xi_g
+		+ \kappa|_g(Y^\mathfrak{g}|_{g}\otimes\Tt R_{g^{-1}}|_g\cdot\xi_g)
+	\big)
+\end{empheq}
+in Richtung des Tangentialvektors $\xi_g\in\Tt_gG$.
+Zum auf diese Weise definierten Begriff der kovarianten Ableitung notieren wie einige Eigenschaften.
+
+\paragraph{Christoffeltensor.}
+Differenzen von linearen Zusammenhängen sind Tensoren.
+Da bereits $\kappa=0$ einen Zusammenhang definiert, den $\nabla^+$-Zusammenhang, kann jeder linear Zusammenhang durch Vorgabe eines $(1,2)$-Christoffel\emph{tensors} $\kappa$ relativ zu $\nabla^+$ ausgedrückt werden.
+
+\paragraph{Linearität.}
+Der Zusammenhang $\nabla^\kappa_{\xi_g} Y|_g$ ist offensichtlich $\mathbb{R}$-linear bezüglich des Vektorfelds $Y$.
+
+Sei $X$ ein weiteres Vektorfeld auf $G$.
+Durch punktweise Auswertung von $X|_g$ wird das Vektorfeld
+\begin{align*}
+	\nabla^\kappa_{X} Y|_g
+\end{align*}
+gewonnen.
+Die Linearität von $\nabla^\kappa$ bezüglich $\xi_g$ in jedem Tangentialraum impliziert, dass die Abhängigkeit von $X$, d.~h. die Richtungsabhängigkeit, $C^\infty$-linear ist.
+
+\paragraph{Leipnizregel.}
+Sei $f:G\rightarrow\mathbb{R}$ eine glatte Funktion.
+Für $\xi_g\in\Tt_gG$ gilt
+\begin{align*}
+	\Dt(f\,Y^\mathfrak{g})|_g\cdot\xi_g
+	&= 
+	(\dt f|_g\cdot\xi_g)\,Y^\mathfrak{g}|_g
+	+  f(g)\,\Dt Y^\mathfrak{g}|_g\cdot\xi_g
+	\ .
+\end{align*}
+Durch Addition des bezüglich $Y^\mathfrak{g}$ $C^\infty$-linearen $\kappa$-Terms verifizieren wir mit $Y_g=\Tt R_g|_e\cdot Y^\mathfrak{g}|_g$ die Leipnizregel
+\begin{empheq}[box=\resultbox]{align}	
+	\nabla^\kappa_{\xi_g} (fY)|_g
+	&= (\dt f|_g\cdot\xi_g)\,Y|_g
+	+ f(g) \nabla^\kappa_{\xi_g} Y)|_g
+	\ .
+\end{empheq}
+
+\subsection{$\nabla^+$-Zusammenhang}
+
+Durch Wahl des Konnektors mit Christoffeltensor $\kappa=0$ wird der Zusammenhang $\nabla^+$ definiert.
+
+\subsubsection{Definition des $\nabla^+$-Zusammenhangs}
+
+Sei $G$ eine Lie-Gruppe und seien $X$ und $Y$ zwei Vektorfelder auf $G$ mit den Trivialisierungen~$X^\mathfrak{g}$ und $Y^\mathfrak{g}$.
+Für $g\in G$ definieren wir den $\mathfrak{g}$-wertigen Ausdruck
+\begin{empheq}[box=\definitionbox]{align}	
+	\nabla^{\mathfrak{g},+}_{X^\mathfrak{g}}\,Y^\mathfrak{g}\big|_g
+	&= \Dt Y^\mathfrak{g}|_g
+	\cdot \Tt R_g|_e 
+	\cdot X^\mathfrak{g}|_g
+	\ .
+\end{empheq}
+Durch anschließenden Rücktransport zu~$g$,
+\begin{empheq}[box=\definitionbox]{align}
+	\nabla^+_{X}\,Y
+	\big|_g
+	&= \Tt R_g|_e
+	\cdot
+	\nabla^{\mathfrak{g},+}_{X^\mathfrak{g}}\,Y^\mathfrak{g}\big|_g
+	\ ,
+\end{empheq}
+wird ein Zusammenhang auf $G$ definiert.
+Er entspricht dem Zusammenhang $\nabla^\kappa$ mit $\kappa=0$ und erfüllt damit alle Voraussetzungen eines affinen Zusammenhangs.
+
+\subsubsection{Eigenschaften des $\nabla^+$-Zusammenhangs}
+
+Der Zusammenhang $\nabla^+$ auf $\Tt G$ mit seiner einfachen Struktur ergibt sich natürlich aus der Lie-Gruppenstruktur von $G$.
+
+\paragraph{Ableitung rechtsinvarianter Vektorfelder.}
+Für ein rechtsinvariantes Vektorfeld~$Y_\upsilon$ mit $Y_\upsilon|_e=\upsilon\in\mathfrak{g}$ ist $Y_\upsilon^\mathfrak{g}=\upsilon$ ein konstantes Feld $G\rightarrow\mathfrak{g}$, so dass die Ableitung $\Dt Y_\upsilon^\mathfrak{g}=0$ ist.
+Es folgt
+\begin{empheq}[box=\resultbox]{align}
+\label{eq:nablaplus_rightinv}
+	\nabla^+_{X}\,Y_\upsilon &= 0
+	\ .
+\end{empheq}
+
+\paragraph{Vektorfelder bezüglich rechtsinvarianter Basis.}
+Sei $\xi_1,\ldots,\xi_n$ eine Basis von $\mathfrak{g}=\Tt_eG$.
+Bezüglich dieser Basis schreiben wir
+\begin{align*}
+	Y^\mathfrak{g}|_g
+	&= \sum_{i=1}^n y_i(g)\,\xi_i
+\end{align*}
+mit glatten Koeffizientenfunktionen $y_i:G\rightarrow\mathbb{R}$.
+
+Mit der Leipnizregel und, da Ableitungen rechtsinvarianter Felder verschwinden, folgt
+\begin{empheq}[box=\resultbox]{align}
+	\nabla^{\mathfrak{g},+}_{X^\mathfrak{g}}\,Y^\mathfrak{g}\big|_g
+	&=
+	\sum_{i=1}^n \dt y_i|_g\cdot X|_g
+	\ .
+\end{empheq}
+Der Zusammenhang $\nabla^{+}$ reduziert sich also auf die Richtungsableitungen bezüglich der Komponentenfunktionen~$y_i$.
+
+\paragraph{Torsion rechtsinvarianter Vektorfelder.}
+Die Torsion 
+\begin{align*}
+	T^+(X,Y)
+	&= \nabla^+_XY - \nabla^+_YX - [X,Y]
+\end{align*}
+des Zusammenhangs $\nabla^+$ berechnen wir zunächst für rechtsinvariante Vektorfelder.
+
+Sind $X_\xi$, $Y_\upsilon$ Vektorfelder mit Werten $X_\xi|_e=\xi$ und $Y_\upsilon|_e=\upsilon$ im neutralen Element, so folgt aus Gl.~(\ref{eq:nablaplus_rightinv}) sofort, dass
+\begin{empheq}[box=\resultbox]{align}
+	T^+(X_\xi, Y_\upsilon)
+	&=
+	-[X_\xi, Y_\upsilon]
+	= -[\xi, \upsilon]_\mathfrak{g}
+	\ .
+\end{empheq}
+
+\paragraph{Torsion beliebiger Vektorfelder.}
+
+\paragraph{Krümmung.}
+
+\subsubsection{Paralleltransport und Geodätische des $\nabla^+$-Zusammenhangs}
 
 \subsection{Lie-Gruppen als riemannsche Mannigfaltigkeiten}
 
