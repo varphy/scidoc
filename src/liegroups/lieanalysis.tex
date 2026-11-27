@@ -4,12 +4,16 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{mathtools}
 \usepackage{microtype}
 \usepackage{authblk}
 \usepackage{titlesec}
 
 \usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage[most]{tcolorbox}
+
 \usepackage{empheq}
 \usepackage{tikz-cd} 
 
@@ -25,9 +29,64 @@
 \renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
 \titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
 \titlespacing*{\subsubsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
-   
+
+% text boxing
+\definecolor{yaleblue}{HTML}{00356B}
+\definecolor{myyellow}{HTML}{FFEEAA}
+
+\newcommand*\resultbox[1]{%
+  \colorbox{yaleblue!10}{\hspace{1em}#1\hspace{1em}}}
+\newcommand*\definitionbox[1]{%
+  \colorbox{myyellow!40}{\hspace{1em}#1\hspace{1em}}}
+
+% theorem styles
+\newtheoremstyle{mytheorem}
+  {\topsep}   % Abstand oben
+  {\topsep}   % Abstand unten
+  {\itshape}  % Schriftart im Körper (kursiv)
+  {}          % Einzug
+  {\bfseries} % Schriftart der Überschrift (fett)
+  {}          % Zeichen nach der Überschrift -> LEER (kein Punkt!)
+  { }         % Abstand nach der Überschrift (ein Leerzeichen)
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\bfseries\itshape(#3)}}
+
+\theoremstyle{mytheorem}
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{proposition}[theorem]{Satz}
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newtheoremstyle{mydefinition}
+  {\topsep}   % Abstand oben
+  {\topsep}   % Abstand unten
+  {}  % Schriftart im Körper (kursiv)
+  {}          % Einzug
+  {\bfseries} % Schriftart der Überschrift (fett)
+  {}          % Zeichen nach der Überschrift -> LEER (kein Punkt!)
+  { }         % Abstand nach der Überschrift (ein Leerzeichen)
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\bfseries\itshape(#3)}}
+
+\theoremstyle{mydefinition}
+\newtheorem{definition}[theorem]{Definition}
+
+\definecolor{examplecolor}{HTML}{E0F8F8}
+\newtheorem{example}[theorem]{Beispiel}
+\tcolorboxenvironment{example}{
+  colback=examplecolor,
+  colframe=white,
+  boxrule=0pt,
+  arc=0pt,
+  left=6pt, right=6pt,
+  top=4pt, bottom=4pt,
+  breakable
+}
+
+\AtBeginEnvironment{proof}{\small}
+
+%\newcommand{\mydef}[1]{\textls{#1}}
+\newcommand{\mydef}[1]{\textbf{\textit{#1}}}
+
 % custom macros
-\newcommand{\mydef}[1]{\textls{#1}}
 \newcommand{\nul}{\textrm{---}}
 \newcommand{\trans}{^\mathsf{T}}
 
@@ -38,14 +97,16 @@
 \newcommand{\ad}{\mathrm{ad}}
 \newcommand{\Ad}{\mathrm{Ad}}
 
+\newcommand{\SO}{\mathrm{SO}}
+\newcommand{\fso}{\mathfrak{so}}
+\newcommand{\fg}{\mathfrak{g}}
+
 \newcommand{\cZ}{\mathcal{Z}}
 \newcommand{\cS}{\mathcal{S}}
 
-\newcommand*\resultbox[1]{%
-  \colorbox{blue!10}{\hspace{1em}#1\hspace{1em}}}
-\newcommand*\definitionbox[1]{%
-  \colorbox{yellow!20}{\hspace{1em}#1\hspace{1em}}}
-
+\newcommand{\body}{\mathrm{b}}
+\newcommand{\nav}{\mathrm{n}}
+\newcommand{\inert}{\mathrm{i}}
 
 % %%%%%%%
 % title %
@@ -73,7 +134,7 @@ Dieser Aufsatz diskutiert auf einführender Weise Aspekte der Analysis und Zusam
 Die ursprüngliche Motivation ist dabei gewesen, im Kontext der Navigation zu klären, welcher Zusammenhang den Transport von Fehlervektoren und Kovarianzen für die Raumlage geometrisch adäquat beschreibt.
 Im Vergleich zu dieser doch überschaubaren Motivation ist der Aufsatz recht lang geworden, zum Einen da er keine Lücken lassen wollte und da er zum Anderen auch den einen oder anderen Abstecher mitnahm.
 
-Es wird vorausgesetzt, dass der Leser mit dem Begriff der Lie-Gruppe und allgemeiner dem Mannigfaltigkeitsbegriff vertraut ist.
+Es wird vorausgesetzt, dass der Leser mit dem Mannigfaltigkeitsbegriff vertraut ist.
 Darüber hinaus wird eine grundlegende Vertrautheit grundlegender Konzepte der Differenzialgeometrie vorausgesetzt, wie sie am Ende des mathematischen Grundstudiums in der Regel vorliegen.
 
 Es ist dem Autor dabei ein Anliegen, die Notation möglichst transparent zu halten. Beispielsweise wird in der differenzialgeometrischen Literatur häufig die gleiche $[-,-]$-Notation sowohl für Ableitungen als auch für die algebraische Lie-Klammer verwendet, was hier vermieden werden soll.
@@ -81,63 +142,226 @@ Auch ist es Intention, miteinander identifizierbare, jedoch nicht gleiche Räume
 
 \section{Differenzialrechnung auf Lie-Gruppen}
 
+\subsection{Lie-Gruppen}
+
+In diesem Aufsatz behandeln wir Lie-Gruppen im Sinne der folgenden Definition.
+
+\begin{definition}
+Eine (reelle) \mydef{Lie-Gruppe} $G$ ist gleichzeitig eine reelle $C^\infty$-Mannigfaltigkeit und eine Gruppe derart, dass die Gruppenmultiplikation
+\begin{align*}
+	\mathrm{mult}:
+	G\times G&\rightarrow G
+	\ ,\nonumber\\
+	(g, h) &\mapsto gh
+\end{align*}
+und die Inversenbildung
+\begin{align*}
+	\mathrm{inv}:
+	G&\rightarrow G
+	\ ,\nonumber\\
+	g &\mapsto g^{-1}
+\end{align*}
+glatte (d.~h. $C^\infty$) Abbildungen sind.
+Für die Multiplikation leitet $G\times G$ seine $C^\infty$-Struktur von jener von $G$ ab.
+\end{definition}
+
+\begin{example}
+\label{ex:attitude}
+Die Lage eines starren Körpers im dreidimensionalen euklidischen Raum beschreiben wir mathematisch durch ein Element $C$ der Gruppe $\SO(3)$ der eigentlichen Drehmatrizen.
+
+Im \mydef{raumfesten Bezugssystem} $\nav$ sei $e_x^\nav, e_y^\nav, e_z^\nav$ eine ausgezeichnete (rechtshändige) Orthonormalbasis, im \mydef{körperfesten Bezugssystem} $\body$ sei dies $e_x^\body, e_y^\body, e_z^\body$.
+
+Sei nun $v$ ein einem Ort unseres Anschauungsraums angehefteter Vektor, zum Beispiel der Wert eines magnetischen Feldes an diesem Ort.
+In raumfesten Koordinaten drücken wir $v$ durch ein Koordinatentripel
+$v_\nav=(v_\nav^x, v_\nav^y, v_\nav^z)\in\mathbb{R}^3$ und in körperfesten Koordinaten durch  $v_\body=(v_\body^x, v_\body^y, v_\body^z)\in\mathbb{R}^3$, so dass
+\begin{align*}
+	v &=
+	v_\nav^x e_x^\nav
+	+ v_\nav^y e_y^\nav
+	+ v_\nav^z e_z^\nav
+	=
+	v_\body^x e_x^\body
+	+ v_\body^y e_y^\body
+	+ v_\body^z e_z^\body
+	\ .
+\end{align*}
+Als \mydef{Lage} des starren Körpers bezüglich des raumfesten Systems definieren wir die Transformationsmatrix $C_{\nav\body}\in\SO(3)$, die körperfeste Koordinaten in raumfeste überführt,
+\begin{align*}
+	v_\nav &= C_{\nav\body} \cdot v_\body
+	\ .
+\end{align*}
+Die Gruppe $\SO(3)$, die nach dem folgenden Satz eine Lie-Gruppe ist, begleitet uns den Aufsatz hindurch immer wieder in Beispielen.
+\end{example}
+
+\begin{theorem}
+\label{th:SO3}
+Die Matrixgruppe $\SO(n)$ ist für $n\in\mathbb{N}^*$ eine Lie-Gruppe.
+\end{theorem}
+\begin{proof}
+$\SO(n)$ ist die Gruppe der $n\times n$-Matrizen $C$ mit $CC\trans=I$ und $\det C=1$, worin $I$ die Einheitsmatrix bezeichnet.
+
+Wir zeigen, dass $\SO(n)$ Untermannigfaltigkeit einer offenen Teilmenge des  Vektorraums $\mathbf{R}^{n\times n}$ der $n\times n$-Matrizen ist.
+Sei dazu $\mathrm{GL}_+(n)$ die im Raum der $n\times n$-Matrizen offene Menge der Matrizen mit positiver Determinante.
+Auf $\mathrm{GL}_+(n)$ betrachten wir die Abbildung
+\begin{align*}
+	\varphi: 
+	\mathrm{GL}_+(n) &\rightarrow \mathrm{Sym}(n)
+	\ ,\nonumber\\
+	A &\mapsto AA\trans - I
+\end{align*}
+in den Vektorraum $\mathrm{Sym}(n)$ der symmetrischen $n\times n$-Matrizen.
+Ihre Ableitung lautet $\Dt\varphi|_C: A\mapsto AC\trans + CA\trans$.
+Für $C\in\SO(n)$ kann jedes $S\in\mathrm{Sym}(n)$ als $\Dt\varphi|_C$-Bild, beispielsweise als Bild von $A=SC/2$, geschrieben werden, so dass $\Dt\varphi|_C$ für $C\in\SO(n)$ Maximalrang hat.
+Damit ist $\varphi$ lokal um $\SO(n)$ eine Submersion und $\SO(n)=\varphi^{-1}(0)$ als deren Faser eine Untermannigfaltigkeit von $\mathrm{GL}_+(n)$.
+
+Da Matrixmultiplikation und -inversion rationale Abbildungen sind, sind beide Operationen glatt und $\SO(n)$ damit eine Lie-Gruppe.
+\end{proof}
+
+
 \subsection{Parallelisierung von Lie-Gruppen}
 
-Sei $G$ ein Lie-Gruppe der Dimension~$n$.\footnote{
-	In diesem Aufsatz betrachten wir ausschließlich glatte ($C^\infty$) Lie-Gruppen.
-}
-Mithilfe der \emph{Rechtsmultiplikation}
-parallelisieren wir $G$, indem wir an einem Punkt $g\in G$ angeheftete Tangentialvektoren $\xi_g\in\Tt_gG$ mit einem Vektor im Tangentialraum $\xi=\xi_e\in\Tt_eG$ des neutralen Elements~$e$ identifizieren,
-\begin{align}
-	\xi = \Tt R_g|_e^{-1}\cdot\xi_g
-	\ ,
-\end{align}
-wobei
-\begin{align}
+Sei $G$ ein Lie-Gruppe.
+Lie-Gruppen zeichnen sich unter den Mannigfaltigkeiten durch ihre Parallelisierbarkeit aus.
+Dazu nutzen die Rechtsmultiplikation.
+
+\begin{definition}
+Für $g\in G$ nennen wir die Abbildungen
+\begin{align*}
 	R_g: G &\rightarrow G
 	\ ,\nonumber\\
 	h &\mapsto hg
-\end{align}
-die Rechtsmultiplikation und $\Tt R_g|_h: \Tt_hG\rightarrow\Tt_{hg}G$ ihre Ableitung bezeichnen.\footnote{
+\end{align*}
+und
+\begin{align*}
+	L_g: G &\rightarrow G
+	\ ,\nonumber\\
+	h &\mapsto gh
+\end{align*}
+die \mydef{Rechts-} bzw.\mydef{Linksmultiplikation} mit $g$.
+\end{definition}
+
+Mithilfe von $R_g$ parallelisieren wir $G$, 
+indem wir an einem Punkt $g\in G$ angeheftete Tangentialvektoren $\xi_g\in\Tt_gG$ mit einem Vektor im Tangentialraum $\xi=\xi_e\in\Tt_eG$ des neutralen Elements~$e$ gemäß
+\begin{align*}
+	\xi = \Tt R_g|_e^{-1}\cdot\xi_g
+\end{align*}
+identifizieren.\footnote{
 Für (koordinatenfrei geschriebene) Ableitungen auf Mannigfaltigkeiten verwenden wir, dem Lehrbuch \cite{StorchWiebe2005} folgend, das Symbol $\Tt$.
 Das Symbol $\Dt$ beschränken wir auf Ableitungen von Abbildungen in Vektorräume, in denen Vektoren nach Wahl einer Basis einfach komponentenweise abgeleitet werden.
 Dazu gehört insbesondere auch $\mathfrak{g}=\Tt_eG$.
 }
+Auf diese Weise wird das praktische Rechnen mit Tangentialvektoren  ausschließlich in $\Tt_eG$ erfolgen,
+wobei wir jedoch in Formeln sowie Herleitungen transparent zwischen $\Tt_eG$ und einem durch $\Tt_eG$ repräsentierten Tangentialraum $\Tt_gG$ unterscheiden wollen.
 
-Im Folgenden nennen wir den Tangentialraum $\Tt_eG$ am neutralen Element
-\begin{empheq}[box=\definitionbox]{align}
+\begin{definition}
+\label{def:Psi1}
+Den Tangentialraum am neutralen Element nennen wir
+\begin{align*}
 	\mathfrak{g} := \Tt_eG
 	\ .
-\end{empheq}
-Das praktische Rechnen mit Tangentialvektoren wird ausschließlich in $\mathfrak{g}$ erfolgen,
-wobei wir jedoch in Formeln und Herleitungen transparent zwischen $\mathfrak{g}$ und einem durch $\mathfrak{g}$ repräsentierten Tangentialraum $\Tt_gG$ unterscheiden wollen.
-Über den Bündeldiffeomorphismus
-\begin{empheq}[box=\definitionbox]{align}
-\label{eq:Psi1}
-	\Psi_1: G\times\mathfrak{g} 
+\end{align*}
+Wir definieren auf $G\times\fg$ die Abbildung
+\begin{align*}
+	\Psi_1: G\times\fg 
 	&\rightarrow\Tt G
 	\ ,\nonumber\\
 	(g, \xi)
 	&\mapsto \Tt R_g|_e\cdot\xi
 	\in \Tt_gG
-\end{empheq}
-formalisieren wir die Parallelisierung des Tangentialbündels $\Tt G$.
+	\ .
+\end{align*}
+\end{definition}
+
+Die Abbildung $\Psi_1$ ist offenbar ein Diffeomorphismus, 
+da mit $R_g$ auch $\Tt R_g$ umkehrbar (und glatt) ist.
+Mittels $\Psi_1^{-1}$ wird $\Tt G$ auf das triviale Bündel $G\times\fg$ diffeomorph abgebildet.
+
+\begin{example}
+Sei $\varphi:A\mapsto AA\trans - I$ die bereits im Beweis zu \ref{th:SO3} verwendete Submersion $\mathrm{GL}_+(3)\rightarrow\mathrm{Sym}(3)$, als deren Faser $\varphi^{-1}(0)$ wir $\SO(3)$ als Untermannigfaltigkeit gewinnen.
+
+Den Tangentialraum $\Tt_I\SO(3)$ an der Einheitsmatrix, dem neutralen Element von $\SO(3)$, nennen wir
+\begin{align*}
+	\fso(3) := \Tt_I\SO(3)
+	\ .
+\end{align*}
+Wir erhalten ihn als Unterraum von $\Tt_I\mathrm{GL}_+(3)=\mathbb{R}^{3\times 3}$ in Form des Kerns von $\Dt\varphi|_I:A\mapsto A+A\trans$ und finden
+\begin{align*}
+	\fso(3) &= 
+	\big\{
+		A\in\mathbb{R}^{3\times 3}
+		\big| 	
+		A = -A\trans
+	\big\}
+	\ .
+\end{align*}
+
+Sei $C\in\SO(3)$.
+Die Ableitung der Rechtsmultiplikation $R_C:Q\mapsto QC$ berechnet sich im Matrizenraum einfach zu $\Tt R_C|_Q:A_Q\mapsto A_QC$ für $A_Q\in\Tt_Q\SO(3)$.
+Es folgt insbesondere, dass
+\begin{align*}
+	\Tt_C\SO(3) &= \fso(3)\cdot C
+\end{align*}
+ist, wobei auch $\Tt_C\SO(3)$ als Unterraum von $\Tt_C\mathrm{GL}_+(3)$ ($\cong\mathbb{R}^{3\times 3}$) aufgefasst wird.
+
+Die Abbildung $\Psi_1$ hat demnach für $\SO(3)$ die Form
+\begin{align*}
+	\Psi_1(C, A) &= AC
+	\ .
+\end{align*}
+\end{example}
 
 Sei $\xi\in\mathfrak{g}=\Tt_eG$ ein am neutralen Element angehefteter Tangentialvektor.
-Durch die Abbildung $\Tt R_g|e:\mathfrak{g}\rightarrow\Tt_gG$ 
-Über $\Psi_1$ definieren wir das rechtsinvariante Vektorfeld
-\begin{align}
+Über $\Psi_1$ definieren wir das Vektorfeld
+\begin{align*}
 	X_\xi: G &\rightarrow \Tt G
 	\ ,\nonumber\\
 	g &\mapsto \Psi_1(g, \xi)\in\Tt_g G
 	\ .
-\end{align}
-Ein Vektorfeld $X$ nennen wir genau dann \mydef{rechtsinvariant}, wenn
-\begin{align}
+\end{align*}
+Es ist rechtsinvariant im Sinne der folgenden Definition.
+
+\begin{definition}
+Ein Vektorfeld $X$ auf $G$ nennen wir genau dann \mydef{rechtsinvariant}, wenn
+\begin{align*}
 	X|_{hg} &= \Tt R_g|_h\cdot X|_{h}
-\end{align}
+\end{align*}
 für alle $g\in G$ gilt.
+\end{definition}
+
 Ein rechtsinvariantes Vektorfeld~$X$ ist über seinen Wert $X|_e$ am neutralen Element eindeutig bestimmt und kann daher mit dem Tangentialvektor $\xi=X|_e\in\mathfrak{g}$ identifiziert werden.
+
+\begin{example}
+\label{ex:attitude_error}
+Sei durch $C\in\SO(3)$ wie in Beispiel \ref{ex:attitude} die Lage eines körperfesten Systems im raumfesten System beschrieben.
+
+Einen Tangentialvektor $A_C$ an $\Tt_C\SO(3)$ fassen wir als \mydef{virtuelle Verrückung} auf, die beispielsweise einen (möglichen) Fehler in unserer durch $C$ angegeben Lage beschreibt.
+(Dies ist in der Anwendung der Fall, wenn $C$ lediglich einen \emph{Schätzwert} angibt.)
+
+Sei die Lage nun einer Bewegung unterworfen.
+Aus $CC\trans=I$ folgt durch Ableiten, dass $\Omega(t)=C(t)\trans\dot{C}(t)\in\fso(3)$ ist.
+$\Omega(t)$ ist die körperfest, zum Beispiel mit einem Kreisel, messbare Winkelgeschwindigkeit. (Annahme ist, dass das raumfeste System nicht rotiert.)
+
+Wenn $\Omega(t)$ die ideal --- das heißt, fehlerfrei und als kontinuierliche Funktion Zeit --- gemessene Winkelgeschwindigkeit ist,
+können wir durch Lösen der Differenzialgleichung
+\begin{align*}
+	\dot{\tilde{C}}(t)
+	&= \tilde{C}(t)\cdot\Omega(t)
+\end{align*}
+mit Anfangswert $\tilde{C}(0)=I$ die Änderung der Lage fehlerfrei nachverfolgen.
+Ist die anfängliche Lage durch $C(0)$ gegegen, 
+so ist $C(t)=C(0)\tilde{C}(t)$.
+Die Propagation der Lage erfolgt also durch \emph{Rechtsmultiplikation}.
+
+Liegt $C(0)$ nur als Schätzwert vor, müssen wir von einem durch einen Tangentialvektor $A_{C(0)}(0)\in\Tt_{C(0)}\SO(3)$ repräsentierten Fehler ausgehen.
+In unserer \emph{Interpretation} soll dieser Fehler angeben, inwiefern das durch $C(0)$ relativ zum Körper geschätzte \emph{raumfeste} System vom tatsächlichen raumfesten (Referenz-)System abweicht.
+
+Da ein auf der raumfesten Seite liegender Fehler sich unter der ideal mitverfolgten Bewegung nicht ändert, interpretieren ihn entlang der Kurve $C(t)$ als \emph{rechtsinvariantes} Vektorfeld.
+Über den Fehler führen wir praktisch stets als $A(0)\in\fso(3)$ buch mit
+\begin{align*}
+	A(0) := A_I(0) &= A_{C(t)}(0)\cdot C\trans(0)
+	\ .
+\end{align*}
+\end{example}
 
 \subsection{Differenziation auf Lie-Gruppen}
 
@@ -147,31 +371,61 @@ Die Ableitung einer differenzierbaren Abbildung $F:G\rightarrow G$ an einer Stel
 	\Tt_gG\rightarrow\Tt_{F(g)}G
 	\ .
 \end{align*}
-Zum praktischen Rechnen identifizieren wir mit Hilfe der Parallelisierung Urbild- und Bildraum mit $\mathfrak{g}=\Tt_eG$.
-Die auf diese Weise in $\mathfrak{g}$ behandelte Ableitung bezeichnen wir mit ``$\Dt$'',
-\begin{empheq}[box=\definitionbox]{align}
+Zum praktischen Rechnen identifizieren wir mit Hilfe der mittels $\Psi_1$ realisierten Parallelisierung Urbild- und Bildraum mit $\mathfrak{g}=\Tt_eG$.
+Die auf diese Weise in $\mathfrak{g}$ behandelte Ableitung bezeichnen wir mit ``$\Dt$''
+
+\begin{definition}
+Es ist 
+\begin{align*}
 	\Dt F|_g: 
 	\mathfrak{g} &\rightarrow \mathfrak{g}
 	\ ,\nonumber\\
 	\xi &\mapsto 
-	\Tt R_{F(g)}^{-1}|_{F(g)}
+	\Psi_1^{-1}\big(
+		\Tt F|_g
+		\cdot \Psi_1(g, \xi)
+	\big)
+	=
+	\Tt R_{F(g)^{-1}}|_{F(g)}
 	\cdot \Tt F|_g
-	\cdot \Tt R_{g}|_e
-	\ ,
-\end{empheq}
-wobei das letzte Verkettungsglied auch als $\Tt R_{F(g)}^{-1}|_{F(g)}=\Tt R_{F(g)}|_e^{-1}$ geschrieben werden kann.
+	\cdot \Tt R_{g}|_e\cdot\xi
+\end{align*}
+die mittels $\Psi_1$ zur Abbildung $\fg\rightarrow\fg$ transformierte Ableitung $\Tt F|_g$.\footnote{
+	Offenbar kann das äußerste Verkettungsglied auch als $\Tt R_{F(g)^{-1}}|_{F(g)}=\Tt R_{F(g)}^{-1}|_{F(g)}=\Tt R_{F(g)}|_e^{-1}$ geschrieben werden.
 
-\subsubsection{Multiplikation}
+}
+\end{definition}
 
-Es bezeichne 
-\begin{align}
+\subsubsection{Produktregel}
+
+Wir unterscheiden bei der Ableitung der Lie-Gruppenmultiplikation
+\begin{align*}
 	\mathrm{mult}:G\times G\rightarrow G
-\end{align}
-die Multiplikationsabbildung $(g,h)\mapsto gh$,
-wobei das Produkt $G\times G$ seine topologische, analytische und algebraische Struktur von $G$ erbt.
-Zur Bestimmung von $\Dt\,\mathrm{mult}|_{g,h}$ seien für $\varepsilon>0$ die Kurvenkeime $\gamma,\eta: (-\varepsilon,\varepsilon)\rightarrow G$ mit $\gamma(0)=g$ und $\dot{\gamma}(0)=\xi_g\in\Tt_gG$ sowie $\eta(0)=h$ und $\dot{\eta}(0)=\upsilon_h\in\Tt_hG$ gegeben.
+\end{align*}
+die Ableitung
+\begin{align*}
+	\Tt\,\mathrm{mult}|_{(g,h)}:\Tt_gG\times\Tt_hG\rightarrow\Tt_{hg}G
+\end{align*}
+und die Ableitung
+\begin{align*}
+	\Dt\,\mathrm{mult}|_{(g,h)}:\fg\times\fg\rightarrow\fg
+	\ .
+\end{align*}
 
-Damit berechnen wir einerseits
+\begin{lemma}
+\label{th:Tmult}
+Es ist
+\begin{align*}
+	\Tt\,\mathrm{mult}|_{(g,h)}\cdot (\xi_g, \upsilon_h)
+	&= \Tt R_h|_g\cdot\xi_g + \Tt L_g|_h\cdot\upsilon_h
+	\ .
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+Es seien für $\varepsilon>0$ die Kurvenkeime $\gamma,\eta: (-\varepsilon,\varepsilon)\rightarrow G$ mit $\gamma(0)=g$ und $\dot{\gamma}(0)=\xi_g\in\Tt_gG$ sowie $\eta(0)=h$ und $\dot{\eta}(0)=\upsilon_h\in\Tt_hG$ gegeben.
+
+Damit finden wir einerseits
 \begin{align*}
 	\Tt\,\mathrm{mult}|_{(g,h)}\cdot (\xi_g, 0)
 	&= \frac{\dt}{\dt t}
@@ -189,19 +443,42 @@ andererseits
 	\Big|_{t=0}
 	= \Tt L_g|_h\cdot\upsilon_h
 	\in \Tt_{gh}G
+	\ .
+\end{align*}
+Zusammengefasst erhalten wir die Aussage.
+\end{proof}
+
+\begin{theorem}
+\label{th:Dmult}
+Es ist
+\begin{align*}
+	\Dt\,\mathrm{mult}|_{(g, h)} \cdot (\xi, \upsilon)
+	&=
+	\xi + \Tt(R_{g^{-1}}\circ L_g)|_e\cdot\upsilon
+	=
+	\xi + \Ad(g)\cdot\upsilon
 	\ ,
 \end{align*}
-wobei $L_g:h\mapsto gh$ die Linksmultiplikation bezeichnet.
-Wir finden mit
-\begin{empheq}[box=\resultbox]{align}
-	\Tt\,\mathrm{mult}|_{(g,h)}\cdot (\xi_g, \upsilon_h)
-	&= \Tt R_h|_g\cdot\xi_g + \Tt L_g|_h\cdot\upsilon_h
-	\ .
-\end{empheq}
-die Produktregel für 
-$\Tt\,\mathrm{mult}|_{(g,h)}:\Tt_gG\times\Tt_hG\rightarrow\Tt_{hg}G$.
+worin $\Ad$ durch die folgende Definition gegeben ist.
+\end{theorem}
 
-Aufgefasst als Abbildung $\mathfrak{g}\times\mathfrak{g}\rightarrow\mathfrak{g}$ finden wir
+\begin{definition}
+\label{def:Ad}
+Der Lie-Gruppenhomomorphismus 
+\begin{align*}
+	\Ad: G&\rightarrow \mathrm{GL}(\mathfrak{g})
+	\ ,\nonumber\\
+	g &\mapsto
+	\Tt
+	(R_{g^{-1}}\circ L_g)|_e
+\end{align*}
+heißt die \mydef{adjungierte Darstellung} von $G$.
+\end{definition}
+
+Dass $\Ad$ ein Lie-Gruppenhomomorphismus ist, prüft man unmittelbar nach.
+
+\begin{proof}[Beweis von \ref{th:Dmult}]
+Wir setzen am Ende des Beweises zu \ref{th:Tmult} an und berechnen
 \begin{align*}
 	\Dt\,\mathrm{mult}|_{(g,h)}\cdot (\xi, 0)
 	&= 
@@ -215,7 +492,7 @@ Aufgefasst als Abbildung $\mathfrak{g}\times\mathfrak{g}\rightarrow\mathfrak{g}$
 	&= \Tt (R_{(gh)^{-1}}\circ R_h\circ R_g)|_e\cdot\xi
 	= \xi
 \end{align*}
-und
+sowie
 \begin{align*}
 	\Dt\,\mathrm{mult}|_{(g,h)}\cdot (0, \upsilon)
 	&=
@@ -233,34 +510,119 @@ und
 	\upsilon	
 	\ .
 \end{align*}
-Zusammengefasst ist also
-\begin{empheq}[box=\resultbox]{align}
-	\Dt\,\mathrm{mult}|_{(g, h)} \cdot (\xi, \upsilon)
-	&=
-	\xi + \Ad(g)\cdot\upsilon
-	\ ,
-\end{empheq}
-wobei
-\begin{empheq}[box=\definitionbox]{align}
-\label{eq:Ad}
-	\Ad: G&\rightarrow \mathrm{GL}(\mathfrak{g})
+Zusammengefasst folgt die Aussage.
+\end{proof}
+
+\begin{example}
+\label{ex:Ad}
+Sei $C\in\SO(3)$ und $A\in\fso(3)$.
+In der adjungierten Darstellung operiert $C$ auf $A$ gemäß
+\begin{align*}
+	\Ad(C)\cdot A &= CAC\trans
+	\ .
+\end{align*}
+Mit $A$ ist offensichtlich auch $CAC\trans$ schiefsymmetrisch.
+
+Sei $a=(a^1, a^2, a^3)\in\mathbb{R}^3$.
+Mit Hilfe des Standardvektorprodukts definieren wir die Isomorphie
+\begin{align*}
+	[-]_\times: 
+	\mathbb{R}^3&\rightarrow\fso(3)
 	\ ,\nonumber\\
-	g &\mapsto
-	\Tt
-	(R_{g^{-1}}\circ L_g)|_e
-\end{empheq}
-die \mydef{adjungierte Darstellung} von $G$ bezeichnet.
+	a &\mapsto [a]_\times = a\times-
+	\ .
+\end{align*}
+Es ist also
+\begin{align*}
+	[a]_\times
+	&=
+	\begin{pmatrix}
+		0    & -a^3 &  a^2 \\
+		 a^3 &    0 & -a^1 \\
+		-a^2 &  a^1 &    0
+	\end{pmatrix}
+	\in\fso(3)
+	\ .
+\end{align*}
+Aus 
+\begin{align*}
+	C[a]_\times C\trans &= [Ca]_\times
+\end{align*}
+folgt, dass die adjungierte Darstellung im mit $\fso(3)$ durch $[-]_\times$ identifizierten Raum $\mathbb{R}^3$ dem Matrix-Vektorprodukt $Ca$ entspricht.
+\end{example}
 
-\subsubsection{Inversenbildung}
+\begin{example}
+\label{ex:attitude_mult}
+Wir übernehmen die Interpretation aus Beispiel \ref{ex:attitude_error} von Tangentialvektoren als Fehler repräsentierende virtuelle Verrückungen.
+Zusätzlich zu den Bezugssystem $\body$ und $\nav$ gebe es noch ein weiteres System $\inert$.
+Für die Lagen zwischen $\body$ und $\nav$ sowie $\nav$ und $\inert$ gebe es Schätzwerte $C_{\nav\body}$ und $C_{\inert\nav}$, die fehlerbehaftet sind.
+Die Fehler seien durch $A_{\nav\body}$ und $A_{\inert\nav}$ jeweils in $\fso(3)$ angegeben.
 
-Sei
-\begin{align}
-	\mathrm{inv}:G\rightarrow G
-\end{align} 
-die Abbildung der Inversenbildung $g\mapsto g^{-1}$.
+Aus diesen Information lässt sich für die Lage von $\body$ relativ zu $\inert$ der Schätzwert
+\begin{align*}
+	C_{\inert\body}
+	&= C_{\inert\nav} C_{\nav\body}
+\end{align*}
+angeben.
+Der diesem Produkt innewohnende in $\fso(3)$ angegebene Fehler $A_{\inert\body}$ pflanzt sich gemäß der Produktregel~\ref{th:Dmult} aus den Fehlern der Faktoren fort,
+\begin{align*}
+	A_{\inert\body}
+	&=
+	\Dt\,\mathrm{mult}|_{(C_{\inert\nav}, C_{\nav\body})}
+	\cdot (A_{\inert\nav}, A_{\nav\body})
+	\nonumber\\
+	&=
+	A_{\inert\nav} + C_{\inert\nav}A_{\nav\body}C_{\inert\nav}\trans
+	\ .
+\end{align*}
+Identifizieren wir wie in Beispiel \ref{ex:Ad} den Raum $\fso(3)$ mit $\mathbb{R}^3$, so finden wir in nach offensichtlichen Regeln angepasster Notation, dass
+\begin{align*}
+	a_{\inert\body}
+	&=
+	a_{\inert\nav} + C_{\inert\nav}a_{\nav\body}
+	\ .
+\end{align*}
+Der Fehler der inneren Lageschätzung ist demnach erst mit dem äußeren Lageschätzwert zu drehen, ehe er mit dessen Fehler verrechnet wird.
 
-Wir drücken dazu die \emph{konstante} Abbildung auf das neutrale Element als Komposition
-\begin{alignat}{2}
+\end{example}
+
+\subsubsection{Ableitung der Inversenbildung}
+
+Für die Ableitung der Inversenbildung folgt aus der Produktregel das
+\begin{corollary}
+\label{th:DInv}
+Es gilt
+\begin{align*}
+	\Tt\,\mathrm{inv}|_{g}
+	&= -\Tt (R_{g^{-1}}\circ L_{g^{-1}})|_g
+\end{align*}
+für die Ableitung $\Tt\,\mathrm{inv}|_{g}:\Tt_gG\rightarrow\Tt_{g^{-1}}G$
+und
+\begin{align*}
+	\Dt\,\mathrm{inv}|_{g}
+	&= -\Ad(g^{-1})
+\end{align*}
+für die Ableitung $\Dt\,\mathrm{inv}|_{g}:\mathfrak{g}\rightarrow\mathfrak{g}$.
+\end{corollary}
+
+\begin{example}
+Für eine Kurve $C:\mathbb{R}\rightarrow\SO(3)$ gilt
+\begin{align*}
+	\dot{C}\trans &= -C\trans\dot{C}C\trans
+	\ ,
+\end{align*}
+wie man durch Ableiten aus $CC\trans=I$ unmittelbar erhält.
+
+Setzen wir $\Omega_\nav=\dot{C}C\trans\in\fso(3)$, so finden wir für $\Omega_\nav'=\dot{C}\trans C$
+\begin{align*}
+	\Omega_\nav' &= -C\trans\Omega_\nav C = -\Ad(C\trans)\cdot \Omega_\nav
+	\ .
+\end{align*}
+\end{example}
+
+\begin{proof}[Beweis von \ref{th:DInv}]
+Wir drücken die \emph{konstante} Abbildung auf das neutrale Element als Komposition
+\begin{alignat*}{2}
 	G 
 	&\rightarrow G\times G 
 	&&\rightarrow G
@@ -271,7 +633,7 @@ Wir drücken dazu die \emph{konstante} Abbildung auf das neutrale Element als Ko
 		\mathrm{inv}(g) \\ g
 	\end{pmatrix}
 	&&\mapsto \mathrm{mult}(\mathrm{inv}(g), g) = e
-\end{alignat}
+\end{alignat*}
 aus.
 Für $g\in G$ in $\xi_g\in\Tt_gG$ gilt dann nach der Kettenregel
 \begin{align*}
@@ -289,121 +651,107 @@ Für $g\in G$ in $\xi_g\in\Tt_gG$ gilt dann nach der Kettenregel
 	+ \Tt L_{g^{-1}}|_g\cdot \xi_g
 	\ .
 \end{align*}
-Damit ist einerseits
-\begin{empheq}[box=\resultbox]{align}
-	\Tt\,\mathrm{inv}|_{g}
-	&= -\Tt (R_{g^{-1}}\circ L_{g^{-1}})|_g
-\end{empheq}
-für die Ableitung der Inversen 
-$\Tt\,\mathrm{inv}|_{g}:\Tt_gG\rightarrow\Tt_{g^{-1}}G$.
+Mit $\Tt R_g|_{g^{-1}}^{-1}=\Tt R_{g^{-1}}|_{e}$ folgt die Formel für $\Tt\,\mathrm{inv}$.
 
-Andererseits finden wir mit $\xi_g=\Tt R_g|_e\cdot \xi$ für die Ableitung $\Dt\,\mathrm{inv}|_{g}:\mathfrak{g}\rightarrow\mathfrak{g}$
+Setzen wir andererseits $\xi_g=\Tt R_g|_e\cdot \xi$ ein, finden wir
 \begin{align*}
 	\Dt\,\mathrm{inv}|_{g} \cdot \xi
+	&= \Tt R_g|_{g^{-1}}
+	\cdot \Tt\,\mathrm{inv}|_{g}
+	\cdot \Tt R_g|_e\cdot \xi
+	\nonumber\\
 	&= -\Tt L_{g^{-1}}|_g\cdot \Tt R_g|_e \cdot \xi
 	= -\Tt (L_{g^{-1}}\circ R_g)|_e \cdot \xi
-	\ ,
 \end{align*}
-also
-\begin{empheq}[box=\resultbox]{align}
-	\Dt\,\mathrm{inv}|_{g}
-	&= -\Ad(g^{-1})
-	\ .
-\end{empheq}
+und damit die Formel für $\Dt\,\mathrm{inv}$.
+\end{proof}
+
 
 \subsection{Vektorfelder auf Mannigfaltigkeiten}
 
-Wir tragen in diesem Abschnitt grundlegende Eigenschaften von Vektorfeldern auf Mannigfaltigkeiten zusammen.\footnote{
+Wir tragen in diesem Abschnitt grundlegende Begriffe zum Umgang mit Vektorfeldern auf Mannigfaltigkeiten zusammen.\footnote{
 	Wir betrachten durchweg glatte ($C^\infty$) Mannigfaltigkeiten.
 }
-Sei dazu $X$ allgemein ein Vektorfeld einer Mannigfaltigkeit $M$ der Dimension~$n$.
+Im Folgenden sei $X$ allgemein ein Vektorfeld auf einer Mannigfaltigkeit $M$.
 
-\subsubsection{Push-Forward eines Vektorfelds}
+\subsubsection{Push-Forward}
 
+Über Diffeomorphismen können Vektorfelder innerhalb einer Mannigfaltigkeit oder zwischen Mannigfaltigkeiten übertragen werden.
+Dies leistet der Push-Forward im Sinne der folgenden Definition.
+\begin{definition}
 Sei $F:M\rightarrow N$ ein Diffeomorphismus auf die Mannigfaltigkeit~$N$.
-Mit $F$ können wir $X$ als \mydef{Push-Forward}  auf $N$ transportieren,
-\begin{align}
+Als \mydef{Push-Forward} von $X$ auf $N$ bezeichnen wir das durch
+\begin{align*}
 	F_*X: N &\rightarrow \Tt N
 	\ ,\nonumber\\
 	q &\mapsto \Tt F|_{F^{-1}(q)}\cdot X|_{F^{-1}(q)}
 	\ .
-\end{align}
+\end{align*}
+auf $N$ definierte Vektorfeld.
+\end{definition}
 
-\subsubsection{Fluss eines Vektorfelds}
+\subsubsection{Flüsse}
 
-Integralkurven $t\mapsto\gamma(t)\in M$ zu einem Vektorfeld~$X$ sind Kurven, deren Geschwindigkeiten an einem Ort durch das dortige Vektorfeld gegeben sind,
+Von zentraler Bedeutung im Studium von Vektorfeldern sind deren Integralkurven und Flüsse.
+\begin{definition}
+Eine Kurve $t\mapsto\gamma(t)\in M$ nennen wir eine \mydef{Integralkurve} zum Vektorfeld~$X$, wenn ihre Momantangeschwindigkeit durch das Vektorfeld ihres momentanen Orts gegeben ist,
 \begin{align*}
 	\dot{\gamma}(t) &= X|_{\gamma(t)}
 	\ .
 \end{align*}
-Flüsse bieten eine übersichtliche Darstellung über Integralkurven.
+\end{definition}
 
-Aus der Theorie gewöhnlicher Differenzialgleichungen folgt die Existenz eines offenen Intervalls $I\subset\mathbb{R}$ mit $0\in I$ und für jedes $p_0\in M$ die Existenz einer offenen Menge $V\subset M$ mit $p_0\in V$, auf deren Produkt der \mydef{Fluss}
-\begin{align}
+\begin{theorem}
+Es gibt ein offenes Intervall $I\subset\mathbb{R}$ mit $0\in I$ und für jedes $p_0\in M$ eine offene Menge $V\subset M$ mit $p_0\in V$, auf deren Produkt die Abbildung
+\begin{align*}
 	\Phi_X: I\times V \rightarrow M
-\end{align}
+\end{align*}
 mit
-\begin{align}
+\begin{align*}
 	\frac{\dt}{\dt t}\Phi_X(t; p) = X|_{\Phi_X(t; p)}
-\end{align}
-wohldefiniert und glatt ist.
-Die Kurve $t\mapsto\Phi_X(t; p)$ ist für $p$ fix die eindeutige Integralkurve durch $p$.
+\end{align*}
+und $\Phi_X(0; p)=p$ wohldefiniert und glatt ist.
+\end{theorem}
+\begin{proof}
+Die Aussage folgt aus der Theorie gewöhnlicher Differenzialgleichungen.
+\end{proof}
 
+\begin{definition}
+Die Abbildung $\Phi_X$ des vorherigen Satzes nennt man den \mydef{Fluss} zu $X$.
+\end{definition}
+
+Die Kurve $t\mapsto\Phi_X(t; p)$ ist für $p$ fix die eindeutige Integralkurve zu $X$ durch $p$.
 Der Fluss $\Phi_X$ des (zeitunabhängigen) Vektorfelds~$X$ erfüllt offenbar die \mydef{Halbgruppeneigenschaft} im Sinne von
-\begin{align}
+\begin{align*}
 	\Phi_X(t_1 + t_2; -)
 	&= \Phi_X(t_2; \Phi_X(t_1; -))
 	\ ,
-\end{align}
-sofern beide Seiten existieren.
-Außerdem ist $\Phi_X(0; -)=\mathrm{id}$.
-
+\end{align*}
+sofern die rechte Seite existiert.
 
 \subsubsection{Lie-Produkt von Vektorfeldern}
 
-Für $t\in I$ ist $\Phi_X(t):=\Phi_X(t;-)$ ein (mindestens) \emph{lokaler} Diffeomorphismus auf sein Bild.
-Seine Umkehrung bezeichnen wir mit $\Phi_X^{-1}(t):q\mapsto\Phi_X^{-1}(t;q)$, wobei $\Phi_X^{-1}(t;q)=\Phi_X(-t;q)$.
+Für $t\in I$ ist $\Phi_X(t):=\Phi_X(t;-)$ (mindestens) \emph{lokal} ein Diffeomorphismus auf sein Bild.
+Seine (lokale) Umkehrung bezeichnen wir mit $\Phi_X^{-1}(t):q\mapsto\Phi_X^{-1}(t;q)$, wobei $\Phi_X^{-1}(t;q)=\Phi_X(-t;q)$.
 Sei nun $Y$ ein weiteres Vektorfeld auf $M$.
 
-Das \mydef{Lie-Produkt} der Vektorfelder $X$ und $Y$ definieren wir als
-\begin{align}
-	[X, Y]\big|_{p} &:= 
+\begin{definition}
+Das durch 
+\begin{align*}
+	\{X, Y\}\big|_{p} &:= 
 	\frac{\dt}{\dt t}
 	\big(
 		[\Phi_X(t)]_* Y
 	\big)
 	\big|_{p}
 	\Big|_{t=0}
-\end{align}
-für alle $p\in M$.
+\end{align*}
+für alle $p\in M$ definierte Vektorfeld nennen wir das \mydef{Lie-Produkt} der Vektorfelder $X$ und $Y$.
+\end{definition}
 
-Ist beispielsweise $M=\mathbb{R}^n$, was \emph{lokal} durch Wahl einer Karte stets erreicht werden kann, finden wir für
+\begin{definition}
+Das durch
 \begin{align*}
-	[X, Y]\big|_{p}
-	&=
-	\frac{\dt}{\dt t}
-	\Big(
-		\Dt\Phi_X(t)|_{\Phi_X^{-1}(t, p)}
-		\cdot
-		Y|_{\Phi_X^{-1}(t, p)}
-	\Big)\Big|_{t=0}
-\end{align*}
-unter Verwendung von
-\begin{align*}
-	\Phi_X(t; p)
-	&= p + t X|_{p} + \mathrm{O}(t^2)
-	\ ,\nonumber\\
-	\Phi_X^{-1}(t; p)
-	&= p - t X|_{p} + \mathrm{O}(t^2)
-	\ ,\nonumber\\
-	\Dt\Phi_X(t)\big|_{p}
-	&= \mathrm{id} + t\,\Dt X|_{p} + \mathrm{O}(t^2)
-	\ ,\nonumber\\
-	Y|_{\Phi_X^{-1}(t, p)}
-	&= Y|_{p} - t\,\Dt Y|_{p}\cdot X|_{p} + \mathrm{O}(t^2)
-\end{align*}
-explizit
-\begin{align}
 	[X, Y]\big|_{p}
 	&=
 	\Dt X|_{p}
@@ -414,13 +762,81 @@ explizit
 	\cdot
 	X|_{p}
 	\ .
-\end{align}
-Das Lie-Produkt entspricht damit der \mydef{Lie-Klammer} von Vektorfeldern.
-Die Jacobi-Identität der Lie-Klammer, die dem Raum der Vektorfelder die algebraische Struktur einer Lie-Algebra gibt, bestätigt man durch direktes Überprüfen.
+\end{align*}
+in einer Karte von~$M$ definierte Vektorfeld nennen wir die \mydef{Lie-Klammer} der Vektorfelder $X$ und $Y$.
+\end{definition}
+Das die Lie-Klammer unabhängig von der Karte ist, folgt aus
+\begin{lemma}
+\label{th:pushForwardLie}
+Sei $M=\mathbb{R}^n$ und $F:\mathbb{R}^n\rightarrow\mathbb{R}^n$
+ein Diffeomorphismus.
+Dann gilt
+\begin{align*}
+	[F_*X, F_*Y]\big|_{p}
+	&= F_*[X, Y]|_p
+	\ .
+\end{align*}
+\end{lemma}
+Es gilt überdies
+\begin{theorem}
+\label{th:LieBracket}
+Lie-Produkt und Lie-Klammer stimmen überein,
+\begin{align*}
+	\{X, Y\} &= [X, Y]
+	\ .
+\end{align*}
+\end{theorem}
+Im Folgenden verwenden wir für beide die gemeinsame Bezeichnung~$[-,-]$.
+Mit der Lie-Klammer bzw. dem Lie-Produkt wird der Vektorraum der Vektorfelder auf $M$ zu einer (unendlichdimensionalen) Lie-Algebra.
+Die Jacobi-Identität der Lie-Klammer bestätigt man dazu durch direktes Überprüfen.
 
-Die Lie-Klammer ist auch im Mannigfaltigkeitsfall unabhängig von der Wahl einer Karte:
-Ist $F$ ein Diffeomorphismus auf $M=\mathbb{R}^n$, so ist nämlich
-\begin{align}
+\begin{proof}[Beweis von \ref{th:LieBracket}]
+Zum Beweis dieser lokalen Aussage nehmen wir ohne Einschränkung $M=\mathbb{R}^n$ an.
+Für
+\begin{align*}
+	\{X, Y\}\big|_{p}
+	&=
+	\frac{\dt}{\dt t}
+	\Big(
+		\Dt\Phi_X(t)|_{\Phi_X^{-1}(t; p)}
+		\cdot
+		Y|_{\Phi_X^{-1}(t; p)}
+	\Big)\Big|_{t=0}
+\end{align*}
+finden wir unter Verwendung von
+\begin{align*}
+	\Phi_X(t; p)
+	&= p + t X|_{p} + \mathrm{O}(t^2)
+	\ ,\nonumber\\
+	\Phi_X^{-1}(t; p)
+	&= p - t X|_{p} + \mathrm{O}(t^2)
+	\ ,\nonumber\\
+	\Dt\Phi_X(t)\big|_{p}
+	&= \mathrm{id} + t\,\Dt X|_{p} + \mathrm{O}(t^2)
+	\ ,\nonumber\\
+	Y|_{\Phi_X^{-1}(t; p)}
+	&= Y|_{p} - t\,\Dt Y|_{p}\cdot X|_{p} + \mathrm{O}(t^2)
+	\ ,
+\end{align*}
+dass
+\begin{align*}
+	\{X, Y\}\big|_{p}
+	&=
+	\Dt X|_{p}
+	\cdot
+	Y|_{p}
+	-
+	\Dt Y|_{p}
+	\cdot
+	X|_{p}
+	\ .
+\end{align*}
+ist.
+\end{proof}
+
+\begin{proof}[Beweis von \ref{th:pushForwardLie}]
+Durch direktes Ausrechnen finden wir
+\begin{align*}
 	[F_*X, F_*Y]\big|_{p}
 	&= 
 	\Dt \big(
@@ -431,24 +847,20 @@ Ist $F$ ein Diffeomorphismus auf $M=\mathbb{R}^n$, so ist nämlich
 	- [X\leftrightarrow Y]
 	\nonumber\\
 	&=
-	\Dt^2F|_{F^{-1}(p)}
-	\cdot
-	(X|_{F^{-1}(p)}\otimes Y|_{F^{-1}(p)})
-	\nonumber\\
-	&\quad 
-	+
-	\Dt F|_{F^{-1}(p)} 
-	\cdot \Dt X|_{F^{-1}(p)}
-	\cdot Y|_{F^{-1}(p)}
+	\big[
+		\Dt^2F|_{F^{-1}(p)}
+		\cdot
+		(X|_{F^{-1}(p)}\otimes Y|_{F^{-1}(p)})
+		\nonumber\\
+		&\quad 
+		+
+		\Dt F|_{F^{-1}(p)} 
+		\cdot \Dt X|_{F^{-1}(p)}
+		\cdot Y|_{F^{-1}(p)}
+	\big]
 	- [X\leftrightarrow Y]
-	\nonumber\\
-	&= \Dt F|_{F^{-1}(p)}
-	\cdot
-	[X, Y]|_{F^{-1}(p)}
-	\nonumber\\
-	&= F_*[X, Y]|_p
 	\ .
-\end{align}
+\end{align*}
 Dabei ist verwendet worden, dass für Vektoren $u,v\in\mathbb{R}^n$
 \begin{align*}
 	\Dt_v(\Dt_u F|_{F^{-1}(p)})\big|_p
@@ -458,7 +870,7 @@ Dabei ist verwendet worden, dass für Vektoren $u,v\in\mathbb{R}^n$
 	=:
 	\Dt^2F|_{F^{-1}(p)}\cdot(u \otimes \Dt F|_{F^{-1}(p)}^{-1}\cdot v)
 \end{align*}
-mit $\Dt F^{-1}|_p=\Dt F|_{F^{-1}(p)}^{-1}$ gilt, dass
+mit $\Dt F^{-1}|_p=\Dt F|_{F^{-1}(p)}^{-1}$ gilt, und dass
 \begin{align*}
 	\Dt \big(
 		X|_{F^{-1}(p)}
@@ -467,53 +879,44 @@ mit $\Dt F^{-1}|_p=\Dt F|_{F^{-1}(p)}^{-1}$ gilt, dass
 	\Dt X|_{F^{-1}(p)}
 	\cdot \Dt F|_{p}^{-1}
 \end{align*}
-ist sowie dass $\Dt^2$ symmetrisch ist.
+ist.
+Für den antisymmetrisierten Ausdruck folgt
+\begin{align*}
+	[F_*X, F_*Y]\big|_{p}
+	&= \Dt F|_{F^{-1}(p)}
+	\cdot
+	[X, Y]|_{F^{-1}(p)}
+	= F_*[X, Y]|_p
+\end{align*}
+da $\Dt^2$ symmetrisch ist.
+\end{proof}
 
 \subsection{Lie-Algebren}
 
-\subsubsection{Lie-Klammer auf $\mathfrak{g}$}
+Sei wieder $G$ eine Lie-Gruppe.
 
-Sei wieder $G$ eine Lie-Gruppe der Dimension $n$ und seien $\xi_1,\xi_2\in\mathfrak{g}=\Tt_eG$ zwei Tangentialvektoren am neutralen Element mit zugehörigen rechtsinvarianten Vektorfeldern~$X_{\xi_1}$ und $X_{\xi_2}$.
-Die Lie-Klammer $[X_{\xi_1}, X_{\xi_2}]$ ist wegen
-\begin{align*}
-	(R_g)_*[(R_g)_*X_{\xi_1}, (R_g)_*{\xi_2}]
-\end{align*}
-ebenfalls rechtsinvariant und identifizierbar mit einem Tangentialvektor in $\Tt_eG$.
-Damit trägt $\mathfrak{g}=\Tt_eG$ die Struktur einer \mydef{Lie-Algebra}.
-Um die algebraische Lie-Klammer auf $\mathfrak{g}$ von der differenziellen Lie-Klammer $[-,-]$ zwischen beliebigen Vektorfeldern auf $G$ zu unterscheiden, definieren wir für $\xi_1,\xi_2\in\Tt_eG$
-\begin{empheq}[box=\definitionbox]{align}
-	[-,-]_\mathfrak{g}:
-	\mathfrak{g}\times\mathfrak{g}
-	&\rightarrow \mathfrak{g}
-	\ ,\nonumber\\
-	(\xi_1,\xi_2) &\mapsto
-	[\xi_1,\xi_2]_\mathfrak{g}
-	:= [X_{\xi_1}, X_{\xi_2}]
-	\ .
-\end{empheq}
-$[-,-]_\mathfrak{g}$ ist eine bilineare Abbildung auf $\mathfrak{g}$ mit Werten in $\mathfrak{g}$.
-
-Sei speziell $\xi_1,\ldots,\xi_n$ eine Basis von $\mathfrak{g}$.
-Dann gibt es eine Darstellung
-\begin{align}
-	[\xi_i,\xi_j]_\mathfrak{g}
-	&= \sum_{k=1}^n f^k_{ij} \xi_k
-	\ .
-\end{align}
-Die \mydef{Strukturkonstanten} $f^k_{ij}\in\mathbb{R}$ bezüglich einer gegebenen Basis bestimmen eindeutig die Lie-Algebrastruktur von $\mathfrak{g}$.
-	
 \subsubsection{Fluss eines rechtsinvarianten Vektorfeldes}
 
-Sei $\xi\in\mathfrak{g}$ und $X_\xi:g\mapsto\Tt R_g|_e\cdot\xi$ das zugehörige rechtsinvariante Vektorfeld.
-
-Sei $\gamma:(-\varepsilon,\varepsilon)\rightarrow G$ eine das neutrale Element passierende lokale Integralkurve zu $X_\xi$,
+Sei $\xi\in\mathfrak{g}$ und $X_\xi:g\mapsto\Psi_1(g,\xi)=\Tt R_g|_e\cdot\xi$ das zugehörige rechtsinvariante Vektorfeld.
+Sei $\gamma:(-\varepsilon,\varepsilon)\rightarrow G$ für $\varepsilon>0$ eine das neutrale Element passierende lokale Integralkurve zu $X_\xi$,
 \begin{align*}
-	\gamma(t) &= e
-	\\
-	\dot{\gamma}(t) &= X_\xi|_{\gamma(t)}
+	\gamma(0) &= e
+	\ ,\quad
+	\dot{\gamma}(t) = X_\xi|_{\gamma(t)}
 	\ .
 \end{align*}
-Die Rechnung
+
+\begin{proposition}
+\label{th:FlowL}
+In der gegebenen Situation ist
+\begin{align*}
+	\Phi_{X_\xi}(t; -)
+	&= L_{\gamma(t)}
+\end{align*}
+der Fluss zum rechtsinvarianten Vektorfeld $X_\xi$.
+\end{proposition}
+\begin{proof}
+Es ist
 \begin{align*}
 	\frac{\dt}{\dt t}
 	\big(
@@ -530,22 +933,181 @@ Die Rechnung
 	\Tt R_g|_{e} \cdot X_\xi|_{e}
 	= X_\xi|_{g}		
 \end{align*}
-zeigt, dass der Fluss zu $X_\xi$ lokal durch Linksmultiplikation einer Integralkurve durch das neutrale Element gegeben ist,
-\begin{align}
-	\Phi_{X_\xi}(t; -)
-	&= L_{\gamma(t)}
-	\ .
-\end{align}
+und $L_{\gamma(0)}=L_{e}=\mathrm{id}$.
+\end{proof}
 
+\begin{example}
+\label{ex:flowSOn}
+Auf $\SO(n)$ für $n\geq 2$ sei die Kurve $C(t)=\exp_\mathsf{M}(tA)$ mit $A\in\fso(n)$ vorgegeben.
+$\exp_\mathsf{M}$ ist hier die durch die Potenzreihe von $x\mapsto\mathrm{e}^x$ definierte Matrixexponentialfunktion.
+Offenbar ist $C(0)=I$ und $\dot{C}(t)=A\exp_\mathsf{M}(tA)=AC(t)$. Der Ausdruck $AC(t)$ ist gleich dem Wert des durch $A$ definierten rechtsinvarianten Feld~$X_A$ an der Stelle $C(t)$.
+
+Der Fluss zu $X_A$ mit $X_A|_I=A$ hat damit die Form
+\begin{align*}
+	\Phi_{X_A}(t; Q) &= \exp_\mathsf{M}(tA)\,Q
+	\ .
+\end{align*}
+\end{example}
+
+\subsubsection{Lie-Klammer auf $\mathfrak{g}$}
+
+Mit Hilfe des Push-Forwards lassen sich rechtsinvariante Vektorfelder auch wie folgt charakterisieren.
+\begin{lemma}
+Ein Vektorfeld $X$ ist genau dann rechtsinvariant, wenn 
+\begin{align*}
+	(R_g)_*X &= X
+\end{align*}
+für alle $g\in G$ gilt.
+\end{lemma}
+\begin{proof}
+Sei $h\in G$. Es ist $[(R_g)_*X]|_h=\Tt R_g|_{hg^{-1}}\cdot X|_{hg^{-1}}=X|_h$, wobei die zweite Gleichheit der Rechtsinvarianz entspricht.
+\end{proof}
+
+Seien $\xi_1,\xi_2\in\mathfrak{g}=\Tt_eG$ zwei Tangentialvektoren am neutralen Element mit zugehörigen rechtsinvarianten Vektorfeldern~$X_{\xi_1}$ und $X_{\xi_2}$.
+
+\begin{proposition}
+Die Lie-Klammer $[X_{\xi_1}, X_{\xi_2}]$ ist ein rechtsinvariantes Vektorfeld.
+\end{proposition}
+\begin{proof}
+Aus \ref{th:pushForwardLie} und dem vorangegangenen Lemma folgt
+\begin{align*}
+	(R_g)_*[X_{\xi_1}, X_{\xi_2}]
+	&= [(R_g)_*X_{\xi_1}, (R_g)_*X_{\xi_2}]
+	= [X_{\xi_1}, X_{\xi_2}]
+	\ .
+\end{align*}
+Durch abermalige Anwendung dieses Lemmas folgt die Aussage.
+\end{proof}
+Damit ist die Lie-Klammer zweier rechtsinvarianter Vektorfelder wiederum mit einem Tangentialvektor in $\fg=\Tt_eG$ identifizierbar.
+Es ist damit gezeigt:
+\begin{theorem}
+Der Tangentialraum $\fg=\Tt_eG$ am neutralen Element einer Lie-Gruppe $G$ trägt die Struktur einer \mydef{Lie-Algebra}.
+Die Lie-Klammer auf $\fg$ ist gegeben durch
+\begin{align*}
+	[-,-]^\mathfrak{g}:
+	\mathfrak{g}\times\mathfrak{g}
+	&\rightarrow \mathfrak{g}
+	\ ,\nonumber\\
+	(\xi_1,\xi_2) &\mapsto
+	[\xi_1,\xi_2]^\mathfrak{g}
+	:= [X_{\xi_1}, X_{\xi_2}]|_e
+	\ .
+\end{align*}
+\end{theorem}
+$[-,-]^\fg$ ist eine bilineare Abbildung auf $\mathfrak{g}$ mit Werten in $\mathfrak{g}$.
+Der obere Index $\fg$ soll die algebraische Lie-Klammer auf $\fg$ von der differenziellen Lie-Klammer $[-,-]$ zwischen beliebigen Vektorfeldern unterscheiden.
+
+\begin{example}
+Seien $A_1, A_2\in\fso(n)$ mit zugehörigen rechtsinvarianten Feldern $X_{A_i}|_C=A_iC$ für $i=1,2$.
+Ihre Lie-Klammer berechnen wir nach
+\begin{align*}
+	[A_1, A_2]^{\fso(n)}
+	&= \frac{\dt}{\dt t}
+		\big(
+			[\Phi_{X_{A_1}}(t)]_* X_{A_2}
+		\big)
+		\big|_{I}
+	\Big|_{t=0}
+	\ .
+\end{align*}
+Einsetzen des Flusses aus Beispiel~\ref{ex:flowSOn} gibt
+\begin{align*}
+	[\Phi_{X_{A_1}}(t)]_* X_{A_2}
+	&= \exp_\mathsf{M}(tA_1)\,A_2\,\exp_\mathsf{M}(-tA_1)
+	\ ,
+\end{align*}
+woraus nach Ableiten an der Stelle $t=0$ folgt
+\begin{align*}
+	[A_1, A_2]^{\fso(n)} = A_1A_2-A_2A_1
+	\ .
+\end{align*}
+Die Lie-Klammer auf $\fso(n)$ ist damit gleich dem Matrixkommutator.
+\end{example}
+
+Sei speziell $\xi_1,\ldots,\xi_n$ eine Basis von $\mathfrak{g}$.
+Dann gibt es eine Darstellung
+\begin{align*}
+	[\xi_i,\xi_j]^\mathfrak{g}
+	&= \sum_{k=1}^n f^k_{ij} \xi_k
+	\ .
+\end{align*}
+Die \mydef{Strukturkonstanten} $f^k_{ij}\in\mathbb{R}$ bezüglich einer gegebenen Basis bestimmen eindeutig die Lie-Algebrastruktur von $\mathfrak{g}$.
+
+\begin{example}
+\label{ex:so3base}
+Für $\fso(3)$, den Vektorraum der schiefsymmetrischen $3\times 3$-Matrizen, wählen wir die Basis
+\begin{align*}
+A_1 &=
+\begin{pmatrix}
+0 & 0 & 0 \\
+0 & 0 & -1 \\
+0 & 1 & 0
+\end{pmatrix}
+\ ,\quad
+A_2 =
+\begin{pmatrix}
+0 & 0 & 1 \\
+0 & 0 & 0 \\
+-1& 0 & 0
+\end{pmatrix}
+\ ,\quad
+A_3 =
+\begin{pmatrix}
+0 & -1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 0
+\end{pmatrix}
+\ .
+\end{align*}
+Für diese Basis gilt
+\begin{align*}
+[A_i,A_j]^{\fso(3)} &= \sum_{k=1}^3 \varepsilon_{ijk} A_k
+\ ,
+\end{align*}
+so dass die Strukturkonstante $f^k_{ij}=\varepsilon_{ijk}$ bezüglich der gegebenen Basis gleich dem Levi-Civita-Symbol ist.
+
+Die Vektorraumisomorphie $[-]_\times:\mathbb{R}^3\rightarrow\fso(3)$ ordnet durch Umkehrung dem Basisvektor $A_i$ den $i$-ten Vektor $e_i$ der Standardbasis des $\mathbb{R}^3$ zu.
+Gleichzeitig erfüllt das Standardvektorprodukt die Relationen $e_i\times e_j=\sum_{k=1}^3 \varepsilon_{ijk}e_k$.
+
+Dies impliziert, dass die Isomorphie $a\mapsto[a]_\times$ überdies ein Lie-Algebraisomorphismus $(\mathbb{R}^3,\times)\rightarrow(\fso(3), [-,-]^{\fso(3)})$ ist.
+\end{example}
+	
 \subsubsection{Adjungierte Darstellung}
 
-Die adjungierte Darstellung $\Ad:G\rightarrow\mathrm{GL}(\mathfrak{g})$ nach Gl.~(\ref{eq:Ad}) ist ein Homomorphismus von Lie-Gruppen.
-Hier soll seine Ableitung
-\begin{empheq}[box=\definitionbox]{align}
-	\ad:=\Dt\,\Ad|_e: \mathfrak{g}\rightarrow\mathfrak{gl}(\mathfrak{g})
-\end{empheq}
-im Tangentialraum $\mathfrak{g}$ des neutralen Elements bestimmt werden.
+Die adjungierte Darstellung $\Ad:G\rightarrow\mathrm{GL}(\mathfrak{g})$ nach Definition~\ref{def:Ad} ist ein Homomorphismus von Lie-Gruppen.
+Seine am neutralen Element ausgewertete Ableitung spielt eine ähnliche Rolle auf der Ebene der Lie-Algebra.
 
+\begin{theorem}
+\label{th:ad}
+Die am neutralen Element $e$ ausgewertete Ableitung der adjungierten Darstellung,
+\begin{align*}
+	\ad:=\Dt\,\Ad|_e: \mathfrak{g}\rightarrow\mathfrak{gl}(\mathfrak{g})
+\end{align*}
+ist die durch
+\begin{align*}
+	\ad(\xi): \upsilon\mapsto[\xi,\upsilon]^\fg
+\end{align*}
+gegebene Derivation auf~$\mathfrak{g}$.
+\end{theorem}
+Dass $\ad(\xi)$ eine Derivation ist, folgt mit der Jacobi-Identität auf $\mathfrak{g}$ und $\upsilon_1,\upsilon_2\in\fg$ durch
+\begin{align*}
+\ad(\xi) [\upsilon_1,\upsilon_2]^\fg
+&= 
+[[\xi, \upsilon_1]^\fg,\upsilon_2]^\fg + [\upsilon_1, [\xi, \upsilon_2]^\fg]^\fg
+=[\ad(\xi) \upsilon_1,\upsilon_2]^\fg + [\upsilon_1,\ad(\xi)\upsilon_2]^\fg
+\end{align*}
+Ebenso mit der Jacobi-Identität folgt mit
+\begin{align*}
+	\ad([\xi_1,\xi_2]^\fg)
+	&= [[\xi_1,\xi_2]^\fg, -]^\fg
+	= -[[\xi_2,-]^\fg, \xi_1]^\fg-[[-,\xi_1]^\fg, \xi_2]^\fg
+	\nonumber\\
+	&= \ad(\xi_1)\circ \ad(\xi_2) - \ad(\xi_2)\circ \ad(\xi_1)
+	\ ,
+\end{align*}
+dass $\ad$ Lie-Algebrahomomorphismus $\mathfrak{g}\rightarrow\mathfrak{gl}(\mathfrak{g})$ ist.
+
+\begin{proof}[Beweis von \ref{th:ad}]
 Nach Definition ist für $g\in G$ und $\upsilon\in\mathfrak{g}$ mit zugehörigem rechtsinvarianten Vektorfeld~$Y_\upsilon$
 \begin{align*}
 	\Ad(g)\cdot\upsilon
@@ -562,13 +1124,13 @@ Nach Definition ist für $g\in G$ und $\upsilon\in\mathfrak{g}$ mit zugehörigem
 	\big|_e
 	\ .	
 \end{align*}
-Sei  $\gamma:(-\varepsilon,\varepsilon)\rightarrow G$ mit $\gamma(0)=e$ und $\dot{\gamma}=X_\xi|_{\gamma(t)}$, insbesondere mit $\dot{\gamma}(0)=\xi\in\mathfrak{g}$	eine Integralkurve zum rechtsinvarianten Vektorfeld $X_\xi$.
+Sei  $\gamma:(-\varepsilon,\varepsilon)\rightarrow G$ mit $\gamma(0)=e$ und $\dot{\gamma}=X_\xi|_{\gamma(t)}$ eine Integralkurve zum rechtsinvarianten Vektorfeld $X_\xi$ mit $X_\xi|_e=\xi$.
 Es folgt
 \begin{align*}
 	\Dt_{\xi}\Ad|_e\cdot\upsilon
 	&=
 	\frac{\dt}{\dt t}
-	\Ad|_{\gamma(t)}\cdot\upsilon
+	\Ad(\gamma(t))\cdot\upsilon
 	\Big|_{t=0}
 	=
 	\frac{\dt}{\dt t}
@@ -579,137 +1141,300 @@ Es folgt
 	\Big|_{t=0}
 	\ .
 \end{align*}
-Da $L_{\gamma(t)}=\Phi_{X_\xi}(t;-)$, folgt
+Mit $L_{\gamma(t)}=\Phi_{X_\xi}(t;-)$ nach Lemma \ref{th:FlowL} folgt
 \begin{align*}
 	\Dt_{\xi}\Ad|_e\cdot\upsilon
 	&=
-	[X_\xi,Y_\upsilon] = [\xi, \upsilon]_\mathfrak{g}
+	[X_\xi,Y_\upsilon]|_e = [\xi, \upsilon]^\mathfrak{g}
 	\ .
 \end{align*}
-$\ad(\xi)$ ist also die durch
-\begin{empheq}[box=\resultbox]{align}
-	\ad(\xi): \upsilon\mapsto[\xi,\upsilon]_\mathfrak{g}
-\end{empheq}
-gegebene Derivation auf~$\mathfrak{g}$.
-Mit der Jacobi-Identität auf $\mathfrak{g}$ folgt nämlich durch
-\begin{align*}
-	\ad([\xi_1,\xi_2])
-	&= [[\xi_1,\xi_2], -]
-	= -[[\xi_2,-], \xi_1]-[[-,\xi_1], \xi_2]
-	\nonumber\\
-	&= \ad(\xi_1)\circ \ad(\xi_2) - \ad(\xi_2)\circ \ad(\xi_1)
-	\ ,
-\end{align*}
-dass $\ad$ ein Lie-Algebrahomomorphismus $\mathfrak{g}\rightarrow\mathfrak{gl}(\mathfrak{g})$ ist.
+\end{proof}
 	
 \subsection{Liesche Exponentialabbildung}
 
-\subsubsection{Vorbetrachtungen}
-
 Sei $\xi\in\mathfrak{g}=\Tt_eG$ ein Element der Lie-Algebra zur Lie-Gruppe~$G$ und $X_\xi$ das zugehörige rechtsinvariante Vektorfeld.
-Der Fluss $\Phi_{X_\xi}(t;e)$ ist mindestens lokal für ein hinreichend kleines $t=\Delta t$ definiert.
-Wir setzen nun $g=\Phi_{X_\xi}(\Delta t;e)$ und 
+Aus der Theorie der gewöhnlichen Differentialgleichungen folgt, dass der Fluss $\Phi_{X_\xi}(t;g)$ mindestens lokal für ein hinreichend kleines $t$ definiert ist.
+Diese Aussage lässt sich verstärken:
+\begin{theorem}
+\label{th:PhiGlobal}
+Der Fluss $(t, g)\mapsto\Phi_{X_\xi}(t;g)$ existiert auf ganz $\mathbb{R}\times G$.
+\end{theorem}
+\begin{proof}
+Wir dürfen voraussetzen, dass $\Phi_{X_\xi}(\Delta t;e)$ für hinreichend kleines $\Delta t\in\mathbb{R}$ existiert.
+Sei
 \begin{align*}
 	\tilde{\Phi}_{X_\xi}(t;g)
-	&= R_g\circ\Phi_{X_\xi}(t;e)
+	&= (R_g\circ\Phi_{X_\xi})(t;e)
+	\ .
 \end{align*}
-Eine einfache Prüfung ergibt, dass $\tilde{\Phi}_{X_\xi}(0;g)=g$ und
+Offenbar ist $\tilde{\Phi}_{X_\xi}(0;g)=g$ und
 \begin{align*}
 	\frac{\dt}{\dt t}
 		\tilde{\Phi}_{X_\xi}(t;g)
 	\Big|_{t=0}
 	= \Tt R_g|_e \cdot X_\xi|_e
-	= \Tt R_g|_e \cdot \xi
+	= X_\xi|_g
 	\ ,
 \end{align*}
 woraus folgt, dass $\tilde{\Phi}_{X_\xi}(t;g)=\Phi_{X_\xi}(t;g)$.
 Der Fluss mit Startpunkt $g$ wird also auf den am neutralen Element~$e$ startenden Fluss zurückgeführt.
-Damit impliziert nun die Existenz von $\Phi_{X_\xi}(\Delta t;e)$ jene von $\Phi_{X_\xi}(\Delta t;g)=\Phi_{X_\xi}(2\Delta t;e)$,
-woraus wir folgern, dass der Fluss $\Phi_{X_\xi}$ zum rechtsinvarianten Vektorfeld~$X_\xi$ auf ganz $\mathbb{R}\times G$ existiert.
+Die Existenz von $\Phi_{X_\xi}(\Delta t;e)$ impliziert über die Halbgruppeneigenschaft also jene von $\Phi_{X_\xi}(2\Delta t;e)=\Phi_{X_\xi}(\Delta t;g=\Phi_{X_\xi}(\Delta t;e))$.
+Es folgt, dass der Fluss $\Phi_{X_\xi}(t;g)$ zum rechtsinvarianten Vektorfeld~$X_\xi$ für alle $g\in G$ und alle$t\in\mathbb{R}$ existiert.
+\end{proof}
 
 \subsubsection{Definition der Exponentialabbildung}
 
-Die angestellten Vorbetrachtungen begründen die Definition der \mydef{Exponentialabbildung} gemäß
-\begin{empheq}[box=\definitionbox]{align}
+Satz~\ref{th:PhiGlobal} garantiert die Existenz des Flusses eines rechtsinvarianten Vektorfeldes zu allen Zeiten.
+Dies garantiert die Existenz der im Folgenden definierten Abbildung.
+\begin{definition}
+Die (liesche) \mydef{Exponentialabbildung} ist definiert als
+\begin{align*}
 	\exp: 
 	\mathfrak{g} &\rightarrow G
 	\ ,\nonumber\\
 	\xi &\mapsto \exp\xi := \Phi_{X_\xi}(1; e)
 	\ .
-\end{empheq}
-Umgekehrt ist mit Hilfe der Exponentialabbildung der Fluss eines \emph{rechtsinvarianten} Vektorfelds $X_\xi$ mit $\xi\in\mathfrak{g}$ durch
-\begin{align}
-	\Phi_{X_\xi}(t;g)
-	&= \exp(t\xi)\,g
-\end{align}
-gegeben.
+\end{align*}
+Darin bezeichnet $X_\xi$ das rechtsinvariante Vektorfeld zu $\xi$.
+\end{definition}
 
-\subsubsection{Eigenschaften der Exponentialabbildung}
+\begin{example}
+Wir betrachten wieder $\SO(n)$.
+Der Fluss eines rechtsinvarianten Vektorfelds $X_A$ zum Tangentialvektor $X_A|_I=A\in\fso(n)$ ist in Beispiel \ref{ex:flowSOn} durch $\Phi_{X_A}:(t,Q)\mapsto\exp_\mathsf{M}(tA)\,Q$ angegeben worden.
+Wir finden somit für $\exp:\fso(n)\rightarrow\SO(n)$, dass
+\begin{align*}
+	\exp A &= \Phi_{X_A}(1; I) = \exp_\mathsf{M}(A)
+	\ .
+\end{align*}
+Die liesche Exponentialfunktion auf $\SO(n)$ stimmt also mit der Matrixexponentialfunktion $\exp_\mathsf{M}$ überein.
+\end{example}
 
-Wir notieren in diesem Abschnitt einige analytische und algebraische Eigenschaften der Exponentialabbildung.
+Mit Hilfe der Exponentialabbildung kann man umgekehrt den Fluss eines \emph{rechtsinvarianten} Vektorfelds $X_\xi$ mit $\xi\in\mathfrak{g}$ übersichtlich darstellen.
 
-\paragraph{Einparametergruppe.}
-Die Abbildung $t\mapsto\exp(t\xi)$ für festes $\xi\in\mathfrak{g}$ ist ein Gruppenhomomorphismus $(\mathbb{R},+)\rightarrow G$.
+\begin{lemma}
+Sei $\xi\in\fg$ mit zugehörigem rechtsinvarianten Vektorfeld $X_\xi$.
+Es gilt
+\begin{align*}
+	\exp(t\xi) &= \Phi_{X_\xi}(t; e)
+	\ .
+\end{align*}
+\end{lemma}
+\begin{proof}
+Sei für $t\in\mathbb{R}$ die Abbildung $\tilde{\Phi}:\mathbb{R}\rightarrow G$ mit $\tilde{\Phi}(s)=\Phi_{X_\xi}(st; e)$ gegeben.
+Es ist $\tilde{\Phi}(0)=e$ und
+\begin{align*}
+	\frac{\dt}{\dt s}	
+	\tilde{\Phi}(s)
+	&=
+	\frac{\dt}{\dt s}
+	\Phi_{X_\xi}(st; e)
+	= tX_\xi|_{\Phi_{X_\xi}(st; e)} = tX_\xi|_{\tilde{\Phi}(s)}
+	\ ,
+\end{align*}
+woraus folgt, dass $\tilde{\Phi}(s)=\Phi_{tX_\xi}(s; e)$.
+Auswertung für $s=1$ ergibt die Aussage.
+\end{proof}
 
-\paragraph{Ableitung der Einparametergruppe.}
+\begin{lemma}
 Die Ableitung von $t\mapsto\exp(t\xi)$ lautet
-\begin{align}
+\begin{align*}
+	\frac{\dt}{\dt t}\exp(t\xi)
+	&=
+	\Tt R_{\exp(t\xi)}|_e\cdot\xi
+	=
+	\Psi_1(\exp(t\xi); \xi)
+	\ .
+\end{align*}
+\end{lemma}
+\begin{proof}
+Die Aussage folgt aus dem vorherigen Lemma mit
+\begin{align*}
 	\frac{\dt}{\dt t}\exp(t\xi)
 	&= 
 	\frac{\dt}{\dt t}
 	\Phi_{X_\xi}(t;e)
 	= X_\xi|_{\exp(t\xi)}
 	= \Tt R_{\exp(t\xi)}|_e\cdot\xi
-	\in \Tt_{\exp(t\xi)}G
 	\ .
-\end{align}
-In der Parallelisierung entspricht dieses Ergebnis $\xi\in\mathfrak{g}$.
+\end{align*}
+\end{proof}
 
-\paragraph{Ableitung im Ursprung.}
-Für die Exponentialabbildung erhalten wir für $\xi\in\mathfrak{g}$ und $\upsilon\in\Tt_\xi\mathfrak{g}=\mathfrak{g}$
-\begin{align}
-\label{eq:dExp0}
-	\Dt\exp|_\xi \cdot\upsilon
-	&=
-	\Tt R_{\exp(\xi)}^{-1}|_{\exp(\xi)}
-	\cdot
-	\frac{\dt}{\dt t}
-		\exp(\xi + t\upsilon)
-	\Big|_{t=0}
-	\ ,
-\end{align}
-woraus für den Ursprung~$\xi=0$
+\begin{proposition}
+\label{th:PhiFromExp}
+Der Fluss $\Phi_{X_\xi}$ eines rechtsinvarianten Vektorfeldes $X_\xi$ mit $X_\xi|_e=\xi$ kann für alle $(t,g)\in\mathbb{R}\times G$ mittels
 \begin{align*}
-	\Dt\exp|_0 \cdot\upsilon
+	\Phi_{X_\xi}(t;g)
+	&= \exp(t\xi)\,g
+\end{align*}
+auf die Exponentialabbildung $\exp$ zurückgeführt werden.
+\end{proposition}
+\begin{proof}
+Mit dem vorherigen Lemma berechnen wir
+\begin{align*}
+	\frac{\dt}{\dt t}\exp(t\xi)\,g
 	&=
-	\frac{\dt}{\dt t}
-		\exp(t\upsilon)
-	\Big|_{t=0}
-	= X_\upsilon|_e = \upsilon
+	\Tt R_g|_{\exp(t\xi)}\cdot\frac{\dt}{\dt t}\exp(t\xi)
+	=
+	\Tt R_g|_{\exp(t\xi)}\cdot\Tt R_{\exp(t\xi)}|_e\cdot\xi
+	\nonumber\\
+	&=
+	\Tt R_{\exp(t\xi)g}|_e\cdot\xi = X_\xi|_{\exp(t\xi)g}
+	\ .
+\end{align*}
+so dass $\exp(t\xi)\,g$ die Differenzialgleichung von $\Phi_{X_\xi}(t;g)$ erfüllt.
+
+Es ist darüberhinaus $\exp(t\xi)\,g|_{t=0}=\exp(0)\,g$
+Der Fluss zum Nullfeld $\Phi_0(t; g)$ ist für alle $g$ konstant, da $\dot{\Phi}_0(t; g)=0$. Es folgt $\exp(0)=\Phi_0(1; e)=e$, womit auch der Anfangswert $\exp(t\xi)\,g|_{t=0}=g$ mit jenem von $\Phi_{X_\xi}(t;g)$ übereinstimmt.
+\end{proof}
+
+\subsubsection{Eigenschaften der Exponentialabbildung}
+
+Wir notieren in diesem Abschnitt einige analytische und algebraische Eigenschaften der Exponentialabbildung.
+
+\begin{proposition}
+Die Abbildung $t\mapsto\exp(t\xi)$ für festes $\xi\in\mathfrak{g}$ ist ein Gruppenhomomorphismus $(\mathbb{R},+)\rightarrow G$.
+Ihr Bild ist eine \mydef{Einparameteruntergruppe} von $G$.
+\end{proposition}
+\begin{proof}
+Es ist für $t,s\in\mathbb{R}$ und mit Hilfe von \ref{th:PhiFromExp}
+\begin{align*}
+	\exp((t+s)\xi)
+	&= \exp((t+s)\xi)e
+	= \Phi_{X_\xi}(t+s;e)
+	= \Phi_{X_\xi}(t; \Phi_{X_\xi}(s;e))
+	= 
+	\nonumber\\
+	&= \exp(t\xi)\Phi_{X_\xi}(s;e) = \exp(t\xi)\exp(s\xi)
 	\ ,
 \end{align*}
-also
-\begin{empheq}[box=\resultbox]{align}
+worin $X_\xi$ wiederum das rechtsinvariante Vektorfeld mit $X_\xi|_e=\xi$ bezeichnet.
+\end{proof}
+
+
+\begin{lemma}
+Im Ursprung $0\in\fg$ hat die Exponentialabbildung den Wert
+\begin{align*}
 	\Dt\exp|_0
 	&=
 	\mathrm{id}
-\end{empheq}
-folgt.
+	\ .
+\end{align*}
+\end{lemma}
+\begin{proof}
+Für die Exponentialabbildung erhalten wir im Ursprung und für $\xi\in\fg$ mit zugehörigem rechtsinvarianten Vektorfeld $X_\xi$
+\begin{align*}
+	\Dt\exp|_0 \cdot\xi
+	&=
+	\frac{\dt}{\dt t}
+		\exp(t\xi)
+	\Big|_{t=0}
+	= \frac{\dt}{\dt t}
+		\Phi_{X_{\xi}}(t;e)
+	\Big|_{t=0}
+	= X_\xi|_e = \xi
+	\ ,
+\end{align*}
+\end{proof}
 
-\paragraph{Normalkoordinaten.}
 Da die Ableitung von $\exp$ im Ursprung gleich der Identität ist,
-existiert ein Gebiet $U\subset\mathfrak{g}$, auf dem $\exp$ ein Diffeomorphismus auf $V=\exp U$ ist.
-Die Umkehrabbildung
-\begin{empheq}[box=\definitionbox]{align}
-	\ln=\exp^{-1}
-\end{empheq}
-auf $V$ ist damit also eine lokale Karte von $G$ um das neutrale Element.
-Über die (Rechts-)Multiplikation gewinnt man entsprechend eine lokale Karte um jedes $g\in G$.
+existiert ein Gebiet $U\subset\mathfrak{g}$, auf dem $\exp$ ein Diffeomorphismus auf das Bild $V=\exp U$ ist.
 
-Sei $\xi_1,\ldots,\xi_n$ eine Basis von $\mathfrak{g}$.
-Indem wir Vektoren $\xi\in\mathfrak{g}$ bezüglich dieser Basis parametrisieren, $\xi=\sum_{i=1}^n x^i\xi_i$ mit $x^i\in\mathbb{R}$,
-gewinnen wir lokale Koordinaten für $G$.
-Diese nennen wir \mydef{(liesche) Normalkoordinaten}.
+\begin{definition}
+In der gegebenen Situation bezeichnen wir die Umkehrabbildung $V\rightarrow U$ zu $\exp$ mit
+\begin{align*}
+	\ln &= \exp^{-1}
+	\ .
+\end{align*}
+Die Abbildung $\ln$ ist eine Kartenabbildung auf $V$.
+\end{definition}
+In Komposition $\ln\circ R_{g^{-1}}$ mit der Rechtsmultiplikation kann für jedes $g\in G$ eine lokale Karte gewonnen werden.
+
+\begin{example}
+Sei $a\in\mathbb{R}^3$ ein (Koordinaten-)Vektor, den wir mit $A\in\fso(3)$ vermöge $A=[a]_\times$ identifizieren.
+Mit $|a|=\sqrt{(a^x)^2+(a^y)^2+(a^z)^2}$ bezeichnen wir die standard\-euklidische Norm von $a$.
+Die \mydef{Formel von Rodrigues} besagt, dass
+\begin{align*}
+	\exp_\mathsf{M}(A)
+	&=
+	I + \frac{\sin(|a|)}{|a|}\,A + \frac{1 - \cos(|a|)}{|a|^2}\,A^2
+	\ .
+\end{align*}
+$\exp_\mathsf{M}(A)$ beschreibt eine (rechtshändige) Rotation um den Winkel $|a|$ um die Achse $a/|a|$.\footnotemark
+Damit ist $\exp_\mathsf{M}:\fso(3)\rightarrow \SO(3)$ in jedem Fall surjektiv.
+Jedoch ist die Abbildung nicht global injektiv, weil zum Beispiel für $|a|=\pi$ die Werte $\exp_\mathsf{M}(A)$ und $\exp_\mathsf{M}(-A)$ übereinstimmen.
+
+Da $t\mapsto\exp_\mathsf{M}(tA)$ eine Flusslinie zum durch $A$ definierten (rechtsinvarianten) Vektorfeld ist und da sich solche Flusslinien nicht schneiden, impliziert eine Gleichheit $\exp_\mathsf{M}(A)=\exp_\mathsf{M}(B)$ mit $B=[b]_\times\in\fso(3)$, dass $A$ ein $\mathbb{R}$-Vielfaches von $B$ ist.
+Ist $|a|<\pi$ und $|b|<\pi$, impliziert die Gleichheit ihrer $\exp_\mathsf{M}$-Bilder sogar $a=b$, wie man anhand der Formel von Rodrigues unmittelbar sieht.
+
+Für $a\in\mathrm{B}^3_\pi=\{a\in\mathbb{R}^3\,|\,|a|<\pi\}$ ist also $a\mapsto\exp_\mathsf{M}([a]_\times)$ eine glatte Bijektion auf sein Bild.
+Auf $\exp_\mathsf{M}([\mathrm{B}^3_{\pi/2}]_\times)$ können wir die Umkehrung
+\begin{align*}
+	\ln_\mathsf{M}:
+	\exp_\mathsf{M}([\mathrm{B}^3_{\pi/2}]_\times)
+	&\rightarrow \fso(3)
+	\ ,\nonumber\\
+	C 
+	&\mapsto
+	\frac{\arcsin|k_C|}{|k_C|}
+	\, K_C
+\end{align*}
+mit $K_C=[k_C]_\times=(C-C\trans)/2$ explizit angeben.
+Da $\ln_\mathsf{M}$ auf seinem Definitionsbereich offenbar ebenfalls glatt ist, ist es eine Karte für alle Drehungen mit einem Drehwinkel, der absolut kleiner als $\pi/2$ ist.
+
+Die Komponenten der hier betrachteten Vektoren $a\in\mathbb{R}^3$ sind die Koordinaten bezüglich der in Beispiel~\ref{ex:so3base} angegebenen Basis von $\fso(3)$.
+Sie sind damit Normalkoordinaten von $\SO(3)$ im Sinne der Definition~\ref{def:normalcoords}.
+\end{example}
+\footnotetext{
+	Für $a=\theta\,e_x$ mit $\theta>0$ finden wir etwa
+	\begin{align*}
+		\exp_\mathsf{M}([\theta\,e_x]_\times)
+		&=
+		\begin{pmatrix}
+			1 & 0 & 0 \\
+			0 & \cos\theta & -\sin\theta \\
+			0 & \sin\theta & \cos\theta
+		\end{pmatrix}
+		\ .
+	\end{align*}		
+	Für ein beliebiges $a$ existieren Drehmatrizen $Q$ mit $Qa=|a|e_x$.
+	In diesem Fall ist
+	$\exp_\mathsf{M}([a]_\times)=Q\exp_\mathsf{M}(|a|[e_x]_\times)Q^{-1}$
+	eine Drehung um die Achse $a/|a|$ um den Winkel $|a|$.
+}
+
+\begin{proof}[Beweis der Formel von Rodrigues]
+Wir setzen
+\begin{align*}
+	F(t,A) &=
+	I 
+	+ \frac{\sin(t|a|)}{|a|}\,A
+	+ \frac{1 - \cos(t|a|)}{|a|^2}\,A^2
+\end{align*} 
+und zeigen die Gleichheit $F(t,A)=\exp_\mathsf{M}(tA)$.
+
+Für $A=[a]_\times$ folgt aus der Graßmannschen Vektorproduktidentität, dass $A^2=aa\trans - |a|^2I$.
+Daraus folgt wiederum $A^3=-|a|^2A$.
+Es ist somit
+\begin{align*}
+	A\,F(t,A)
+	&=
+	\cos(t|a|)\,A
+	+
+	\frac{\sin(t|a|)}{|a|}\,A^2
+	\ .	
+\end{align*}
+Denselben Ausdruck erhält man für die Ableitung $\dt F(t,A)/\dt t$.
+
+$F(t,A)$ erfüllt damit dieselbe Differenzialgleichung wie $\exp_\mathsf{M}(tA)$ und hat überdies den gleichen Anfangswert $F(0,A)=I$.
+\end{proof}
+
+\begin{definition}
+\label{def:normalcoords}
+Sei $\xi_1,\ldots,\xi_n$ eine Basis der Lie-Algebra $\mathfrak{g}$ zur Lie-Gruppe $G$.
+Die in der Koordinatendarstellung $\xi=\sum_{i=1}^n x^i\xi_i$ für $\xi\in\mathfrak{g}$ verwendeten Koordinaten $x^i\in\mathbb{R}$, $i=1,\ldots,n$ nennen wir \mydef{(liesche) Normalkoordinaten}.
+\end{definition}
+Über $\exp$ liefern die lieschen Normalkoordinaten eine (lokale) Parametrisierung von $G$.
+
 
 \subsubsection{Exponentialabbildung und adjungierte Darstellung}
 
@@ -722,16 +1447,59 @@ G \arrow{r}{\Ad}
 & \mathrm{GL}(\mathfrak{g})
 \end{tikzcd}
 \end{center}
-illustriert zwei Wege für Abbildungen $\mathfrak{g}\rightarrow\mathrm{GL}(\mathrm{g})$.
-Dabei ist $\exp:\mathfrak{gl}(\mathfrak{g})\rightarrow\mathrm{GL}(\mathfrak{g})$ die ``gewöhnliche'' Operatorexponentialfunktion.
+illustriert zwei Kompositionen für eine Abbildung $\mathfrak{g}\rightarrow\mathrm{GL}(\mathrm{g})$.
+Dabei ist $\exp:\mathfrak{gl}(\mathfrak{g})\rightarrow\mathrm{GL}(\mathfrak{g})$ die ``gewöhnliche'' durch die Potenzreihe definierte Operatorexponentialfunktion.\footnote{
+	Die Bildräume von $\ad$ und $\Ad$ könnte man genauer charakterisieren als $\fg$ und $\mathrm{GL}(\fg)$.
+}
 
-Dass sie übereinstimmen, dass also
-\begin{empheq}[box=\resultbox]{align}
+\begin{theorem}
+\label{th:AdExp}
+Bezugnehmend auf das vorstehende Diagramm gilt
+\begin{align*}
 	\Ad\circ\exp &= \exp\circ\ad
-\end{empheq}
-ist, soll hier gezeigt werden.
+	\ ,
+\end{align*}
+so dass das Diagramm kommutativ ist.
+\end{theorem}
 
-Sei dazu $\xi\in\mathfrak{g}$ beliebig.
+\begin{example}
+Die Lie-Algebra $\fso(3)$ identifizieren wir wieder mit $(\mathbb{R}^3,\times)$, wobei wir wie in vorherigen Beispielen die Entsprechung von $a\in\mathbb{R}^3$ mit $A=[a]_\times\in\fso(3)$ verwenden.
+
+In diesem Fall ist
+\begin{align*}
+	(\Ad\circ\exp)(A): 
+	B &\mapsto
+	\exp_\mathsf{M}(A)\,B\,\exp_\mathsf{M}(-A)
+	= 
+	\big[	
+		\exp_\mathsf{M}(A)\,b
+	\big]_\times
+\end{align*}
+für $B=[b]_\times\in\fso(3)$ mit $b\in\mathbb{R}^3$.
+
+Andererseits ist
+\begin{align*}
+	(\exp\circ\ad)(A):
+	B \mapsto
+	\exp(\ad(A))\cdot B
+	&= \exp([A,-]^{\fso(3)})(B)
+	\nonumber\\
+	&=
+	\big[
+		\exp_\mathsf{M}([a]_\times)\,b
+	\big]_\times
+	= \big[
+		\exp_\mathsf{M}(A)\,b
+	\big]_\times	
+	\ .
+\end{align*}
+Im Beispiel $\SO(3)$ ist die Identität $\Ad\circ\exp=\exp\circ\ad$ durch die Isomorphie $(\mathbb{R}^3,\times)\cong\fso(3)$ sehr einfach darstellbar.
+\end{example}
+
+
+
+\begin{proof}[Beweis von \ref{th:AdExp}]
+Sei $\xi\in\mathfrak{g}$.
 Wir betrachten zwei Kurven in $\mathrm{GL}(\mathfrak{g})$,
 \begin{align*}
 	\Gamma_1: t&\mapsto \exp(t\,\ad(\xi))
@@ -775,6 +1543,7 @@ Aufgrund der Einparametergruppeneigenschaft gilt für $i=1,2$
 Beide Kurven erfüllen also dieselbe gewöhnliche Differenzialgleichung ersten Grades und haben wegen $\Gamma_1(0)=\Gamma_2(0)=\mathrm{id}$ überdies den gleichen Anfangswert.
 Damit stimmen $\Gamma_1$ und $\Gamma_2$ überein, 
 so dass die Gleichheit $\Gamma_1(1)=\Gamma_2(1)$ die zu zeigende Aussage ergibt.
+\end{proof}
 
 \subsubsection{Ableitung der Exponentialfunktion}
 
@@ -1042,7 +1811,7 @@ und Inversenbildung
 selbst eine Lie-Gruppe.
 Dabei ist der Nullvektor $0_e=0\in\Tt_eG=\mathfrak{g}$ am neutralen Element von $G$ das neutrale Element von $\Tt G$.
 
-Die Abbildung $\Psi_1^{-1}:\xi_g\mapsto\Tt R_{g^{-1}}|_g\cdot \xi_g$, vgl. Gl.~(\ref{eq:Psi1}), definiert den Diffeomorphimus $\Tt G\rightarrow G\times\mathfrak{g}$, den wir zur Parallelisierung von $G$ verwenden.
+Die Abbildung $\Psi_1^{-1}:\xi_g\mapsto\Tt R_{g^{-1}}|_g\cdot \xi_g$, vgl. Defitinion~\ref{def:Psi1}, definiert den Diffeomorphimus $\Tt G\rightarrow G\times\mathfrak{g}$, den wir zur Parallelisierung von $G$ verwenden.
 Über diesen transportieren wir die Lie-Gruppenstruktur auf $G\times\mathfrak{g}$ und finden mit
 \begin{align*}
 	&\Tt R_{(gh)^{-1}}|_{gh}
@@ -1546,7 +2315,7 @@ finden wir in den Trivialisierungen
 \subsubsection{Affine Zusammenhänge}
 
 Um aus Formel (\ref{eq:TX}) eine kovariante Ableitung zu gewinnen, bedarf es lediglich einer Projektion auf den Vertikalraum.
-Die allgemeinste Form eine solchen Projektion lautet
+Die allgemeinste Form einer solchen Projektion lautet
 \begin{align}
 K: (\xi, \Dt Y^\mathfrak{g}|_{g}\cdot\xi)
 	&\mapsto 
