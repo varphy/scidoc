@@ -935,7 +935,7 @@ and $L_{\gamma(0)}=L_{e}=\mathrm{id}$.
 \begin{example}
 \label{ex:flowSOn}
 On $\SO(n)$ for $n\geq 2$, consider the curve $C(t)=\exp_\mathsf{M}(tA)$ with $A\in\fso(n)$.
-Here, $\exp_\mathsf{M}$ denotes the matrix exponential defined by the power series of $x\mapsto\mathrm{e}^x$.
+Here, $\exp_\mathsf{M}$ denotes the matrix exponential defined by the power series of $x\mapsto\mathrm{e}^x$.\footnotemark
 Evidently, $C(0)=I$ and $\dot{C}(t)=A\exp_\mathsf{M}(tA)=AC(t)$. The expression $AC(t)$ equals the value of the right-invariant vector field~$X_A$ defined by $A$ at the point $C(t)$.
 
 Thus, the flow of $X_A$ with $X_A|_I=A$ has the form
@@ -944,6 +944,15 @@ Thus, the flow of $X_A$ with $X_A|_I=A$ has the form
 	\ .
 \end{align*}
 \end{example}
+\footnotetext{
+That $\exp_\mathsf{M}(tA)\in\SO(n)$ follows from
+\begin{align*}
+	\exp_\mathsf{M}(tA)[\exp_\mathsf{M}(tA)]\trans
+	&= \exp_\mathsf{M}(tA)\exp_\mathsf{M}(tA\trans)
+	= \exp_\mathsf{M}(tA)\exp_\mathsf{M}(-tA)=I
+\end{align*}
+and from the fact that, by continuity, the sign of $\det[\exp_\mathsf{M}(tA)]$ agrees with that of $\det[\exp_\mathsf{M}(0)]=1$.
+}
 
 \subsubsection{Lie Bracket on $\mathfrak{g}$}
 
