@@ -27,7 +27,7 @@
 \titlespacing*{\subsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
 
 \renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
-\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
 \titlespacing*{\subsubsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
 
 % text boxing
@@ -1312,6 +1312,7 @@ worin $X_\xi$ wiederum das rechtsinvariante Vektorfeld mit $X_\xi|_e=\xi$ bezeic
 
 
 \begin{lemma}
+\label{th:DExp0}
 Im Ursprung $0\in\fg$ hat die Exponentialabbildung den Wert
 \begin{align*}
 	\Dt\exp|_0
@@ -1447,9 +1448,9 @@ G \arrow{r}{\Ad}
 & \mathrm{GL}(\mathfrak{g})
 \end{tikzcd}
 \end{center}
-illustriert zwei Kompositionen für eine Abbildung $\mathfrak{g}\rightarrow\mathrm{GL}(\mathrm{g})$.
+illustriert zwei Kompositionen für eine Abbildung $\mathfrak{g}\rightarrow\mathrm{GL}(\fg)$.
 Dabei ist $\exp:\mathfrak{gl}(\mathfrak{g})\rightarrow\mathrm{GL}(\mathfrak{g})$ die ``gewöhnliche'' durch die Potenzreihe definierte Operatorexponentialfunktion.\footnote{
-	Die Bildräume von $\ad$ und $\Ad$ könnte man genauer charakterisieren als $\fg$ und $\mathrm{GL}(\fg)$.
+	Die Bildräume von $\ad$ und $\Ad$ könnte man genauer charakterisieren als 	Derivationenraum $\mathfrak{der}(\fg)$ bzw. Automorphismengruppe $\mathrm{Aut}(\fg)$.
 }
 
 \begin{theorem}
@@ -1514,7 +1515,7 @@ Dass dies auch $\Gamma_2$ ist, folgt aus
 	&= \Ad(\exp((t+s)\xi))
 	= \Ad(\exp(t\xi)\exp(s\xi))
 	\nonumber\\
-	&= \Ad(\exp(t\xi)\cdot\Ad(\exp(s\xi)
+	&= \Ad(\exp(t\xi))\cdot\Ad(\exp(s\xi))
 	\ .
 \end{align*}
 Es ist außerdem
@@ -1547,11 +1548,36 @@ so dass die Gleichheit $\Gamma_1(1)=\Gamma_2(1)$ die zu zeigende Aussage ergibt.
 
 \subsubsection{Ableitung der Exponentialfunktion}
 
-Ausgehend von Gl.~(\ref{eq:dExp0}) betrachten wir die Ableitung mit um den Faktor $s$ skalierten Tangentialvektoren,
+Wir verallgemeinern Lemma~\ref{th:DExp0} zu folgendem Satz.
+\begin{theorem}
+\label{th:DExp}
+Die Ableitung der Exponentialabbildung an der Stelle $\xi\in\fg$ hat als Abbildung $\Tt\exp|_{\xi}:\Tt_\xi\fg=\fg\rightarrow\Tt_{\exp\xi}G$ die Form
+\begin{align*}
+	\Tt\exp|_{\xi}
+	&= \Tt R_{\exp\xi}|_e\cdot E(\ad(\xi))
+\end{align*}
+sowie als Abbildung $\Dt\exp|_{\xi}:\fg\rightarrow\fg$ die Form
+\begin{align*}
+	\Dt\exp|_{\xi}
+	&= E(\ad(\xi))
+	\ .
+\end{align*}
+Darin ist $E$ als die durch
+\begin{align*}
+	E(x) &:=
+	\int_0^1
+	\mathrm{e}^{(1-s')x}\ \dt s'
+	= \frac{\mathrm{e}^x-1}{x}
+	= 1 + \frac{1}{2}x + \frac{1}{6}x^2 + \ldots
+\end{align*}
+definierte Potenzreihe aufzufassen.
+\end{theorem}
+\begin{proof}
+Wir betrachten die Ableitung für um den Faktor $s$ skalierte Tangentialvektoren,
 \begin{align*}
 	\Dt\exp|_{s\xi} \cdot s\upsilon
 	&=
-	\Tt R_{\exp(s\xi)}^{-1}|_{\exp(s\xi)}
+	\Tt R_{\exp(-s\xi)}|_{\exp(s\xi)}
 	\cdot
 	\frac{\dt}{\dt t}
 		\exp(s\xi + st\upsilon)
@@ -1581,14 +1607,14 @@ wobei
 	&= \frac{\dt}{\dt t} h_{\xi, \upsilon}(t, s)
 	\ .
 \end{align*}
-Wir notieren einige in der Folge wichtige Eigenschaften dieser Abbildung,
+Wir notieren, dass
 \begin{align*}
 	h_{\xi,\upsilon}(0, s)
 	&= e
-	\ ,\\
-	\dot{h}_{\xi, \upsilon}(0, s) 
-	&\in\mathfrak{g}
-	\ ,\\
+	\ ,
+\end{align*}
+sowie für die $\fg$-wertige Abbildung $\dot{h}_{\xi, \upsilon}(0, s)$, dass
+\begin{align*}
 	\dot{h}_{\xi, \upsilon}(0, 0)
 	&= 0
 	\ ,\\
@@ -1681,7 +1707,7 @@ und
 	&= \exp(\ad(-s\xi))\cdot\xi
 	= \xi
 \end{align*}
-erhalten wir 
+(siehe Satz~\ref{th:AdExp}) erhalten wir 
 \begin{align*}
 	\frac{\partial}{\partial s}
 	\dot{h}_{\xi, \upsilon}(0, s)	
@@ -1755,30 +1781,217 @@ Mit dem Anfangswert $\dot{h}_{\xi, \upsilon}(0, 0)=0$ finden wir
 	\exp((s-s')\,\ad(\xi))\cdot{\upsilon}
 	\ \dt s'
 \end{align*}
-und mit $\dot{h}_{\xi, \upsilon}(0, 1)=\Dt\exp|_{\xi}\cdot\upsilon$ schließlich
-\begin{empheq}[box=\resultbox]{align}
-	\Dt\exp|_{\xi}
-	&= E(\ad(\xi))
-	\ ,
-\end{empheq}
-wobei
-\begin{align}
-	E(x) &:=
-	\int_0^1
-	\mathrm{e}^{(1-s')x}\ \dt s'
-	= \frac{\mathrm{e}^x-1}{x}
-	= 1 + \frac{1}{2}x + \frac{1}{6}x^2 + \ldots
-	\ .
-\end{align}
+und mit $\dot{h}_{\xi, \upsilon}(0, 1)=\Dt\exp|_{\xi}\cdot\upsilon$ schließlich die zu zeigende Formel für $\Dt\exp$.
+Durch Rechtsmultiplikation folgt entsprechend die Formel für $\Tt\exp$.
+\end{proof}
 
-\newpage
+Mit Satz~\ref{th:DExp} können in der Folge Formeln wie jene von Baker-Campbell-Hausdorff hergeleitet werden.
+In diesem Aufsatz nutzen wir ihn für einen in der Navigation interessantes Ergebnis.
+\begin{example}
+\label{ex:coning1}
+Wir betrachten die bereits in Beispiel \ref{ex:attitude_error} behandelte Kinematik der Lage $C\in\SO(3)$.
+Sei $\omega\in\mathbb{R}^3$ bzw. $\Omega=[\omega]_\times\in\fso(3)$ die körperfest (fehlerfrei) gemessene Winkelgeschwindigkeit.
+Die Lage erfüllt in dieser Situation die Differenzialgleichung
+\begin{align*}
+	\dot{C} &= C\,\Omega
+	\ .
+\end{align*}
+In der Praxis liegen die Winkelgeschwindigkeiten in Form von über einem Intervall $(t-\Delta, t)$ integrierten Winkelinkrementen
+\begin{align*}
+	\theta(t) &= \int_{t-\Delta t}^t\omega(\tau)\,\dt \tau
+\end{align*}
+vor, aus denen man in erster Näherung die Lageänderung durch
+\begin{align*}
+	C(t) &\simeq C(t - \Delta t)\,\exp_\mathsf{M}([\theta(t)]_\times)
+\end{align*}
+bestimmt.
+Diese Näherungsformel ist exakt für den Fall, dass $\omega$ über das Messintervall seine Richtung beibehält.
+Rotiert diese Drehachse über das Intervall $(t-\Delta t, t)$ unterliegt die angebene Näherung dem sogenannten \mydef{Konusbewegungsfehler} (englisch \emph{Coning}-Fehler).
+Zur Verbesserung kann man zum Winkelinkrement eine \mydef{Konusbewegungskorrektur} (\emph{Coning}-Korrektur) $\Delta\theta^c$ addieren,
+\begin{align*}
+	C(t) &\simeq C(t - \Delta t)\,
+	\exp_\mathsf{M}([\theta(t) + \Delta\theta^c(t)]_\times)
+	\ .
+\end{align*}
+Die \mydef{Magnus-Entwicklung} liefert eines systematische Näherung für $\Delta\theta^c$.\footnotemark
+\end{example}
+\footnotetext{
+Liegen Winkelinkremente $\theta$ auf relativ zur Lagedynamik hinreichend hoher Abtastrate vor, wird eine Konusbewegungskorrektur im Navigationsalgorithmus unnötig. 
+Voraussetzung ist, dass die Rechenleistung zur Verarbeitung der hochabgetasteten Winkelinkremente ausreicht.
+Dies ist heutzutage zunehmend der Fall.
+}
+
+\begin{lemma}
+\label{th:MagnusLemma}
+Sei $T>0$ die Länge eines Intervalls und $\Omega: (0,T)\rightarrow\fso(n)$ eine glatte Kurve.
+Die Differenzialgleichung 
+\begin{align*}
+	\frac{\dt}{\dt t}\exp_\mathsf{M}(\Theta)
+	&= \exp_\mathsf{M}(\Theta)\,\Omega
+\end{align*}
+für die $\fso(n)$-wertige Abbildung $t\mapsto\Theta(t)$ lässt sich in der Form
+\begin{align*}
+	\dot{\Theta}
+	&= \frac{\ad(\Theta)}{1 - \mathrm{e}^{-\ad(\Theta)}}\,\Omega
+\end{align*}
+schreiben.
+(Die von $\ad(\Theta)$ abhängige Funktion ist dabei formal als Potenzreihe auszuwerten.)
+\end{lemma}
+Wir bemerken, dass das obige Lemma für alle (Matrix-)Lie-Gruppen und ihre Lie-Algebren gilt, nicht nur den uns in den Beispiel interessierenden Fall der $\SO(n)$.
+
+\begin{proof}
+Durchführen der Ableitung liefert mit Satz~\ref{th:DExp}
+\begin{align*}
+	\frac{\dt}{\dt t}\exp_\mathsf{M}(\Theta)
+	&= \Tt \exp|_\Theta\cdot\dot{\Theta}
+	= \big(
+		E(\ad(\Theta))\,\dot{\Theta}
+	\big)\,\exp_\mathsf{M}(\Theta)
+	\ .
+\end{align*}
+Es folgt mit Satz \ref{th:AdExp}
+\begin{align*}
+	E(\ad(\Theta))\,\dot{\Theta}
+	&=
+	\exp_\mathsf{M}(\Theta)\,\Omega\,\exp_\mathsf{M}(-\Theta)
+	= \Ad(\exp_\mathsf{M}(\Theta))\,\Omega
+	= \exp_\mathsf{M}(\ad(\Theta))\,\Omega
+\end{align*}
+und damit
+\begin{align*}
+	\dot{\Theta}
+	&=
+	\frac{\mathrm{e}^{\ad(\Theta)}}{E(\ad(\Theta))}
+	\,\Omega
+	\ .
+\end{align*}
+Einsetzen von $E$ liefert die zu zeigende Gleichung.
+\end{proof}
+
+\begin{definition}
+Die durch sukzessive Iteration der Gleichung
+\begin{align*}
+	\dot{\Theta}
+	&= \frac{\ad(\Theta)}{1 - \mathrm{e}^{-\ad(\Theta)}}\,\Omega
+\end{align*}
+gewonnene Reihenentwicklung ist die \mydef{Magnus-Entwicklung}.
+\end{definition}
+Wir geben die ersten Terme der Magnus-Reihe über das Intervall~$(0, T)$ mit Anfangswert $\Theta(0)=0$ an.
+Es ist 
+\begin{align*}
+	\dot{\Theta}
+	&= 
+	\Big(
+		1 + \frac{1}{2}\ad(\Theta) 
+		+ \frac{1}{12}[\ad(\Theta)]^2
+		+ \ldots
+	\Big)\,\Omega
+\end{align*}
+Für die führende Ordnung ist
+\begin{align*}
+	\Theta^{(0)}(T) &= \int_0^T\dt t\,\Omega(t)
+	\ .
+\end{align*}
+Einsetzen von $\Theta^{(0)}$ in die rechte Seite liefert die nächste Ordnung
+\begin{align*}
+	\Theta^{(1)}(T)
+	&=
+	\frac{1}{2}\int_0^T\dt t\,
+	[\Theta^{(0)}(t), \Omega(t)]^{\fso(n)}
+	\nonumber\\	
+	&=
+	\frac{1}{2}\int_0^T\dt t\int_0^t\dt t_1 \,
+	[\Omega(t_1), \Omega(t)]^{\fso(n)}
+	\ ,
+\end{align*}
+und damit erhalten wir wiederum
+\begin{align*}
+\Theta^{(2)}(T)
+	&= 
+	\frac{1}{2}
+	\int_0^T\dt t\, 
+	[\Theta^{(1)}(t), \Omega(t)]^{\fso(n)}
+	\nonumber\\
+	&\quad
+	+\frac{1}{12}
+	\int_0^T\dt t\,
+	[\Theta^{(0)}(t), [\Theta^{(0)}(t), \Omega(t)]^{\fso(n)}]^{\fso(n)}
+	\ ,	
+\end{align*}
+was unter Ausnutzung von
+\begin{align*}
+	\int_0^t\dt t_1\int_0^t\dt t_2\, f(t_1,t_2)
+	&=\int_0^t\dt t_1\int_0^{t_1}\dt t_2\,
+	[f(t_1,t_2)-f(t_2,t_1)]
+\end{align*}
+und Jacobi-Identität symmetrisch in der Form
+\begin{align*}
+\Theta^{(2)}(T) 
+	=
+	\frac{1}{6}
+	\int_0^T\dt t\int_0^t\dt t_1\int_0^{t_1}\dt t_2\,
+	\Big(
+		&[[\Omega(t_2), \Omega(t_1)]^{\fso(n)}, \Omega(t)]^{\fso(n)}
+		\nonumber\\
+		&
+		+ [\Omega(t_2), [\Omega(t_1), \Omega(t)]^{\fso(n)}]^{\fso(n)}
+	\Big)	
+\end{align*}
+geschrieben werden kann.
+
+\begin{example}
+\label{ex:coning2}
+Wir führen die Diskussion der Konusbewegungskorrektur aus Beispiel~\ref{ex:coning1} fort.
+Für die führende Korrektur finden wir nach der Magnus-Entwicklung
+\begin{align*}
+	\Delta\theta^c(t)
+	&\simeq
+	\frac{1}{2}\int_{t-\Delta t}^t\dt \tau\int_{t-\Delta t}^\tau\dt \tau_1 \,
+	\omega(\tau_1)\times\omega(\tau)
+	\ ,
+\end{align*}
+wobei wir wiederum $\fso(3)$ durch $(\mathbb{R}^3,\times)$ ausdrücken.
+
+Ändert sich die Winkelgeschwindigkeit über $(t-\Delta t,t)$ in guter Näherung linear in der Zeit,
+ist also
+\begin{align*}
+	\omega(\tau)
+	&=
+	\bar{\omega}
+	+ \alpha\,
+	\big[
+		\tau 
+		- \big(
+			t - \frac{1}{2}\Delta t
+		\big)
+	\big]
+\end{align*}
+mit $\bar{\omega}=\theta/\Delta t$ und einer aus den Messwerten geschätzten Winkelbeschleunigung $\alpha$,
+so lautet die Konusbewegungskorrektur
+\begin{align*}
+	\Delta\theta^c(t)
+	&\simeq
+	\frac{\Delta t^2}{12}\,\theta\times\alpha
+	\ .
+\end{align*}
+\end{example}
 
 \section{Zusammenhänge auf Lie-Gruppen}
 
-Dieser Teil ist der Diskussion von Zusammenhängen auf Lie-Gruppen gewidmet,
-die aus Sicht mancher Anwendung, insbesondere der Navigation, interessant sind.
-Ein allgemeiner Überblick über Zusammenhänge auf Lie-Gruppen ist nicht Ziel.
-Auch beschränken wir uns im Detail auf affine Zusammenhänge auf dem (parallelisierten) Tangentialbündel.
+Auf einer Mannigfaltigkeit~$M$ sind Ableitungen allein aus der differenziellen Struktur heraus wohldefiniert:
+Kurven $t\mapsto\gamma(t)$ besitzen Geschwindigkeitsvektoren $\dot{\gamma}(t)\in\Tt_{\gamma(t)}M$, 
+Funktionen $f:M\rightarrow\mathbb{R}$ liefern Differenzialformen $\dt f$ (verallgemeinert durch die äußere Ableitung) 
+und glatte Abbildungen $F:M\rightarrow N$ die Ableitung $\Tt F:\Tt M\rightarrow\Tt N$.
+
+Allen diesen Ableitungsbegriffen ist gemeinsam, dass ihr Bildraum vom Bildraum der ursprünglichen Abbildung abweicht.
+Um jedoch die Änderungsrate eines Vektorfelds aus Sicht eines Beobachters sinnvoll anzugeben, der sich entlang einer Kurve $\gamma$ mit Momentan\-geschwindigkeit $\dot{\gamma}$ bewegt, wird eine Richtungsableitung benötigt, \emph{deren Ergebnis wieder im Raum des Vektorfelds selbst liegt}.
+
+Ein Zusammenhang stellt genau diese Struktur bereit. 
+Verschwindet die durch ihn definierte Änderungsrate eines Vektorfelds längs $\gamma$, spricht man vom Paralleltransport, mit dem Vektoren von $\Tt_{\gamma(t)}M$ nach $\Tt_{\gamma(t+\Delta t)}M$ überführt werden können. Verschwindet speziell die Änderungsrate des eigenen Geschwindigkeitsvektorfelds $\dot{\gamma}$, bewegt sich der Beobachter unbeschleunigt --- dies definiert Geodätische.
+
+Dieser Abschnitt widmet sich Zusammenhängen auf einer Lie-Gruppe~$G$, 
+wobei der Fokus auf affinen Zusammenhängen, also den linearen Zusammenhängen auf dem Tangentialbündel~$\Tt G$ liegt. 
+Übergeordnete Motivation bleibt dabei die Untersuchung jener Zusammenhänge, die in der Navigation für die Lageschätzung von Bedeutung sind.
 
 \subsection{Parallelisierung von $\Tt G$ und $\Tt\Tt G$}
 

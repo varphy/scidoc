@@ -27,7 +27,7 @@
 \titlespacing*{\subsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
 
 \renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
-\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
 \titlespacing*{\subsubsection}{0pt}{11pt plus 2pt minus 2pt}{11pt plus 2pt minus 2pt}
 
 % text boxing
@@ -148,19 +148,19 @@ In this paper, we treat Lie groups in the sense of the following definition.
 
 \begin{definition}
 A (real) \mydef{Lie group} $G$ is simultaneously a real $C^\infty$-manifold and a group such that group multiplication
-\begin{align}
+\begin{align*}
 	\mathrm{mult}:
 	G\times G&\rightarrow G
 	\ ,\nonumber\\
 	(g, h) &\mapsto gh
-\end{align}
+\end{align*}
 and inversion
-\begin{align}
+\begin{align*}
 	\mathrm{inv}:
 	G&\rightarrow G
 	\ ,\nonumber\\
 	g &\mapsto g^{-1}
-\end{align}
+\end{align*}
 are smooth (i.e., $C^\infty$) maps.
 For multiplication, $G\times G$ inherits its $C^\infty$-structure from that of $G$.
 \end{definition}
@@ -245,10 +245,10 @@ Following the textbook \cite{StorchWiebe2005}, we use the symbol $\Tt$ for (coor
 We restrict the symbol $\Dt$ to derivatives of maps into vector spaces, in which vectors are simply differentiated component-wise after choosing a basis.
 In particular, this includes $\mathfrak{g}=\Tt_eG$.
 }
-\begin{align}
+\begin{align*}
 	\xi = \Tt R_g|_e^{-1}\cdot\xi_g
 	\ .
-\end{align}
+\end{align*}
 In this way, practical calculations with tangent vectors will take place exclusively in $\Tt_eG$,
 while in formulas and derivations we still wish to distinguish transparently between $\Tt_eG$ and a tangent space $\Tt_gG$ represented by $\Tt_eG$.
 
@@ -312,19 +312,19 @@ Accordingly, for $\SO(3)$, the map $\Psi_1$ takes the form
 
 Let $\xi\in\mathfrak{g}=\Tt_eG$ be a tangent vector attached at the identity element.
 Via $\Psi_1$, we define the vector field
-\begin{align}
+\begin{align*}
 	X_\xi: G &\rightarrow \Tt G
 	\ ,\nonumber\\
 	g &\mapsto \Psi_1(g, \xi)\in\Tt_g G
 	\ .
-\end{align}
+\end{align*}
 It is right-invariant in the sense of the following definition.
 
 \begin{definition}
 We call a vector field $X$ on $G$ \mydef{right-invariant} if and only if
-\begin{align}
+\begin{align*}
 	X|_{hg} &= \Tt R_g|_h\cdot X|_{h}
-\end{align}
+\end{align*}
 holds for all $g\in G$.
 \end{definition}
 
@@ -398,10 +398,10 @@ to be the derivative $\Tt F|_g$ transformed via $\Psi_1$ into a map $\fg\rightar
 \subsubsection{Product Rule}
 
 For the derivative of Lie group multiplication
-\begin{align}
+\begin{align*}
 	\mathrm{mult}:G\times G\rightarrow G
 	\ ,
-\end{align}
+\end{align*}
 we distinguish between the derivative
 \begin{align*}
 	\Tt\,\mathrm{mult}|_{(g,h)}:\Tt_gG\times\Tt_hG\rightarrow\Tt_{hg}G
@@ -465,13 +465,13 @@ where $\Ad$ is given by the following definition.
 \begin{definition}
 \label{def:Ad}
 The Lie group homomorphism
-\begin{align}
+\begin{align*}
 	\Ad: G&\rightarrow \mathrm{GL}(\mathfrak{g})
 	\ ,\nonumber\\
 	g &\mapsto
 	\Tt
 	(R_{g^{-1}}\circ L_g)|_e
-\end{align}
+\end{align*}
 is called the \mydef{adjoint representation} of $G$.
 \end{definition}
 
@@ -621,7 +621,7 @@ Setting $\Omega_\nav=\dot{C}C\trans\in\fso(3)$, we find for $\Omega_\nav'=\dot{C
 
 \begin{proof}[Proof of \ref{th:DInv}]
 We express the \emph{constant} map to the identity element as the composition
-\begin{alignat}{2}
+\begin{alignat*}{2}
 	G 
 	&\rightarrow G\times G 
 	&&\rightarrow G
@@ -633,7 +633,7 @@ We express the \emph{constant} map to the identity element as the composition
 	\end{pmatrix}
 	&&\mapsto \mathrm{mult}(\mathrm{inv}(g), g) = e
 	\ .
-\end{alignat}
+\end{alignat*}
 For $g\in G$ and $\xi_g\in\Tt_gG$, the chain rule then gives
 \begin{align*}
 	\mathfrak{g}\ni	
@@ -680,12 +680,12 @@ This is accomplished by the push-forward in the sense of the following definitio
 \begin{definition}
 Let $F:M\rightarrow N$ be a diffeomorphism onto the manifold~$N$.
 The \mydef{push-forward} of $X$ onto $N$ is the vector field defined on $N$ by
-\begin{align}
+\begin{align*}
 	F_*X: N &\rightarrow \Tt N
 	\ ,\nonumber\\
 	q &\mapsto \Tt F|_{F^{-1}(q)}\cdot X|_{F^{-1}(q)}
 	\ .
-\end{align}
+\end{align*}
 \end{definition}
 
 \subsubsection{Flows}
@@ -701,13 +701,13 @@ We call a curve $t\mapsto\gamma(t)\in M$ an \mydef{integral curve} of the vector
 
 \begin{theorem}
 There exist an open interval $I\subset\mathbb{R}$ with $0\in I$ and, for each $p_0\in M$, an open set $V\subset M$ with $p_0\in V$, on whose product the map
-\begin{align}
+\begin{align*}
 	\Phi_X: I\times V \rightarrow M
-\end{align}
+\end{align*}
 satisfying
-\begin{align}
+\begin{align*}
 	\frac{\dt}{\dt t}\Phi_X(t; p) = X|_{\Phi_X(t; p)}
-\end{align}
+\end{align*}
 and $\Phi_X(0; p)=p$ is well-defined and smooth.
 \end{theorem}
 \begin{proof}
@@ -720,11 +720,11 @@ The map $\Phi_X$ of the preceding theorem is called the \mydef{flow} of $X$.
 
 For fixed $p$, the curve $t\mapsto\Phi_X(t; p)$ is the unique integral curve of $X$ passing through $p$.
 The flow $\Phi_X$ of the (time-independent) vector field~$X$ evidently satisfies the \mydef{semigroup property} in the sense that
-\begin{align}
+\begin{align*}
 	\Phi_X(t_1 + t_2; -)
 	&= \Phi_X(t_2; \Phi_X(t_1; -))
 	\ ,
-\end{align}
+\end{align*}
 whenever the right-hand side exists.
 
 \subsubsection{Lie Derivative of Vector Fields}
@@ -735,7 +735,7 @@ Now let $Y$ be another vector field on $M$.
 
 \begin{definition}
 The vector field defined for all $p\in M$ by
-\begin{align}
+\begin{align*}
 	\{X, Y\}\big|_{p} &:= 
 	\frac{\dt}{\dt t}
 	\big(
@@ -743,7 +743,7 @@ The vector field defined for all $p\in M$ by
 	\big)
 	\big|_{p}
 	\Big|_{t=0}
-\end{align}
+\end{align*}
 is called the \mydef{Lie derivative} (or \mydef{Lie product}) of the vector fields $X$ and $Y$.
 \end{definition}
 
@@ -1022,11 +1022,11 @@ The Lie bracket on $\fso(n)$ is therefore equal to the matrix commutator.
 
 Specifically, let $\xi_1,\ldots,\xi_n$ be a basis of $\mathfrak{g}$.
 Then there is a representation
-\begin{align}
+\begin{align*}
 	[\xi_i,\xi_j]^\mathfrak{g}
 	&= \sum_{k=1}^n f^k_{ij} \xi_k
 	\ .
-\end{align}
+\end{align*}
 The \mydef{structure constants} $f^k_{ij}\in\mathbb{R}$ with respect to a given basis uniquely determine the Lie algebra structure of $\mathfrak{g}$.
 
 \begin{example}
@@ -1309,6 +1309,7 @@ where $X_\xi$ again denotes the right-invariant vector field with $X_\xi|_e=\xi$
 
 
 \begin{lemma}
+\label{th:DExp0}
 At the origin $0\in\fg$, the derivative of the exponential map equals the identity,
 \begin{align*}
 	\Dt\exp|_0
@@ -1432,9 +1433,9 @@ The coordinates $x^i\in\mathbb{R}$, $i=1,\ldots,n$, used in the coordinate repre
 \end{definition}
 Via $\exp$, the Lie normal coordinates provide a (local) parametrization of $G$.
 
-\subsubsection{Exponentialabbildung und adjungierte Darstellung}
+\subsubsection{Exponential Map and Adjoint Representation}
 
-Das Diagramm
+The diagram
 \begin{center}
 \begin{tikzcd}
 \mathfrak{g} \arrow{d}{\exp} \arrow{r}{\ad}
@@ -1443,45 +1444,88 @@ G \arrow{r}{\Ad}
 & \mathrm{GL}(\mathfrak{g})
 \end{tikzcd}
 \end{center}
-illustriert zwei Wege für Abbildungen $\mathfrak{g}\rightarrow\mathrm{GL}(\mathrm{g})$.
-Dabei ist $\exp:\mathfrak{gl}(\mathfrak{g})\rightarrow\mathrm{GL}(\mathfrak{g})$ die ``gewöhnliche'' Operatorexponentialfunktion.
+illustrates two compositions for a map $\mathfrak{g}\rightarrow\mathrm{GL}(\mathfrak{g})$.
+Here, $\exp:\mathfrak{gl}(\mathfrak{g})\rightarrow\mathrm{GL}(\mathfrak{g})$ is the ``ordinary'' operator exponential defined by the power series.\footnote{
+	The image domains of $\ad$ and $\Ad$ could be characterized more precisely as the derivations $\mathfrak{der}(\fg)$ and the automorphism group $\mathrm{Aut}(\fg)$, respectively.
+}
 
-Dass sie übereinstimmen, dass also
-\begin{empheq}[box=\resultbox]{align}
+\begin{theorem}
+\label{th:AdExp}
+With reference to the preceding diagram, we have
+\begin{align*}
 	\Ad\circ\exp &= \exp\circ\ad
-\end{empheq}
-ist, soll hier gezeigt werden.
+	\ ,
+\end{align*}
+so that the diagram commutes.
+\end{theorem}
 
-Sei dazu $\xi\in\mathfrak{g}$ beliebig.
-Wir betrachten zwei Kurven in $\mathrm{GL}(\mathfrak{g})$,
+\begin{example}
+We again identify the Lie algebra $\fso(3)$ with $(\mathbb{R}^3,\times)$, using the correspondence between $a\in\mathbb{R}^3$ and $A=[a]_\times\in\fso(3)$ as in previous examples.
+
+In this case,
+\begin{align*}
+	(\Ad\circ\exp)(A): 
+	B &\mapsto
+	\exp_\mathsf{M}(A)\,B\,\exp_\mathsf{M}(-A)
+	= 
+	\big[	
+		\exp_\mathsf{M}(A)\,b
+	\big]_\times
+\end{align*}
+for $B=[b]_\times\in\fso(3)$ with $b\in\mathbb{R}^3$.
+
+On the other hand,
+\begin{align*}
+	(\exp\circ\ad)(A):
+	B \mapsto
+	\exp(\ad(A))\cdot B
+	&= \exp([A,-]^{\fso(3)})(B)
+	\nonumber\\
+	&=
+	\big[
+		\exp_\mathsf{M}([a]_\times)\,b
+	\big]_\times
+	= \big[
+		\exp_\mathsf{M}(A)\,b
+	\big]_\times	
+	\ .
+\end{align*}
+In the example of $\SO(3)$, the identity $\Ad\circ\exp=\exp\circ\ad$ is very easy to represent via the isomorphism $(\mathbb{R}^3,\times)\cong\fso(3)$.
+\end{example}
+
+
+
+\begin{proof}[Proof of \ref{th:AdExp}]
+Let $\xi\in\mathfrak{g}$.
+We consider two curves in $\mathrm{GL}(\mathfrak{g})$,
 \begin{align*}
 	\Gamma_1: t&\mapsto \exp(t\,\ad(\xi))
 	\ ,\\
 	\Gamma_2: t&\mapsto \Ad(\exp(t\xi))
 	\ .
 \end{align*}
-$\Gamma_1$ ist nach Definition eine Einparametergruppe.
-Dass dies auch $\Gamma_2$ ist, folgt aus
+By definition, $\Gamma_1$ is a one-parameter subgroup.
+That $\Gamma_2$ is also one follows from
 \begin{align*}
 	\Gamma_2(t+s)
 	&= \Ad(\exp((t+s)\xi))
 	= \Ad(\exp(t\xi)\exp(s\xi))
 	\nonumber\\
-	&= \Ad(\exp(t\xi)\cdot\Ad(\exp(s\xi)
+	&= \Ad(\exp(t\xi))\cdot\Ad(\exp(s\xi))
 	\ .
 \end{align*}
-Es ist außerdem
+Moreover,
 \begin{align*}
 	\dot{\Gamma}_1(0)
 	&= \ad(\xi)
 \end{align*}
-und
+and
 \begin{align*}
 	\dot{\Gamma}_2(0)
 	&= \Dt\,\Ad|_e\cdot \xi = \ad(\xi) = \dot{\Gamma}_1(0)
 	\ .
 \end{align*}
-Aufgrund der Einparametergruppeneigenschaft gilt für $i=1,2$
+By the one-parameter subgroup property, for $i=1,2$ we have
 \begin{align*}
 	\dot{\Gamma}_i(t)
 	&=
@@ -1491,19 +1535,45 @@ Aufgrund der Einparametergruppeneigenschaft gilt für $i=1,2$
 	= \dot{\Gamma}_i(0)\Gamma_i(t)
 	= \ad(\xi)\circ\Gamma_i(t)
 \end{align*}
-(wobei $\Gamma_i(t)$ und $\ad(\xi)$ vermöge der Einparametergruppe kommutieren).
+(where $\Gamma_i(t)$ and $\ad(\xi)$ commute by virtue of the one-parameter subgroup).
 
-Beide Kurven erfüllen also dieselbe gewöhnliche Differenzialgleichung ersten Grades und haben wegen $\Gamma_1(0)=\Gamma_2(0)=\mathrm{id}$ überdies den gleichen Anfangswert.
-Damit stimmen $\Gamma_1$ und $\Gamma_2$ überein, 
-so dass die Gleichheit $\Gamma_1(1)=\Gamma_2(1)$ die zu zeigende Aussage ergibt.
+Thus, both curves satisfy the same first-order ordinary differential equation and, since $\Gamma_1(0)=\Gamma_2(0)=\mathrm{id}$, also share the same initial value.
+Hence $\Gamma_1$ and $\Gamma_2$ coincide,
+so that the equality $\Gamma_1(1)=\Gamma_2(1)$ yields the desired claim.
+\end{proof}
 
-\subsubsection{Ableitung der Exponentialfunktion}
+\subsubsection{Derivative of the Exponential Map}
 
-Ausgehend von Gl.~(\ref{eq:dExp0}) betrachten wir die Ableitung mit um den Faktor $s$ skalierten Tangentialvektoren,
+We generalize Lemma~\ref{th:DExp0} to the following theorem.
+\begin{theorem}
+\label{th:DExp}
+The derivative of the exponential map at $\xi\in\fg$ has, as a map $\Tt\exp|_{\xi}:\Tt_\xi\fg=\fg\rightarrow\Tt_{\exp\xi}G$, the form
+\begin{align*}
+	\Tt\exp|_{\xi}
+	&= \Tt R_{\exp\xi}|_e\cdot E(\ad(\xi))
+\end{align*}
+and, as a map $\Dt\exp|_{\xi}:\fg\rightarrow\fg$, the form
+\begin{align*}
+	\Dt\exp|_{\xi}
+	&= E(\ad(\xi))
+	\ .
+\end{align*}
+Here, $E$ is to be understood as the power series defined by
+\begin{align*}
+	E(x) &:=
+	\int_0^1
+	\mathrm{e}^{(1-s')x}\ \dt s'
+	= \frac{\mathrm{e}^x-1}{x}
+	= 1 + \frac{1}{2}x + \frac{1}{6}x^2 + \ldots
+	\ .
+\end{align*}
+\end{theorem}
+\begin{proof}
+We consider the derivative for tangent vectors scaled by a factor $s$,
 \begin{align*}
 	\Dt\exp|_{s\xi} \cdot s\upsilon
 	&=
-	\Tt R_{\exp(s\xi)}^{-1}|_{\exp(s\xi)}
+	\Tt R_{\exp(-s\xi)}|_{\exp(s\xi)}
 	\cdot
 	\frac{\dt}{\dt t}
 		\exp(s\xi + st\upsilon)
@@ -1514,33 +1584,35 @@ Ausgehend von Gl.~(\ref{eq:dExp0}) betrachten wir die Ableitung mit um den Fakto
 		\exp(s\xi + st\upsilon)
 		\exp(-s\xi)
 	\Big|_{t=0}
+	\ .
 \end{align*}
-Mit Hilfe der durch 
+Using the map $h_{\xi,\upsilon}:\mathbb{R}^2\rightarrow G$ defined by
 \begin{align*}
 	h_{\xi,\upsilon}(t, s)
 	&:= 
 	\exp(s\xi + st\upsilon)\exp(-s\xi)
+	\ ,
 \end{align*}
-definierten Abbildung $h_{\xi,\upsilon}:\mathbb{R}^2\rightarrow G$ schreiben wir
+we write
 \begin{align*}
 	\Dt\exp|_{s\xi} \cdot s\upsilon
 	&= \dot{h}_{\xi, \upsilon}(0, s)
 	\ ,
 \end{align*}
-wobei
+where
 \begin{align*}
 	\dot{h}_{\xi, \upsilon}(t, s)
 	&= \frac{\dt}{\dt t} h_{\xi, \upsilon}(t, s)
 	\ .
 \end{align*}
-Wir notieren einige in der Folge wichtige Eigenschaften dieser Abbildung,
+We note that
 \begin{align*}
 	h_{\xi,\upsilon}(0, s)
 	&= e
-	\ ,\\
-	\dot{h}_{\xi, \upsilon}(0, s) 
-	&\in\mathfrak{g}
-	\ ,\\
+	\ ,
+\end{align*}
+and for the $\fg$-valued map $\dot{h}_{\xi, \upsilon}(0, s)$, that
+\begin{align*}
 	\dot{h}_{\xi, \upsilon}(0, 0)
 	&= 0
 	\ ,\\
@@ -1548,7 +1620,7 @@ Wir notieren einige in der Folge wichtige Eigenschaften dieser Abbildung,
 	&= \Dt\exp|_{\xi} \cdot \upsilon
 	\ .
 \end{align*}
-Die explizite Berechnung von $\dot{h}_{\xi, \upsilon}(0, s)$ erfolgt über die Ableitung nach $s$, beginnend mit der Produktregel (für $\Tt\,\mathrm{mult}$),
+The explicit computation of $\dot{h}_{\xi, \upsilon}(0, s)$ proceeds by differentiating with respect to $s$, starting with the product rule (for $\Tt\,\mathrm{mult}$),
 \begin{align*}
 	\frac{\partial}{\partial s}
 	\dot{h}_{\xi, \upsilon}(0, s)	
@@ -1610,7 +1682,7 @@ Die explizite Berechnung von $\dot{h}_{\xi, \upsilon}(0, s)$ erfolgt über die A
 	\Big|_{t=0}
 	\ .
 \end{align*}
-Mit
+With
 \begin{align*}
 	\frac{\dt}{\dt t}	
 	\Big(
@@ -1627,13 +1699,13 @@ Mit
 	\upsilon
 	= \upsilon
 \end{align*}
-und
+and
 \begin{align*}
 	\Ad(\exp(-s\xi))\cdot\xi
 	&= \exp(\ad(-s\xi))\cdot\xi
 	= \xi
 \end{align*}
-erhalten wir 
+(see Theorem~\ref{th:AdExp}), we obtain
 \begin{align*}
 	\frac{\partial}{\partial s}
 	\dot{h}_{\xi, \upsilon}(0, s)	
@@ -1650,7 +1722,7 @@ erhalten wir
 	\cdot\xi
 	\ .
 \end{align*}
-Mit
+Using
 \begin{align*}
 	\big(
 	\Tt R_{h_{\xi, \upsilon}(t, s)}
@@ -1660,7 +1732,7 @@ Mit
 	\big)\big|_{t=0}
 	&= 0
 \end{align*}
-sowie $\Tt L_{h_{\xi, \upsilon}(0, s)^{-1}}|_{h_{\xi, \upsilon}(0, s)}=\mathrm{id}$ (was trivial ist) folgt
+as well as $\Tt L_{h_{\xi, \upsilon}(0, s)^{-1}}|_{h_{\xi, \upsilon}(0, s)}=\mathrm{id}$ (which is trivial), it follows that
 \begin{align*}
 	&\frac{\dt}{\dt t}	
 	\Big(
@@ -1689,7 +1761,7 @@ sowie $\Tt L_{h_{\xi, \upsilon}(0, s)^{-1}}|_{h_{\xi, \upsilon}(0, s)}=\mathrm{i
 	= \ad(-\dot{h}_{\xi, \upsilon}(0, s))
 	\ .
 \end{align*}
-Zusammengefasst erhalten wir
+Combining these results, we obtain
 \begin{align*}
 	\frac{\partial}{\partial s}
 	\dot{h}_{\xi, \upsilon}(0, s)
@@ -1698,8 +1770,8 @@ Zusammengefasst erhalten wir
 	= \ad(\xi)\cdot\dot{h}_{\xi, \upsilon}(0, s) + \upsilon
 	\ .
 \end{align*}
-Dies ist eine gewöhnliche Diffenzialgleichung für $\dot{h}_{\xi, \upsilon}(0, s)$ auf dem endlichdimensionalen Vektorraum $\mathfrak{g}$.
-Mit dem Anfangswert $\dot{h}_{\xi, \upsilon}(0, 0)=0$ finden wir
+This is an ordinary differential equation for $\dot{h}_{\xi, \upsilon}(0, s)$ on the finite-dimensional vector space $\mathfrak{g}$.
+With the initial value $\dot{h}_{\xi, \upsilon}(0, 0)=0$, we find
 \begin{align*}
 	\dot{h}_{\xi, \upsilon}(0, s)
 	&=
@@ -1707,30 +1779,220 @@ Mit dem Anfangswert $\dot{h}_{\xi, \upsilon}(0, 0)=0$ finden wir
 	\exp((s-s')\,\ad(\xi))\cdot{\upsilon}
 	\ \dt s'
 \end{align*}
-und mit $\dot{h}_{\xi, \upsilon}(0, 1)=\Dt\exp|_{\xi}\cdot\upsilon$ schließlich
-\begin{empheq}[box=\resultbox]{align}
-	\Dt\exp|_{\xi}
-	&= E(\ad(\xi))
-	\ ,
-\end{empheq}
-wobei
-\begin{align}
-	E(x) &:=
-	\int_0^1
-	\mathrm{e}^{(1-s')x}\ \dt s'
-	= \frac{\mathrm{e}^x-1}{x}
-	= 1 + \frac{1}{2}x + \frac{1}{6}x^2 + \ldots
+and with $\dot{h}_{\xi, \upsilon}(0, 1)=\Dt\exp|_{\xi}\cdot\upsilon$, we finally arrive at the desired formula for $\Dt\exp$.
+By right multiplication, the formula for $\Tt\exp$ follows accordingly.
+\end{proof}
+
+With Theorem~\ref{th:DExp}, formulas such as the Baker--Campbell--Hausdorff formula can subsequently be derived.
+In this paper, we use it for a result of interest in navigation.
+\begin{example}
+\label{ex:coning1}
+We consider the kinematics of attitude $C\in\SO(3)$ already treated in Example~\ref{ex:attitude_error}.
+Let $\omega\in\mathbb{R}^3$, or $\Omega=[\omega]_\times\in\fso(3)$, be the body-fixed (error-free) measured angular velocity.
+In this situation, the attitude satisfies the differential equation
+\begin{align*}
+	\dot{C} &= C\,\Omega
 	\ .
-\end{align}
+\end{align*}
+In practice, angular velocities are available in the form of angular increments integrated over an interval $(t-\Delta t, t)$,
+\begin{align*}
+	\theta(t) &= \int_{t-\Delta t}^t\omega(\tau)\,\dt \tau
+	\ ,
+\end{align*}
+from which the change in attitude is determined to first approximation by
+\begin{align*}
+	C(t) &\simeq C(t - \Delta t)\,\exp_\mathsf{M}([\theta(t)]_\times)
+	\ .
+\end{align*}
+This approximation formula is exact in the case where $\omega$ maintains its direction over the measurement interval.
+If this axis of rotation rotates over the interval $(t-\Delta t, t)$, the given approximation is subject to the so-called \mydef{coning error}.
+To improve accuracy, a \mydef{coning correction} $\Delta\theta^c$ can be added to the angular increment,
+\begin{align*}
+	C(t) &\simeq C(t - \Delta t)\,
+	\exp_\mathsf{M}([\theta(t) + \Delta\theta^c(t)]_\times)
+	\ .
+\end{align*}
+The \mydef{Magnus expansion} provides a systematic approximation for $\Delta\theta^c$.\footnotemark
+\end{example}
+\footnotetext{
+If angular increments $\theta$ are available at a sampling rate that is sufficiently high relative to the attitude dynamics, a coning correction in the navigation algorithm becomes unnecessary.
+The prerequisite is that the computing power is sufficient to process the high-rate angular increments.
+Nowadays, this is increasingly the case.
+}
 
-\newpage
+\begin{lemma}
+\label{th:MagnusLemma}
+Let $T>0$ be the length of an interval and $\Omega: (0,T)\rightarrow\fso(n)$ be a smooth curve.
+The differential equation
+\begin{align*}
+	\frac{\dt}{\dt t}\exp_\mathsf{M}(\Theta)
+	&= \exp_\mathsf{M}(\Theta)\,\Omega
+\end{align*}
+for the $\fso(n)$-valued map $t\mapsto\Theta(t)$ can be written in the form
+\begin{align*}
+	\dot{\Theta}
+	&= \frac{\ad(\Theta)}{1 - \mathrm{e}^{-\ad(\Theta)}}\,\Omega
+	\ .
+\end{align*}
+(Here, the function depending on $\ad(\Theta)$ is to be evaluated formally as a power series.)
+\end{lemma}
+We note that the above lemma holds for all (matrix) Lie groups and their Lie algebras, not only for the case of $\SO(n)$ of interest to us in the example.
 
-\section{Zusammenhänge auf Lie-Gruppen}
+\begin{proof}
+Carrying out the differentiation yields, via Theorem~\ref{th:DExp},
+\begin{align*}
+	\frac{\dt}{\dt t}\exp_\mathsf{M}(\Theta)
+	&= \Tt \exp|_\Theta\cdot\dot{\Theta}
+	= \big(
+		E(\ad(\Theta))\,\dot{\Theta}
+	\big)\,\exp_\mathsf{M}(\Theta)
+	\ .
+\end{align*}
+It follows with Theorem~\ref{th:AdExp} that
+\begin{align*}
+	E(\ad(\Theta))\,\dot{\Theta}
+	&=
+	\exp_\mathsf{M}(\Theta)\,\Omega\,\exp_\mathsf{M}(-\Theta)
+	= \Ad(\exp_\mathsf{M}(\Theta))\,\Omega
+	= \exp_\mathsf{M}(\ad(\Theta))\,\Omega
+\end{align*}
+and hence
+\begin{align*}
+	\dot{\Theta}
+	&=
+	\frac{\mathrm{e}^{\ad(\Theta)}}{E(\ad(\Theta))}
+	\,\Omega
+	\ .
+\end{align*}
+Substituting $E$ yields the desired equation.
+\end{proof}
 
-Dieser Teil ist der Diskussion von Zusammenhängen auf Lie-Gruppen gewidmet,
-die aus Sicht mancher Anwendung, insbesondere der Navigation, interessant sind.
-Ein allgemeiner Überblick über Zusammenhänge auf Lie-Gruppen ist nicht Ziel.
-Auch beschränken wir uns im Detail auf affine Zusammenhänge auf dem (parallelisierten) Tangentialbündel.
+\begin{definition}
+The series expansion obtained by successive iteration of the equation
+\begin{align*}
+	\dot{\Theta}
+	&= \frac{\ad(\Theta)}{1 - \mathrm{e}^{-\ad(\Theta)}}\,\Omega
+\end{align*}
+is called the \mydef{Magnus expansion}.
+\end{definition}
+We state the first terms of the Magnus series over the interval~$(0, T)$ with initial value $\Theta(0)=0$.
+We have
+\begin{align*}
+	\dot{\Theta}
+	&= 
+	\Big(
+		1 + \frac{1}{2}\ad(\Theta) 
+		+ \frac{1}{12}[\ad(\Theta)]^2
+		+ \ldots
+	\Big)\,\Omega
+	\ .
+\end{align*}
+At leading order, we have
+\begin{align*}
+	\Theta^{(0)}(T) &= \int_0^T\dt t\,\Omega(t)
+	\ .
+\end{align*}
+Substituting $\Theta^{(0)}$ into the right-hand side yields the next order,
+\begin{align*}
+	\Theta^{(1)}(T)
+	&=
+	\frac{1}{2}\int_0^T\dt t\,
+	[\Theta^{(0)}(t), \Omega(t)]^{\fso(n)}
+	\nonumber\\	
+	&=
+	\frac{1}{2}\int_0^T\dt t\int_0^t\dt t_1 \,
+	[\Omega(t_1), \Omega(t)]^{\fso(n)}
+	\ ,
+\end{align*}
+and from this we obtain in turn
+\begin{align*}
+\Theta^{(2)}(T)
+	&= 
+	\frac{1}{2}
+	\int_0^T\dt t\,
+	[\Theta^{(1)}(t), \Omega(t)]^{\fso(n)}
+	\nonumber\\
+	&\quad
+	+\frac{1}{12}
+	\int_0^T\dt t\,
+	[\Theta^{(0)}(t), [\Theta^{(0)}(t), \Omega(t)]^{\fso(n)}]^{\fso(n)}
+	\ ,	
+\end{align*}
+which, using
+\begin{align*}
+	\int_0^t\dt t_1\int_0^t\dt t_2\, f(t_1,t_2)
+	&=\int_0^t\dt t_1\int_0^{t_1}\dt t_2\,
+	[f(t_1,t_2)-f(t_2,t_1)]
+\end{align*}
+and the Jacobi identity, can be written symmetrically in the form
+\begin{align*}
+\Theta^{(2)}(T) 
+	=
+	\frac{1}{6}
+	\int_0^T\dt t\int_0^t\dt t_1\int_0^{t_1}\dt t_2\,
+	\Big(
+		&[[\Omega(t_2), \Omega(t_1)]^{\fso(n)}, \Omega(t)]^{\fso(n)}
+		\nonumber\\
+		&
+		+ [\Omega(t_2), [\Omega(t_1), \Omega(t)]^{\fso(n)}]^{\fso(n)}
+	\Big)
+	\ .
+\end{align*}
+
+\begin{example}
+\label{ex:coning2}
+We continue the discussion of the coning correction from Example~\ref{ex:coning1}.
+For the leading correction, the Magnus expansion yields
+\begin{align*}
+	\Delta\theta^c(t)
+	&\simeq
+	\frac{1}{2}\int_{t-\Delta t}^t\dt \tau\int_{t-\Delta t}^\tau\dt \tau_1 \,
+	\omega(\tau_1)\times\omega(\tau)
+	\ ,
+\end{align*}
+where we again express $\fso(3)$ via $(\mathbb{R}^3,\times)$.
+
+If the angular velocity varies over $(t-\Delta t,t)$ to a good approximation linearly in time,
+that is,
+\begin{align*}
+	\omega(\tau)
+	&=
+	\bar{\omega}
+	+ \alpha\,
+	\big[
+		\tau 
+		- \big(
+			t - \frac{1}{2}\Delta t
+		\big)
+	\big]
+\end{align*}
+with $\bar{\omega}=\theta/\Delta t$ and an angular acceleration $\alpha$ estimated from the measurements,
+then the coning correction reads
+\begin{align*}
+	\Delta\theta^c(t)
+	&\simeq
+	\frac{\Delta t^2}{12}\,\theta\times\alpha
+	\ .
+\end{align*}
+\end{example}
+
+\section{Connections on Lie Groups}
+
+On a manifold~$M$, derivatives are well-defined solely from the differential structure:
+curves $t\mapsto\gamma(t)$ possess velocity vectors $\dot{\gamma}(t)\in\Tt_{\gamma(t)}M$,
+functions $f:M\rightarrow\mathbb{R}$ yield differential forms $\dt f$ (generalized by the exterior derivative),
+and smooth maps $F:M\rightarrow N$ induce the derivative $\Tt F:\Tt M\rightarrow\Tt N$.
+
+What all these notions of derivative have in common is that their image domain differs from the image domain of the original map.
+However, in order to meaningfully specify the rate of change of a vector field from the perspective of an observer moving along a curve $\gamma$ with instantaneous velocity $\dot{\gamma}$, one requires a directional derivative \emph{whose result lies back in the space of the vector field itself}.
+
+A connection provides precisely this structure.
+If the rate of change, defined by this connection, of a vector field along $\gamma$ vanishes, one speaks of parallel transport, by means of which vectors can be transferred from $\Tt_{\gamma(t)}M$ to $\Tt_{\gamma(t+\Delta t)}M$.
+In particular, if the rate of change of the observer's own velocity vector field $\dot{\gamma}$ vanishes, the observer moves without acceleration---this defines geodesics.
+
+This section is devoted to connections on a Lie group~$G$,
+with the focus on affine connections, that is, linear connections on the tangent bundle~$\Tt G$.
+The overarching motivation remains the investigation of those connections that are of significance in navigation for attitude estimation.
 
 \subsection{Parallelisierung von $\Tt G$ und $\Tt\Tt G$}
 
